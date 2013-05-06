@@ -54,8 +54,10 @@ echo -e "$newline"
 
 read -p ">>> Enter commit message: " commit_msg2
 if [ "$commit_msg2" = "" ]; then
+    echo -e "Using same commit message as OpenShift"
     git commit -am "$commit_msg"
 else
+    echo -e "Using a new commit message"
     git commit -am "$commit_msg2"
 fi
 echo -e "Ready to launch!$newline"
