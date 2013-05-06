@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+    <title>Advanced Task Editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ STATIC_URL }}css/demo.css" rel="stylesheet" media="screen">
+    <link href="{{ STATIC_URL }}css/demo-responsive.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/redmond/jquery-ui.css" rel="stylesheet">
+</head>
+<body>
+    <div class="hero-unit-midget-top">
+        <p>
+            <div class="container" style="text-align: center">
+                <h3>GTG Advanced</h3>
+                <p class="muted" style="font-size: 15px">FOR THOSE WITH IMPECCABLE GOOD TASTE</p>
+            </div>
+            <ul class="breadcrumb" id="pwd">
+                <li><span class="divider">/</span></li>
+                <!--<li><a href="#">Library</a> <span class="divider">/</span></li>-->
+                <!--<li class="active">Data</li>-->
+            </ul>
+            <form action="{% url 'demo:create_advanced' %}" method="post" onsubmit="return validateForm()" name="new_task_form">{% csrf_token %}
+            <div style="text-align: center" class="container">
+                <textarea rows="30" class="span12" name="structure" id="main" style="font-size: medium;"></textarea>
+                <button type="submit" class="btn btn-primary">Create!</button>
+                </form>
+            </div>
+        </p>
+    </div>
+    
+    <!-- ----------------------------------SCRIPTS HERE------------------------------------ -->
+    <script src="{{ STATIC_URL }}js/code-jquery.js"></script>	  
+    <script src="{{ STATIC_URL }}js/demo.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery-1.9.1.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery-ui.js"></script>
+    <script type="application/x-javascript">
+        
+        var main = document.getElementById("main");
+        var path = document.getElementById('pwd');
+        var newLI = document.createElement("LI");
+        var prompt_string = "\n\t\t> ";
+        var tab_char = "";
+        var subtask_running = 0;
+        var subtask_prompt = "\n\t\t\t  --> ";
+        var prev_keycode = "";
+        var tag_continue = 0;
+        var prev_name = "";
+        var prev_value = 0;
+        var prev_str = "";
+        var prev_length = 0;
+        
+        $(document).delegate('#main', 'keydown', function(e) {
+            var keyCode = e.keyCode || e.which;
+            
+            if (keyCode == 9) {     // TAB key
+                e.preventDefault();
+                var start = $(this).get(0).selectionStart;
+                var end = $(this).get(0).selectionEnd;
+                
+                // set textarea value to: text before caret + tab + text after caret
+                $(this).val($(this).val().substring(0, start) + "\t" + $(this).val().substring(end));
+                
+                // put caret at right position again
+                $(this).get(0).selectionStart = $(this).get(0).selectionEnd = start + 1;
+                
+                value = main.value;
+                //alert(value.substr(value.length - 4));
+                if (value.slice(-5) == prompt_string + "\t")
+                {
+                    //alert("Subtask detected ");
+                    main.value = main.value.slice(0, -5);
+                    insertAtCaret(subtask_prompt);
+                    tab_char += "\t";
+                    subtask_running = 1;
+                }
+            }
+            
+            if ((prev_keycode == 16 && keyCode == 50) || (tag_continue == 1 && keyCode != 188)) {   // For tag check
+                tag_continue = 1;
+                //alert("TAG !!!");
+                //$(this).style.color = 'yellow';
+                main.value = main.value.slice(0, -1) + main.value.slice(-1).fontcolor('#444444');
+            }
+            
+            if (keyCode == 188) {       // ',' character
+                tag_continue = 0;
+            }
+            prev_keycode = keyCode;
+        });
+        
+        //$(document).delegate('#main', 'keyup', function(e) {
+        //    var keyCode = e.keyCode || e.which;
+        //    
+        //    //if (keyCode < 14 || keyCode > 46 || keyCode == 32) {
+        //    //    prev_value++;
+        //    //}
+        //    
+        //    if (main.value.length > prev_length) {
+        //        prev_value++;
+        //    }
+        //    
+        //    if (keyCode == 13) {        //newline character
+        //        //alert(main.value.slice(-prev_value));
+        //        
+        //        prev_str = main.value.slice(-prev_value).slice(0, -1);
+        //        if (prev_str != '') {
+        //            var newLI = document.createElement("LI");
+        //            path.appendChild(newLI);
+        //            newLI.innerHTML = prev_str + ' <span class="divider">/</span>';
+        //            prev_name = "";
+        //            prev_value = 0;
+        //        }
+        //        
+        //        if (subtask_running == 1) {
+        //            insertAtCaret(subtask_prompt);
+        //        }
+        //        else{
+        //            $('#pwd').empty();
+        //            var newLI = document.createElement("LI");
+        //            path.appendChild(newLI);
+        //            newLI.innerHTML = ' <span class="divider">/</span>' + prev_str + ' <span class="divider">/</span>';
+        //            prev_name = "";
+        //            prev_value = 0;
+        //            insertAtCaret(prompt_string);
+        //        }
+        //    }
+        //    
+        //    if (keyCode == 8) {         //backspace character
+        //        
+        //        value = main.value;
+        //        if (value.slice(-8) == subtask_prompt.slice(0, -1))
+        //        {
+        //            subtask_running = 0;
+        //            main.value = value.slice(0, -8);
+        //            insertAtCaret(prompt_string);
+        //        }
+        //    }
+        //    
+        //    prev_length = main.value.length;
+        //    
+        //});
+        
+        var $editor = $("#main").keypress(function(event) {
+            //alert("content has changed");
+            keyCode = event.which;
+            
+            if (main.value.length > prev_length) {
+                prev_value++;
+            }
+            
+            if (keyCode == 13) {        //newline character
+                //alert(main.value.slice(-prev_value));
+                
+                prev_str = main.value.slice(-prev_value).slice(0, -1);
+                if (prev_str != '') {
+                    var newLI = document.createElement("LI");
+                    path.appendChild(newLI);
+                    newLI.innerHTML = prev_str + ' <span class="divider">/</span>';
+                    prev_name = "";
+                    prev_value = 0;
+                }
+                
+                if (subtask_running == 1) {
+                    insertAtCaret(subtask_prompt);
+                }
+                else{
+                    $('#pwd').empty();
+                    var newLI = document.createElement("LI");
+                    path.appendChild(newLI);
+                    newLI.innerHTML = ' <span class="divider">/</span>' + prev_str + ' <span class="divider">/</span>';
+                    prev_name = "";
+                    prev_value = 0;
+                    insertAtCaret(prompt_string);
+                }
+            }
+            
+            if (keyCode == 8) {         //backspace character
+                
+                value = main.value;
+                if (value.slice(-8) == subtask_prompt.slice(0, -1))
+                {
+                    subtask_running = 0;
+                    main.value = value.slice(0, -8);
+                    insertAtCaret(prompt_string);
+                }
+            }
+            
+            prev_length = main.value.length;
+        });
+        
+        main.focus();
+        main.value = "\n\n\n\t\t> New Task";
+        prev_name = prev_name.slice(0, -1);
+        createSelection(main, 7, 15);
+        
+        function createSelection(field, start, end) {
+            if( field.createTextRange ) {
+                var selRange = field.createTextRange();
+                selRange.collapse(true);
+                selRange.moveStart('character', start);
+                selRange.moveEnd('character', end);
+                selRange.select();
+                field.focus();
+                } else if( field.setSelectionRange ) {
+                    field.focus();
+                    field.setSelectionRange(start, end);
+                    } else if( typeof field.selectionStart != 'undefined' ) {
+                        field.selectionStart = start;
+                        field.selectionEnd = end;
+                        field.focus();
+                        }
+        } 
+        
+        function insertAtCaret(text) {
+            var txtarea = main;
+            var scrollPos = txtarea.scrollTop;
+            var strPos = 0;
+            var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? "ff" : (document.selection ? "ie" : false ) );
+            if (br == "ie") { 
+		txtarea.focus();
+		var range = document.selection.createRange();
+		range.moveStart ('character', -txtarea.value.length);
+		strPos = range.text.length;
+            }
+            else if (br == "ff") strPos = txtarea.selectionStart;
+            
+            var front = (txtarea.value).substring(0,strPos);
+            var back = (txtarea.value).substring(strPos,txtarea.value.length);
+            txtarea.value=front+text+back;
+            strPos = strPos + text.length;
+            if (br == "ie") { 
+		txtarea.focus();
+		var range = document.selection.createRange();
+		range.moveStart ('character', -txtarea.value.length);
+		range.moveStart ('character', strPos);
+		range.moveEnd ('character', 0);
+		range.select();
+            }
+            else if (br == "ff") {
+		txtarea.selectionStart = strPos;
+		txtarea.selectionEnd = strPos;
+		txtarea.focus();
+            }
+            txtarea.scrollTop = scrollPos;
+        }
+    </script>
+</body>
+</html>

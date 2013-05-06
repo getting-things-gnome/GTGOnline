@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GTG Online Interface Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 	<link href="{{ STATIC_URL }}css/demo.css" rel="stylesheet" media="screen">
+	<link href="{{ STATIC_URL }}css/demo-responsive.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}css/redmond/jquery-ui.css" rel="stylesheet">
+ </head>
+  <body style="background-image:url({{ STATIC_URL }}img/blue.jpg); background-attachment:fixed;">
+	
+	<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+	<div class="container-fluid">
+	<table width="100%">
+	<tr>
+		<td><a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</a></td>
+		<td><a class="brand" href="#">Getting Things Gnome!</a></td>
+		<td><ul class="nav">
+				<li><div class="btn-group spacing">
+        <button class="btn  dropdown-toggle" data-toggle="dropdown">Sort by<span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Task Name</a></li>
+            <li><a href="#">Due Date</a></li>
+            <li><a href="#">Days Left</a></li>
+        </ul>             
+    	</div></li>
+			  <li><div class="btn-group spacing">
+        <button class="btn  dropdown-toggle" data-toggle="dropdown">Filter Tasks<span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Without Start Date</a></li>
+            <li><a href="#">Without Due Date</a></li>
+            <li><a href="#">Without Tags</a></li>
+        </ul>             
+    	</div></li>
+		</ul>
+	</td>
+		<div class="nav-collapse">
+			<td>
+			<form class="navbar-search">
+  <input type="text" class="search-query" placeholder="Search/Add Tasks, Tags">
+</form>
+			</td>
+			<div class="pull-right">
+			<td><div id="tab" class="btn-group" data-toggle="buttons-radio">
+			<a href="#organiser" class="btn btn-primary active" data-toggle="tab">Organiser</a>
+			<a href="#work_view" class="btn btn-primary" data-toggle="tab">Work View</a></div></td>
+			<td>
+                <ul class="nav pull-right">
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, Lionel <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><i class="icon-home"></i> Profile </a></li>
+                            <li><a href="#"><i class="icon-wrench"></i> Settings</a></li>
+                            <li><a href="#"><i class="icon-question-sign"></i> Help</a></li>
+                            <li><a href="#"><i class="icon-envelope"></i> Contact Us</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#"><i class="icon-off"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul></td></div></div></tr></table>
+		</div>
+	</div>
+	</div>
+	
+<!--	<div class="container-fluid" style="background-color:#ffffe0">-->
+		<div class="container-fluid" >
+		<div class="row-fluid">
+		<div class="span2">
+			
+		<div class="sidebar-nav well-narrow sidebar-nav-fixed">
+				<ul class="nav nav-list">
+				  <!--<li><button class="btn btn-large" type="button" href="#myModal" data-toggle="modal">New Task</button></li>-->
+				  <!--<li><button class="btn btn-large" type="button" href="/demo/advanced/" data-toggle="modal">Advanced</button></li>-->
+				  <li><div class="btn-group">
+				    <button class="btn btn-large" type="button" href="#myModal" data-toggle="modal">New Task</button>
+				    <button class="btn dropdown-toggle btn-large" data-toggle="dropdown">
+				      <span class="caret"></span>
+				    </button>
+				    <ul class="dropdown-menu">
+				      <li><a href="/demo/advanced">Advanced</a></li>
+				      <!--<li><a href="javascript:toggleDiv('calendar');">Calendar</a></li>-->
+				    </ul>
+				  </div></li>
+				  <!--<li><a href="#myModal" type="button" class="btn btn-large" data-toggle="modal">New Task</a></li>-->
+				  <br>
+				  <li class="nav-header"><i class="icon-tasks"> </i>Tasks</li>
+				  <li class="divider"></li>
+				  <li><a href="#"><i class="icon-tasks"></i>All<span class="pull-right muted" id="all_tasks"></span></a></li>
+				  <li><a href="#"><i class="icon-play"></i>Active<span class="pull-right muted" id="active_tasks"></span></a></li>
+				  <li><a href="#"><i class="icon-ok"></i>Done<span class="pull-right muted" id="done_tasks"></span></a></li>
+				  <li><a href="#"><i class="icon-minus-sign"></i>Dismissed<span class="pull-right muted" id="dismissed_tasks"></span></a></li>
+				  <br>
+				  <li class="nav-header"><i class="icon-tags"> </i>Tags</li>
+				  <li class="divider"></li>
+  				  <li><a href="#"><span class="label label-important">&nbsp;&nbsp;&nbsp;</span> Home<span class="pull-right muted">5</span></a></li>
+				  <li><a href="#"><span class="label label-success">&nbsp;&nbsp;&nbsp;</span> Work<span class="pull-right muted">17</span></a></li>
+  				  <li><a href="#"><span class="label label-warning">&nbsp;&nbsp;&nbsp;</span> Downtown<span class="pull-right muted">3</span></a></li>
+				  <li><a href="#"><span class="label label-white">&nbsp;&nbsp;&nbsp;</span> Phone Calls<span class="pull-right muted">1</span></a></li>
+<!--        		  <li><a href="#"><i class="icon-comment"></i> Comments <span class="badge badge-info">10</span></a></li>
+				  <li class="active"><a href="#"><i class="icon-user"></i> Members</a></li>-->
+				  <br>
+				  <li class="nav-header"><i class="icon-exclamation-sign"> </i>Tasks Due Dates</li>
+				  <li class="divider"></li>
+				  <li><a href="#"><span class="label label-red">Due Today</span><span class="pull-right muted">1</span></a></li>
+				  <li><a href="#"><span class="label label-yellow" style="color:#4d4d4d">Due This Week</span><span class="pull-right muted">9</span></a></li>
+				  <br>
+				  <li class="divider"></li>
+				  <li>
+				  <div class="btn-group">
+					  <button class="btn"><i class="icon-refresh"></i></button>
+					  <button class="btn"><i class="icon-envelope"></i></button>
+					  <button class="btn"><i class="icon-tag"></i><i class="icon-plus"></i></button>
+				  </div>
+				  </li>
+<!--				  <li><a href="#">Settings<span class="pull-right muted">100</span></a></li>
+				  <li><a href="#"><i class="icon-share"></i> Logout</a></li>-->
+				</ul>
+		</div>
+	</div>
+    
+	<div class="span10" style="position:relative; overflow: visible">
+	
+	<!---------------------------------------------------- start here for right pane 	---------------------------------------------------------------------->
+	
+
+	
+		
+
+	<div class="tab-content">
+	  <div class="tab-pane active" id="organiser" style="overflow: visible">
+	  
+	<!---------------------------------------------------    start here for tab pane ------------------------------------------------------------------>
+	  
+
+	 <div  class="container-fluid-custom opacious"><br><br><br>
+	 <table width="100%" class="table-condensed">
+	 <tr>
+	 <th style="width:6%"><span style="color:#cccccc">Subtasks</span></th>
+	 <th style="width:27%"><span style="color:#cccccc">Title</span></th>
+	 <th style="width:15%"><span style="color:#cccccc">Tags</span></th>
+	 <th style="width:32%"><span style="color:#cccccc">Description</span></th>
+	 <th style="width:10%"><span class="pull-right" style="color:#cccccc">Start Date</span></th>
+	 <th style="width:10%"><span class="pull-right" style="color:#cccccc">End Date</span></th>
+	 </tr>
+	 </table>
+		</div>
+		
+		
+		  
+	  <div class="accordion container-fluid-custom2" id="topmost" style="overflow: visible">
+		
+		<!--------------------------------------------   Task separator -------------------------------------------------->
+		
+		<hr><br><br><br>
+	  </div>
+		
+		<!--</div>-->
+</div>
+
+	
+
+
+  <!-- 												separator between the two tabs									 -->
+<div class="tab-pane" id="work_view">
+
+<div  class="container-fluid-custom opacious"><br><br><br>
+	 <table width="100%" class="table-condensed">
+	 <tr>
+	 <th style="width:6%"><span style="color:#cccccc">Status</span></th>
+	 <th style="width:27%"><span style="color:#cccccc">Title</span></th>
+	 <th style="width:15%"><span style="color:#cccccc">Tags</span></th>
+	 <th style="width:32%"><span style="color:#cccccc">Description</span></th>
+	 <th style="width:10%"><span class="pull-left" style="color:#cccccc">End Date</span></th>
+	 <th style="width:10%"><span class="pull-left" style="color:#cccccc">Days left</span></th>
+	 </tr>
+	 </table>
+		</div>
+
+			<div class="container-fluid" style="background-color:#ffffff">
+				<table width="100%" class="table table-striped">
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%">
+					  <div class="dropdown">
+						  <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d"><strong>Send invoices to the clients</strong></a>
+						  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						  <li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
+						  <li><a href="#"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+						  <li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+						  </ul>
+						</div>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%">
+					  <div class="dropdown">
+						  <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d"><strong>Pick up Dad</strong></a>
+						  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						  <li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
+						  <li><a href="#"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+						  <li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+						  </ul>
+						</div>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-warning-space">Downtown</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">flight is at 6:30</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 14.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>12</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-ok"></i></td>
+				      <td style="width:27%">
+					  <div class="dropdown">
+						  <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d"><strong>Meet Uncle</strong></a>
+						  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						  <li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
+						  <li><a href="#"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+						  <li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+						  </ul>
+						</div>
+					  </td>
+				     <td style="width:15%"></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">at the park</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 2.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>0</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%">
+					  <div class="dropdown">
+						  <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d"><strong>Call Mum</strong></a>
+						  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						  <li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
+						  <li><a href="#"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+						  <li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+						  </ul>
+						</div>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-important-space">Home</span></a>
+					 <a href="#"><span class="label label-white-space" style="color:#4d4d4d">Phone Calls</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">Ask her about aunty's health</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 12.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>10</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%">
+					  <div class="dropdown">
+						  <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d"><strong>Handover leave letter to boss</strong></a>
+						  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						  <li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
+						  <li><a href="#"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+						  <li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+						  </ul>
+						</div>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 19.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>17</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-exclamation-sign"></i></td>
+				      <td style="width:27%">
+					  <div class="dropdown">
+						  <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d"><strong>Watch the movie - Amelie</strong></a>
+						  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						  <li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
+						  <li><a href="#"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+						  <li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+						  </ul>
+						</div>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-important-space">Home</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">Also call Kevin, Mark and others</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 3.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>1</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-exclamation-sign"></i></td>
+				      <td style="width:27%">
+					  <div class="dropdown">
+						  <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d"><strong>Pick up Kevin from school</strong></a>
+						  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						  <li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
+						  <li><a href="#"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+						  <li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+						  </ul>
+						</div>
+					  </td>
+				     <td style="width:15%"></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">At 1:30 pm</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 2.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>0</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%">
+					  <div class="dropdown">
+						  <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d"><strong>Discuss project plans with team</strong></a>
+						  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						  <li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
+						  <li><a href="#"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+						  <li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+						  </ul>
+						</div>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">Meeting at 9:00 pm sharp</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 13.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>11</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%">
+					  <div class="dropdown">
+						  <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d"><strong>Pick up flowers for Misty</strong></a>
+						  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						  <li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
+						  <li><a href="#"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+						  <li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+						  </ul>
+						</div>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-warning-space">Downtown</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">Remember Tulips, not roses</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 7.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>5</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				  <tr>
+				      <td style="width:6%"><i class="icon-play"></i></td>
+				      <td style="width:27%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <strong>Send invoices to the clients</strong></a>
+					  </td>
+				     <td style="width:15%"><span class="pull-left"><a href="#"><span class="label label-success-space">Work</span></a></span></td>
+					 <td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">June invoices must be sent</span></a></td>
+					  <td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d">
+					  <span class="pull-left"><strong> 10.12.12</strong></span></a>
+					  </td>
+				      <td style="width:10%">
+						<span class="pull-left"><strong>8</strong></span>
+					  </td>
+				  </tr>
+				</table>
+				</div>
+	
+  </div>
+</div>
+
+<br>
+<!--<div class="pagination pagination-centered">
+  <ul>
+    <li><a href="#"><i class="icon-chevron-left"></i></a></li>
+    <li class="disabled"><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li><a href="#"><i class="icon-chevron-right"></i></a></li>
+  </ul>
+</div>
+<footer class="footer"><hr></footer>-->
+    </div>
+  </div>
+</div>
+	  
+	  <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <form action="{% url 'demo:create' %}" method="post" onsubmit="return validateForm()" name="new_task_form">{% csrf_token %}
+	      <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+	      <!--<h3 id="myModalLabel">Modal header</h3>-->
+	      <div style="text-align:center">
+	      <input type="text" placeholder="Task Title" class="span5" name="title" style="font-weight:bold;">
+	      </div>
+	      </div>
+	    <div class="modal-body">
+	      <!--<p>One fine body</p>-->
+	      <div style="text-align:center">
+	        <textarea rows="10" placeholder="Task Description" class="span5" name="description"></textarea>
+	      </div>
+	      <input type="text" id="datepicker1" name="start_date" class="pull-left" placeholder="Start Date">
+	      <input type="text" id="datepicker2" name="due_date" class="pull-right" placeholder="Due Date">
+	    </div>
+	    <div class="modal-footer">
+	      <button class="btn" data-dismiss="modal" aria-hidden="true">Hide</button>
+	      <button type="submit" class="btn btn-primary">Create</button>
+	    </div>
+	    </form>
+	  </div>
+	  
+	  <!--<div id="calendar">-->
+	  <!--<div id="myCarousel" class="carousel slide">-->
+	  <!--  <ol class="carousel-indicators">-->
+	  <!--    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>-->
+	  <!--    <li data-target="#myCarousel" data-slide-to="1"></li>-->
+	  <!--    <li data-target="#myCarousel" data-slide-to="2"></li>-->
+	  <!--  </ol>-->
+	  <!--  <!-- Carousel items -->-->
+	  <!--  <div class="carousel-inner">-->
+	  <!--    <div class="active item"></div>-->
+	  <!--    <div class="item"></div>-->
+	  <!--    <div class="item"></div>-->
+	  <!--  </div>-->
+	  <!--  <!-- Carousel nav -->-->
+	  <!--  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>-->
+	  <!--  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>-->
+	  <!--</div>-->
+	  <!--</div>-->
+	  
+
+	<script src="{{ STATIC_URL }}js/code-jquery.js"></script>	  
+	<script src="{{ STATIC_URL }}js/demo.js"></script>
+	<script src="{{ STATIC_URL }}js/jquery-1.9.1.js"></script>
+	<script src="{{ STATIC_URL }}js/jquery-ui.js"></script>
+	<script>
+	$(function() {
+	  $( "#datepicker1" ).datepicker();
+	  });
+	$(function() {
+	  $( "#datepicker2" ).datepicker();
+	  });
+	</script>
+	<script>
+	  {% autoescape off %}
+	  var task = {{ task|safe }}
+	  {% endautoescape %}
+	  var i=0, done=0, dismissed=0, active=0;
+	  for (i=0; i<task.length; i++) {
+	    //var url1 = "{% url 'demo:mark_done' ";
+	    //url1 = url1.concat(i+1);
+	    //url1 = url1.concat(" %}");
+	    //var url2 = "{% url 'demo:mark_dismissed' ";
+	    //url2 = url2.concat(i+1);
+	    //url2 = url2.concat(" %}");
+	    //alert(url1);
+	    //alert(url2);
+	    
+	    var tag_show = '<span class="pull-right">';
+	    var tags_len = task[i].tags.length
+	    for (var j=0; j<tags_len; j++) {
+	      tag_show = tag_show.concat('<a href="#"><span class="label label-warning-space">' + task[i].tags[j].slice(1) + '</span></a>');
+	    }
+	    tag_show = tag_show.concat('</span>');
+	    
+	    if (task[i].done == 1) {
+	      done++;
+	      var new_task = '<div class="accordion-group" id="topmost"><div class="accordion-heading" style="overflow:visible"><table width="99%" class="table-hover"><tr><td style="width:7%"><span class="accordion-toggle-custom"><input type="checkbox" class="checkbox"></span></td><td style="width:26%"><div class="dropdown" style="overflow:visible"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d"><i class="icon-ok"></i><strong>&nbsp;' + task[i].name + '</strong></a><ul class="dropdown-menu" role="menu" aria-labelledby="dLabel"><li><a href="/demo/' + task[i].id + '/mark_active/"><i class="icon-play"></i>&nbsp;Active</a></li><li><a href="/demo/' + task[i].id + '/mark_done/"><i class="icon-ok"></i>&nbsp;Done</a></li><li><a href="/demo/' + task[i].id + '/mark_dismissed/"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li><li><a href="/demo/' + task[i].id + '/delete/"><i class="icon-trash"></i>&nbsp;Delete</a></li></ul></div></td><td style="width:15%">' + tag_show + '</td><td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">' + task[i].description + '</span></a></td><td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d"><span class="pull-right"><strong>' + task[i].start_date + '</strong></span></a></td><td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d"><span class="pull-right"><strong>' + task[i].due_date + '</strong></span></a></td></tr></table></div></div>';
+	    }
+	    else if (task[i].dismissed == 1) {
+	      dismissed++;
+	      var new_task = '<div class="accordion-group" id="topmost"><div class="accordion-heading" style="overflow:visible"><table width="99%" class="table-hover"><tr><td style="width:7%"><span class="accordion-toggle-custom"><input type="checkbox" class="checkbox"></span></td><td style="width:26%"><div class="dropdown" style="overflow:visible"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d"><i class="icon-minus-sign"></i><strong>&nbsp;' + task[i].name + '</strong></a><ul class="dropdown-menu" role="menu" aria-labelledby="dLabel"><li><a href="/demo/' + task[i].id + '/mark_active/"><i class="icon-play"></i>&nbsp;Active</a></li><li><a href="/demo/' + task[i].id + '/mark_done/"><i class="icon-ok"></i>&nbsp;Done</a></li><li><a href="/demo/' + task[i].id + '/mark_dismissed/"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li><li><a href="/demo/' + task[i].id + '/delete/"><i class="icon-trash"></i>&nbsp;Delete</a></li></ul></div></td><td style="width:15%">' + tag_show + '</td><td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">' + task[i].description + '</span></a></td><td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d"><span class="pull-right"><strong>' + task[i].start_date + '</strong></span></a></td><td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d"><span class="pull-right"><strong>' + task[i].due_date + '</strong></span></a></td></tr></table></div></div>';
+	    }
+	    else
+	    {
+	      active++;
+	      var new_task = '<div class="accordion-group" id="topmost"><div class="accordion-heading" style="overflow:visible"><table width="99%" class="table-hover"><tr><td style="width:7%"><span class="accordion-toggle-custom"><input type="checkbox" class="checkbox"></span></td><td style="width:26%"><div class="dropdown" style="overflow:visible"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d"><strong>&nbsp;' + task[i].name + '</strong></a><ul class="dropdown-menu" role="menu" aria-labelledby="dLabel"><li><a href="/demo/' + task[i].id + '/mark_active/"><i class="icon-play"></i>&nbsp;Active</a></li><li><a href="/demo/' + task[i].id + '/mark_done/"><i class="icon-ok"></i>&nbsp;Done</a></li><li><a href="/demo/' + task[i].id + '/mark_dismissed/"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li><li><a href="/demo/' + task[i].id + '/delete/"><i class="icon-trash"></i>&nbsp;Delete</a></li></ul></div></td><td style="width:15%">' + tag_show + '</td><td style="width:32%"><a href="#" style="text-decoration:none"><span class="muted">' + task[i].description + '</span></a></td><td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d"><span class="pull-right"><strong>' + task[i].start_date + '</strong></span></a></td><td style="width:10%"><a href="#" style="text-decoration:none; color:#4d4d4d"><span class="pull-right"><strong>' + task[i].due_date + '</strong></span></a></td></tr></table></div></div>';
+	    }
+	    //var new_task = '<div>Insert Here</div>'
+	    $( "#topmost" ).before(new_task);
+	  }
+	  document.getElementById("done_tasks").innerHTML = done;
+	  document.getElementById("dismissed_tasks").innerHTML = dismissed;
+	  document.getElementById("active_tasks").innerHTML = active;
+	  document.getElementById("all_tasks").innerHTML = active+done+dismissed;
+	</script>
+	<script>
+	    function validateForm()
+	    {
+	      var x=document.forms["new_task_form"]["title"].value;
+	      if (x==null || x=="")
+	      {
+		alert("Please fill out Task Title");
+		return false;
+		}
+		}
+	</script>
+	<script type="text/javascript">
+	  function toggleDiv(divId) {
+	    $("#"+divId).toggle();
+	  }
+	</script>
+	<!--<script>-->
+	<!--  $(function() {-->
+	<!--    var new_task = "";-->
+	<!--  $( ".accordion-group" ).before(new_task);-->
+	<!--  });-->
+	<!--</script>-->
+  </body>
+</html>
