@@ -1,8 +1,8 @@
 # Django settings for GTGOnline project.
-#localhost
+#openshift
 import sys
 import os
-#WSGI_DIR = os.path.join(os.environ['OPENSHIFT_REPO_DIR'], 'wsgi')
+WSGI_DIR = os.path.join(os.environ['OPENSHIFT_REPO_DIR'], 'wsgi')
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -18,11 +18,11 @@ PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'demo',
-        'USER': 'parin',
-        'PASSWORD': 'parin',
-        'HOST': '',
-        'PORT': ''
+        'NAME': os.environ['OPENSHIFT_APP_NAME'],
+        'USER': os.environ['OPENSHIFT_MYSQL_DB_USERNAME'],
+        'PASSWORD': os.environ['OPENSHIFT_MYSQL_DB_PASSWORD'],
+        'HOST': os.environ['OPENSHIFT_MYSQL_DB_HOST'],
+        'PORT': os.environ['OPENSHIFT_MYSQL_DB_PORT']
     }
 }
 
@@ -70,7 +70,7 @@ MEDIA_URL = '/media/'
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
 #STATIC_ROOT = os.path.join(os.environ.get('OPENSHIFT_REPO_DIR'), 'wsgi', 'demo', 'static')
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(WSGI_DIR,'static')
 
 
 # URL prefix for static files.
