@@ -52,8 +52,12 @@ do
 done
 echo -e "$newline"
 
-read -p ">>> Enter commit message: " commit_msg
-git commit -am "$commit_msg"
+read -p ">>> Enter commit message: " commit_msg2
+if [ "$commit_msg2" = "" ]; then
+    git commit -am "$commit_msg"
+else
+    git commit -am "$commit_msg2"
+fi
 echo -e "Ready to launch!$newline"
 git push
 
