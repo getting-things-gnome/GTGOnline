@@ -63,5 +63,19 @@ fi
 echo -e "Ready to launch!$newline"
 git push
 
+echo -e "Pushed to Github$newline Now, lets launch it to Launchpad!$newline"
+
+bzr add 
+read -p ">>> Enter commit message: " commit_msg2
+if [ "$commit_msg2" = "" ]; then
+    echo -e "Using same commit message as OpenShift"
+    bzr commit -m "$commit_msg"
+else
+    echo -e "Using a new commit message"
+    bzr commit -m "$commit_msg2"
+fi
+echo -e "Ready to launch!$newline"
+bzr push
+
 cp ./GTGOnline/settings_for_localhost.py ./GTGOnline/settings.py
 echo -e "\nDone !\n"
