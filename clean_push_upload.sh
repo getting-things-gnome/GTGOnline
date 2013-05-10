@@ -1,5 +1,4 @@
 find . -name '*.pyc' -print0 | xargs -0 rm -f
-cp ./GTGOnline/settings_for_openshift.py ./GTGOnline/settings.py
 cd ..
 
 newline="\n"
@@ -77,5 +76,4 @@ fi
 echo -e "Ready to launch!$newline"
 bzr push
 
-cp ./GTGOnline/settings_for_localhost.py ./GTGOnline/settings.py
 echo -e "\nDone !\n"

@@ -1,8 +1,16 @@
 # Django settings for GTGOnline project.
-#openshift
+
 import sys
 import os
-WSGI_DIR = os.path.join(os.environ['OPENSHIFT_REPO_DIR'], 'wsgi')
+
+OPENSHIFT_SETTINGS = 0
+LOCALHOST_SETTINGS = 1
+
+if 'OPENSHIFT_REPO_DIR' in os.environ:
+    WSGI_DIR = os.path.join(os.environ['OPENSHIFT_REPO_DIR'], 'wsgi')
+    use_settings = OPENSHIFT_SETTINGS
+else:
+    use_settings = LOCALHOST_SETTINGS
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -15,16 +23,28 @@ MANAGERS = ADMINS
 
 PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ['OPENSHIFT_APP_NAME'],
-        'USER': os.environ['OPENSHIFT_MYSQL_DB_USERNAME'],
-        'PASSWORD': os.environ['OPENSHIFT_MYSQL_DB_PASSWORD'],
-        'HOST': os.environ['OPENSHIFT_MYSQL_DB_HOST'],
-        'PORT': os.environ['OPENSHIFT_MYSQL_DB_PORT']
+if use_settings == OPENSHIFT_SETTINGS:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ['OPENSHIFT_APP_NAME'],
+            'USER': os.environ['OPENSHIFT_MYSQL_DB_USERNAME'],
+            'PASSWORD': os.environ['OPENSHIFT_MYSQL_DB_PASSWORD'],
+            'HOST': os.environ['OPENSHIFT_MYSQL_DB_HOST'],
+            'PORT': os.environ['OPENSHIFT_MYSQL_DB_PORT']
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'demo',
+            'USER': 'parin',
+            'PASSWORD': 'parin',
+            'HOST': '',
+            'PORT': ''
+        }
+    }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -34,7 +54,7 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Asia/Kolkata'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -55,10 +75,10 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-if 'OPENSHIFT_DATA_DIR' in os.environ:
+if use_settings == OPENSHIFT_SETTINGS:
     MEDIA_ROOT = os.path.join(os.environ.get('OPENSHIFT_DATA_DIR'), 'media')
 else:
-    MEDIA_ROOT = os.path.join(PROJECT_ROOT, *MEDIA_URL.strip("/").split("/"))
+    MEDIA_ROOT = ''
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -70,7 +90,10 @@ MEDIA_URL = '/media/'
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
 #STATIC_ROOT = os.path.join(os.environ.get('OPENSHIFT_REPO_DIR'), 'wsgi', 'demo', 'static')
-STATIC_ROOT = os.path.join(WSGI_DIR,'static')
+if use_settings == OPENSHIFT_SETTINGS:
+    STATIC_ROOT = os.path.join(WSGI_DIR,'static')
+else:
+    STATIC_ROOT = ''
 
 
 # URL prefix for static files.
