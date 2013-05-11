@@ -35,3 +35,7 @@ def fuzzy_datetime_to_str(input_datetime):
         return 'soon'
     elif input_datetime.day == FUZZY_SOMEDAY_DAY:
         return 'someday'
+    
+def get_days_left(input_datetime):
+    return
+
