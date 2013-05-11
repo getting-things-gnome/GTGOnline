@@ -18,13 +18,14 @@ def add_task(user, name, description = "", start_date = None, \
                     start_date = start_date, due_date = due_date)
     
     # Try to remove this function and use tag_list obtained from client instead
-    tag_list = find_tags(description)
+    tag_list = find_tags(name + " " + description)
     new_tags, existing_tags = create_tag_objects(user, tag_list)
     new_task.save()
     new_task.tags.add(*(list(new_tags)+existing_tags))
     return new_task
 
-def update_task_name(user, new_name, task_object = None, task_id = None):
+def update_task_name(user, new_name, task_object = None, task_id = None, \
+                     tag_list = None):
     if task_object == None:
         task_object = get_task_object(user, task_id)
     task_object.name = new_name

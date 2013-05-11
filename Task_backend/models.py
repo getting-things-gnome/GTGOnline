@@ -15,7 +15,7 @@ class Task(models.Model):
     description = models.TextField()
     start_date = models.DateTimeField(null = True, blank = True)
     due_date = models.DateTimeField(null = True, blank = True)
-    closed_date = models.DateTimeField()
+    closed_date = models.DateTimeField(null = True, blank = True)
     last_modified_date = models.DateTimeField(auto_now = True)
     status = models.SmallIntegerField(choices = TASK_STATUS, default = 0)
     tags = models.ManyToManyField(Tag)

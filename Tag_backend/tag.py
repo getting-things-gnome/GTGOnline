@@ -5,7 +5,7 @@ from User_backend.user import get_user_object
 from GTGOnline.static import *
 
 def find_tags(text):
-    return re.findall(TAG_REGEX, text)
+    return list(set(re.findall(TAG_REGEX, text)))
 
 def does_tag_exist(user, tag_name):
     return Tag.objects.filter(user = user, name = tag_name).exists()
