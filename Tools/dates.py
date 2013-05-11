@@ -37,5 +37,8 @@ def fuzzy_datetime_to_str(input_datetime):
         return 'someday'
     
 def get_days_left(input_datetime):
-    return
+    if input_datetime > datetime.now():
+        return (input_datetime - datetime.now()).days
+    else:
+        return (datetime.now() - input_datetime).days
 
