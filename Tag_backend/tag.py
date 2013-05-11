@@ -5,7 +5,9 @@ from User_backend.user import get_user_object
 from GTGOnline.static import *
 
 def find_tags(text):
-    return list(set(re.findall(TAG_REGEX, text)))
+    tags_list = re.findall(TAG_REGEX, text)
+    tags_list = [x[1:].lower() for x in tags_list]
+    return list(set(tags_list))
 
 def does_tag_exist(user, tag_name):
     return Tag.objects.filter(user = user, name = tag_name).exists()
@@ -19,7 +21,6 @@ def create_tag_objects(user, tag_list):
     user = get_user_object(user)
     new_tags, existing_tags, new_tags_names = [], [], []
     for tag in tag_list:
-        tag = tag[1:]
         if does_tag_exist(user, tag):
             existing_tags.append(get_tag_object(user, tag_name = tag))
         else:
@@ -38,7 +39,7 @@ def create_tag_objects(user, tag_list):
         # and it will add it to it's m2m field. Note that the following approach
         # only works because the existing tags HAVE ids.
         #task_object.tags.add(*existing_tags)
-    return (new_tags, existing_tags)
+    return (list(new_tags), existing_tags)
 
 def create_bulk_tags(tag_objects):
     Tag.objects.bulk_create(tag_objects)

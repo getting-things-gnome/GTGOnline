@@ -21,6 +21,9 @@ class Task(models.Model):
     tags = models.ManyToManyField(Tag)
     subtasks = models.ManyToManyField('self', symmetrical = False)
     
+    class Meta:
+        ordering = ['-due_date']
+    
     def __unicode__(self, ):
         return self.name
     
