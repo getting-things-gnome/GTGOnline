@@ -2,7 +2,7 @@ import re
 
 from Tag_backend.models import Tag
 from User_backend.user import get_user_object
-from GTGOnline.static import *
+from Tools.constants import *
 
 def find_tags(text):
     tags_list = re.findall(TAG_REGEX, text)
@@ -10,7 +10,7 @@ def find_tags(text):
     return list(set(tags_list))
 
 def does_tag_exist(user, tag_name):
-    return Tag.objects.filter(user = user, name = tag_name).exists()
+    return user.tag_set.filter(name = tag_name).exists()
 
 def create_tag_objects(user, tag_list):
     '''
@@ -47,9 +47,15 @@ def create_bulk_tags(tag_objects):
 def get_tag_object(user, tag_name = None, tag_id = None):
     user = get_user_object(user)
     if tag_id != None:
-        return Tag.objects.get(user = user, id = tag_id)
+        try:
+            return Tag.objects.get(user = user, id = tag_id)
+        except Tag.DoesNotExist:
+            return None
     if tag_name != None:
-        return Tag.objects.get(user = user, name = tag_name)
+        try:
+            return Tag.objects.get(user = user, name = tag_name)
+        except Tag.DoesNotExist:
+            return None
 
 def update_tag_name(user, tag_id, new_name):
     user = get_user_object(user)

@@ -3,11 +3,14 @@ from User_backend.models import User_preferences
 
 def get_user_object(user):
     if isinstance(user, str) or isinstance(user, unicode):
-        return User.objects.get(username = user)
+        try:
+            return User.objects.get(username = user)
+        except User.DoesNotExist:
+            return None
     elif isinstance(user, User):
         return user
     
-def get_first_name(user):
+def get_first_name(username):
     user = get_user_object(user)
     return user.get_short_name()
 
