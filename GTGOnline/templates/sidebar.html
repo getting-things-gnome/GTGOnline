@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block sidebar %}
+    <div style="position: fixed">
+        <div class="section sidebar">
+            <button class="modern" id="showhide">
+                <span class="">New Task</span>
+            </button>
+            <div class="widget">
+				<header class="widget-header">
+						<h3 class="light">Tasks</h3>
+                </header>
+                <div class="widget-content">
+                    <!--<ul class="unstyled user-list clearfix">-->
+                    <ul class="nav nav-list">
+                        <li>All</li>
+                        <li>Active</li>
+                        <li>Done</li>
+                        <li>Dismissed</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="widget bg-color blue">
+                <header class="widget-header">
+                	<h3>Tags</h3>
+                </header>
+                <div class="widget-content">
+                	<ul class="unstyled list">
+                		<li>
+                			<i class="icon-folder-close"></i> 
+                			<span class="font-bold">Metroboard</span>
+                			<span class="pull-right label label-success">completed</span>
+                		</li>
+                		<li>
+                			<i class="icon-folder-close"></i> 
+                			<span class="font-bold">Boardskin</span>
+                			<span class="pull-right label label-important">7 tasks</span>
+                		</li>
+                		<li>
+                			<i class="icon-folder-close"></i> 
+                			<span class="font-bold">Landingskin</span>
+                			<span class="pull-right label label-important">1 task</span>
+                		</li>
+                		<li>
+                			<i class="icon-folder-close"></i> 
+                			<span class="font-bold">Plain</span>
+                			<span class="pull-right label label-important">3 tasks</span>
+                		</li>
+                		<li>
+                			<i class="icon-folder-close"></i> 
+                			<span class="font-bold">Website</span>
+                			<span class="pull-right label label-warning">Pending</span>
+                		</li>
+                		<li>
+                			<i class="icon-folder-close"></i> 
+                			<span class="font-bold">Snippets</span>
+                			<span class="pull-right label label-warning">4 tasks</span>
+                		</li>
+                		<li>
+                			<i class="icon-folder-close"></i> 
+                			<span class="font-bold">Styler</span>
+                			<span class="pull-right label label-default">unknown</span>
+                		</li>
+                	</ul>
+                </div>
+            </div>
+            <div class="widget bg-color dark-grey">
+            	<header class="widget-header">
+            		<h3>Due Dates</h3>
+            	</header>
+            	<div class="widget-content">
+            		<ul class="nav nav-list">
+            			<li>
+            			    <a href="#">
+                				<i class="icon-folder-close"></i> 
+                				<span class="font-bold">Due Today</span>
+                				<span class="pull-right label label-important">2</span>
+            			    </a>
+            			</li>
+            			<li>
+            			    <a href="#">
+                				<i class="icon-folder-close"></i> 
+                				<span class="font-bold">Due This Week</span>
+                				<span class="pull-right label label-warning">7</span>
+            			    </a>
+            			</li>
+            		</ul>
+            	</div>
+            </div>
+        </div>
+    </div>
+{% endblock sidebar %}

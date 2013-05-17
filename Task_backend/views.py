@@ -4,6 +4,7 @@ import json
 
 from django.core import serializers
 from django.http import HttpResponse
+from django.template import loader, RequestContext
 
 from Task_backend.models import Task
 from Tag_backend.tag import find_tags
@@ -22,3 +23,8 @@ def get_json_tasks(request):
         "status":i.get_status_display(), \
         "tags":find_tags(i.description)})
     return HttpResponse(json.dumps(tasks, indent=4), mimetype='application/json')
+
+def show_title(request):
+    template = loader.get_template('sidebar.html')
+    context = RequestContext(request, {})
+    return HttpResponse(template.render(context))

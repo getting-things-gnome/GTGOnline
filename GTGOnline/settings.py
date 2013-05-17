@@ -22,6 +22,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
+print PROJECT_DIR
 
 if use_settings == OPENSHIFT_SETTINGS:
     DATABASES = {
@@ -105,6 +106,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_DIR, 'static').replace('\\','/'),
 )
 
 # List of finder classes that know how to find static files in

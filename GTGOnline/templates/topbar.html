@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block topbar %}
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <div id="branding" style="width: 250px; text-align: center" class="pull-left">
+                <a href="#">
+                    <!-- <i class="icon-tasks"></i>
+                    <h1>BoardSkin</h1> -->
+                    <!--<img src="img/logo.png">-->
+                    <h1 style="color: white">GTGOnline!</h1>
+                </a>
+            </div>
+            <form class="searchform pull-left">
+                <div class="input-icon-append">
+                	<input class="input-xxlarge" maxlength="23" placeholder="Search" type="text">
+                    <button type="submit" rel="tooltip-bottom" class="icon" data-original-title="search">
+                    	<i class="icon-search"></i>
+                    </button>
+                </div>
+            </form>
+            <div class="pull-right user">
+            	<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+            		<img src="{{ STATIC_URL }}img/styler/user-thumb.jpg"> 
+            		<p><span>User</span></p> 
+            		<b class="caret"></b>
+            		<ul class="dropdown-menu" role="menu">
+                        <li><a tabindex="-1" href="#">View Profile</a></li>
+                        <li><a tabindex="-1" href="#">Manage Account</a></li>
+                        <li><a tabindex="-1" href="#">Inbox</a></li>
+                        <li><a tabindex="-1" href="#">Logout</a></li>
+                        <li class="divider"></li>
+                        <li><a tabindex="-1" href="#">Invite a Friend</a></li>
+                        <li><a tabindex="-1" href="#">Create a Team</a></li>
+                    </ul>
+            	</a>
+            </div>
+        </div>
+    </div>
+{% endblock topbar %}

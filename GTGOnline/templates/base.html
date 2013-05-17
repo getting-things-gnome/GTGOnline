@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+  <html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>
+			{% block pagetitle %}GTGOnline!{% endblock pagetitle %}
+		</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		
+		<!-- Le styles -->
+		<link rel="shortcut icon" href="{{ STATIC_URL }}img/gnome.png" >
+		<link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
+		<link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel="stylesheet">
+		<link href="{{ STATIC_URL }}css/styler.css" rel="stylesheet">
+		<link href="{{ STATIC_URL }}css/font-awesome.min.css" rel="stylesheet">
+		<link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+		  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<!-- Fav and touch icons -->
+		<!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+		<link rel="shortcut icon" href="../assets/ico/favicon.png">-->
+	</head>
+  <body cz-shortcut-listen="true">
+		{% block topbar %}{% endblock topbar %}
+	<div class="content clearfix">
+	    {% block sidebar %}{% endblock sidebar %}
+	    <div class="section main">
+			<div class="section-header" id="header">
+				<h1>Active Tasks</h1>
+			</div>
+			<div class="dropdown-options" style="display: none" id="dropdown">
+			      <table class="navigation nav-collapse"><tr>
+				    <td>
+					  <a href="#">
+						<i class="icon-ok"></i>
+						<span>Done</span>
+					  </a>
+				    </td>
+				    <td>
+					  <a href="forms.html">
+						<i class="icon-minus-sign"></i>
+						<span>Dismissed</span>
+					  </a>
+				    </td>
+				    <td>
+					  <a href="forms.html">
+						<i class="icon-trash"></i>
+						<span>Delete</span>
+					  </a>
+				    </td>
+				    <td>
+					  <a href="forms.html">
+						<i class="icon-share"></i>
+						<span>Share</span>
+					  </a>
+				    </td>
+			      </tr></table>
+			</div>
+			      <div class="task-row" style="background-color: #ffff66">
+				    <div style="width: 7%" class="div-inline pull-left">
+					  <input type="checkbox" class="checkbox">
+					  <a data-toggle="collapse" data-target="#collapse11" href="#" style="text-decoration:none; color:#4d4d4d">
+					  (2)</a>
+				    </div>
+				    <div class="dropdown div-inline pull-left" style="width: 26%">
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d">
+						<strong>Summer's here: Lets clean the house!</strong>
+					  </a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
+						<li><a href="#"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+						<li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+					  </ul>
+				    </div>
+				    <div style="width: 15%" class="div-inline">
+					  <a href="#"><span class="label label-important">Work</span></a>
+					  <a href="#"><span class="label label-warning">Downtown</span></a>
+				    </div>
+				    <div style="width: 32%" class="div-inline">
+					  <a href="#" style="text-decoration:none">
+						<span class="muted">It's that time of the year again ...</span>
+					  </a>
+				    </div>
+				    <div style="width: 10%" class="div-inline pull-right">
+					  <a href="#" style="text-decoration:none; color:#4d4d4d">
+						<i class="icon-exclamation-sign"></i>
+						<span class="label label-red"><i class="icon-time"></i></span>
+						<strong>13.09.12</strong>
+					  </a>
+				    </div>
+				    <div style="width: 10%" class="div-inline pull-right">
+					  <a href="#" style="text-decoration:none; color:#4d4d4d">
+						<span class="label label-green"><i class="icon-time"></i></span>
+						<strong>06.09.12</strong>
+					  </a>
+				    </div>
+			      </div>
+			      <div class="task-row" style="display: none; margin-left: 40px; border-left: 1px solid #dedede;" id="dropdown">
+				    <div style="width: 7%" class="div-inline pull-left">
+					  <input type="checkbox" class="checkbox">
+					  <a data-toggle="collapse" data-target="#collapse11" href="#" style="text-decoration:none; color:#4d4d4d">
+					  (2)</a>
+				    </div>
+				    <div class="dropdown div-inline pull-left" style="width: 26%">
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d">
+						<strong>Summer's here: Lets clean the house!</strong>
+					  </a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
+						<li><a href="#"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+						<li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+					  </ul>
+				    </div>
+				    <div style="width: 15%" class="div-inline">
+					  <a href="#"><span class="label label-important">Work</span></a>
+					  <a href="#"><span class="label label-warning">Downtown</span></a>
+				    </div>
+				    <div style="width: 32%" class="div-inline">
+					  <a href="#" style="text-decoration:none">
+						<span class="muted">It's that time of the year again ...</span>
+					  </a>
+				    </div>
+				    <div style="width: 10%" class="div-inline pull-right">
+					  <a href="#" style="text-decoration:none; color:#4d4d4d">
+						<i class="icon-exclamation-sign"></i>
+						<span class="label label-red"><i class="icon-time"></i></span>
+						<strong>13.09.12</strong>
+					  </a>
+				    </div>
+				    <div style="width: 10%" class="div-inline pull-right">
+					  <a href="#" style="text-decoration:none; color:#4d4d4d">
+						<span class="label label-green"><i class="icon-time"></i></span>
+						<strong>06.09.12</strong>
+					  </a>
+				    </div>
+			      </div>
+			      <div class="task-row" style="display: none; margin-left: 80px; border-left: 1px solid #dedede;" id="dropdown2">
+				    <div style="width: 7%" class="div-inline pull-left">
+					  <input type="checkbox" class="checkbox">
+					  <a data-toggle="collapse" data-target="#collapse11" href="#" style="text-decoration:none; color:#4d4d4d">
+					  (2)</a>
+				    </div>
+				    <div class="dropdown div-inline pull-left" style="width: 26%">
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d">
+						<strong>Summer's here: Lets clean the house!</strong>
+					  </a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
+						<li><a href="#"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+						<li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+					  </ul>
+				    </div>
+				    <div style="width: 15%" class="div-inline">
+					  <a href="#"><span class="label label-important">Work</span></a>
+					  <a href="#"><span class="label label-warning">Downtown</span></a>
+				    </div>
+				    <div style="width: 32%" class="div-inline">
+					  <a href="#" style="text-decoration:none">
+						<span class="muted">It's that time of the year again ...</span>
+					  </a>
+				    </div>
+				    <div style="width: 10%" class="div-inline pull-right">
+					  <a href="#" style="text-decoration:none; color:#4d4d4d">
+						<i class="icon-exclamation-sign"></i>
+						<span class="label label-red"><i class="icon-time"></i></span>
+						<strong>13.09.12</strong>
+					  </a>
+				    </div>
+				    <div style="width: 10%" class="div-inline pull-right">
+					  <a href="#" style="text-decoration:none; color:#4d4d4d">
+						<span class="label label-green"><i class="icon-time"></i></span>
+						<strong>06.09.12</strong>
+					  </a>
+				    </div>
+			      </div>
+			      <div class="task-row">
+				    <div style="width: 7%" class="div-inline pull-left">
+					  <input type="checkbox" class="checkbox">
+					  <a data-toggle="collapse" data-target="#collapse11" href="#" style="text-decoration:none; color:#4d4d4d">
+					  (2)</a>
+				    </div>
+				    <div class="dropdown div-inline pull-left" style="width: 26%">
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d">
+						<strong>Summer's here: Lets clean the house!</strong>
+					  </a>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
+						<li><a href="#"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+						<li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+					  </ul>
+				    </div>
+				    <div style="width: 15%" class="div-inline">
+					  <a href="#"><span class="label label-important">Work</span></a>
+					  <a href="#"><span class="label label-warning">Downtown</span></a>
+				    </div>
+				    <div style="width: 32%" class="div-inline">
+					  <a href="#" style="text-decoration:none">
+						<span class="muted">It's that time of the year again ...</span>
+					  </a>
+				    </div>
+				    <div style="width: 10%" class="div-inline pull-right">
+					  <a href="#" style="text-decoration:none; color:#4d4d4d">
+						<i class="icon-exclamation-sign"></i>
+						<span class="label label-red"><i class="icon-time"></i></span>
+						<strong>13.09.12</strong>
+					  </a>
+				    </div>
+				    <div style="width: 10%" class="div-inline pull-right">
+					  <a href="#" style="text-decoration:none; color:#4d4d4d">
+						<span class="label label-green"><i class="icon-time"></i></span>
+						<strong>06.09.12</strong>
+					  </a>
+				    </div>
+			      </div>
+	    </div>
+	    <!--<div class="section menu">
+		  <ul class="navigation nav-collapse">
+		<li  class="current" >
+		  <a href="index.html">
+			<i class="icon-dashboard"></i>
+			<span>Dashboard</span>
+		  </a>
+		</li>
+		<li >
+		  <a href="forms.html">
+			<i class="icon-edit"></i>
+			<span>Forms</span>
+		  </a>
+		</li>
+		<li >
+		  <a href="calendar.html">
+			<i class="icon-calendar"></i>
+			<span>Calendar</span>
+		  </a>
+		</li>
+		<li >
+		  <a href="icons.html">
+			<i class="icon-heart"></i>
+			<span>Icons</span>
+		  </a>
+		</li>
+		<li >
+		  <a href="tables.html">
+			<i class="icon-table"></i>
+			<span>Tables</span>
+		  </a>
+		</li>
+		<li >
+			<a href="charts.html">
+				<i class="icon-bar-chart"></i>
+				<span>Charts</span>
+			</a>
+		</li>
+		<li >
+			<a href="typography.html">
+				<i class="icon-font"></i>
+				<span>Typography</span>
+			</a>
+		</li>
+	</ul>	
+	    </div>-->
+	</div>
+
+	<!-- Le javascript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+	<script src="{{ STATIC_URL }}js/jquery-ui.min.js"></script>
+	<script src='{{ STATIC_URL }}js/calendar/_loader.js'></script>
+
+	<!-- JS:charts-->
+	<!--<script src="js/charts/jquery.flot.js"></script>
+	<script src="js/charts/jquery.flot.resize.js"></script>
+	<script src="js/charts/jquery.flot.stack.js"></script>
+	<script src="js/charts/jquery.flot.pie.min.js"></script>
+	<script src="js/charts/jquery.sparkline.min.js"></script>-->
+	<!--[if lte IE 8]><!--<script language="javascript" type="text/javascript" src="excanvas.min.js"></script>--><![endif]-->
+
+	<script src="{{ STATIC_URL }}js/jquery.dataTables.min.js"></script>
+	
+	<script type='text/javascript'>
+		$(document).ready(function() {
+		
+			var date = new Date();
+			var d = date.getDate();
+			var m = date.getMonth();
+			var y = date.getFullYear();
+			$('.calendar-default').fullCalendar({
+				editable: true,
+				events: [
+					{
+						title: 'All Day Event',
+						start: new Date(y, m, 1)
+					},
+					{
+						title: 'Long Event',
+						start: new Date(y, m, d-5),
+						end: new Date(y, m, d-2)
+					},
+					{
+						id: 999,
+						title: 'Repeating Event',
+						start: new Date(y, m, d-3, 16, 0),
+						allDay: false
+					},
+					{
+						id: 999,
+						title: 'Repeating Event',
+						start: new Date(y, m, d+4, 16, 0),
+						allDay: false
+					},
+					{
+						title: 'Meeting',
+						start: new Date(y, m, d, 10, 30),
+						allDay: false
+					},
+					{
+						title: 'Lunch',
+						start: new Date(y, m, d, 12, 0),
+						end: new Date(y, m, d, 14, 0),
+						allDay: false
+					},
+					{
+						title: 'Birthday Party',
+						start: new Date(y, m, d+1, 19, 0),
+						end: new Date(y, m, d+1, 22, 30),
+						allDay: false
+					},
+					{
+						title: 'Click for Google',
+						start: new Date(y, m, 28),
+						end: new Date(y, m, 29),
+						url: 'http://google.com/'
+					}
+				]
+			});
+			$('.calendar-agenda').fullCalendar({
+				header: {
+					left: 'prev,next today',
+					center: 'title',
+					right: 'month,agendaWeek,agendaDay'
+				},
+				editable: true,
+				events: [
+					{
+						title: 'All Day Event',
+						start: new Date(y, m, 1)
+					},
+					{
+						title: 'Long Event',
+						start: new Date(y, m, d-5),
+						end: new Date(y, m, d-2)
+					},
+					{
+						id: 999,
+						title: 'Repeating Event',
+						start: new Date(y, m, d-3, 16, 0),
+						allDay: false
+					},
+					{
+						id: 999,
+						title: 'Repeating Event',
+						start: new Date(y, m, d+4, 16, 0),
+						allDay: false
+					},
+					{
+						title: 'Meeting',
+						start: new Date(y, m, d, 10, 30),
+						allDay: false
+					},
+					{
+						title: 'Lunch',
+						start: new Date(y, m, d, 12, 0),
+						end: new Date(y, m, d, 14, 0),
+						allDay: false
+					},
+					{
+						title: 'Birthday Party',
+						start: new Date(y, m, d+1, 19, 0),
+						end: new Date(y, m, d+1, 22, 30),
+						allDay: false
+					},
+					{
+						title: 'Click for Google',
+						start: new Date(y, m, 28),
+						end: new Date(y, m, 29),
+						url: 'http://google.com/'
+					}
+				]
+			});
+			
+		});
+	</script>
+	<script src="{{ STATIC_URL }}js/bootstrap.js"></script>
+	<script src="{{ STATIC_URL }}js/custom.js"></script>
+	<script type="text/javascript">
+	    $("#showhide").click(function() { 
+    // assumes element with id='button'
+    $("#dropdown").fadeToggle();
+    $("#dropdown2").fadeToggle();
+    $("#header").slideToggle();
+});
+	    $("#showhide2").click(function() { 
+    // assumes element with id='button'
+    $("#dropdown2").fadeToggle();
+    //$("#header").slideToggle();
+});
+	</script>
+  </body>
+</html>
