@@ -7,13 +7,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^', include('demo.urls', namespace='demo')),
-    # Examples:
-    # url(r'^$', 'GTGOnline.views.home', name='home'),
-    # url(r'^GTGOnline/', include('GTGOnline.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
+    
+    url(r'^tasks/', include('Task_backend.urls', namespace='tasks')),
+    
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 )

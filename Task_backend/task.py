@@ -11,7 +11,11 @@ def get_task_object(user, task_id):
         return None
     
 def get_tasks(username):
-    return Task.objects.filter(user = username)
+    user = get_user_object(username)
+    if user != None:
+        return Task.objects.filter(user = user)
+    else:
+        return []
 
 def add_task(user, name, description = "", start_date = None, \
              due_date = None, tag_list = None):
@@ -75,35 +79,43 @@ def update_tag_set(task_object, latest_tags):
 def get_task_name(user, task_id):
     return Task.objects.get(user = user, id = task_id).name
 
-def get_task_description(user, task_id):
+def get_description(user, task_id):
     return Task.objects.get(user = user, id = task_id).description
 
-def get_task_start_date(user, task_id):
-    start_date = get_task_object(user, task_id).start_date
-    return get_datetime_str(user, start_date)
+def get_start_date(user, task):
+    return get_datetime_str(user, task.start_date)
 
-def get_task_due_date(user, task_id):
-    due_date = get_task_object(user, task_id).due_date
-    return get_datetime_str(user, due_date)
+def get_due_date(user, task):
+    return get_datetime_str(user, task.due_date)
 
-def get_task_closed_date(user, task_id):
-    closed_date = get_task_object(user, task_id).closed_date
-    return get_datetime_str(user, closed_date)
+def get_closed_date(user, task):
+    return get_datetime_str(user, task.closed_date)
 
-def get_task_last_modified_date(user, task_id):
-    last_modified_date = get_task_object(user, task_id).last_modified_date
-    return get_datetime_str(user, last_modified_date)
+def get_last_modified_date(user, task):
+    return get_datetime_str(user, task.last_modified_date)
 
-def get_task_tags(user, task_id):
-    task = get_task_object(user, task_id)
+def get_tags(task):
     return task.tags.all()
 
-def get_task_subtasks(user, task_id):
-    task = get_task_object(user, task_id)
+def get_subtasks(task):
     return task.subtasks.all()
 
-def get_task_parents(user, task_id):
-    task = get_task_object(user, task_id)
+def get_parents(task):
     return task.task_set.all()
 
+def print_task_tree(task):
+    print str(task.id) + " " + task.name + "\n\t",
+    subtasks = get_subtasks(task)
+    for task in subtasks:
+        print str(task.id) + " " + task.name
+        print_task_tree(task)
+        
+def get_all_parents(task):
+    print str(task.id) + " " + task.name + "\n\t",
+    parents = get_parents(task)
+    for task in parents:
+        print str(task.id) + " " + task.name
+        get_all_parents(task)
+    
 
+    

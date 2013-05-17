@@ -12,5 +12,5 @@ urlpatterns = patterns('',
     url(r'^demo/(?P<task_id>\d+)/mark_dismissed/$', views.mark_dismissed, name='mark_dismissed'),
     url(r'^demo/(?P<task_id>\d+)/mark_active/$', views.mark_active, name='mark_active'),
     url(r'^demo/(?P<task_id>\d+)/delete/$', views.delete, name='delete'),
-    url(r'^advanced/$', views.advanced, name='advanced'),
+    url(r'^demo/advanced/$', views.advanced, name='advanced'),
 )

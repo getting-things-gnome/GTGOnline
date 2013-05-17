@@ -9,6 +9,8 @@ def get_user_object(user):
             return None
     elif isinstance(user, User):
         return user
+    else:
+        return None
     
 def get_first_name(username):
     user = get_user_object(user)
