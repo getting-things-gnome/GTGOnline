@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block header+dropdown_options %}
+	<div class="section-header" id="header">
+		<h1>Active Tasks</h1>
+	</div>
+	<div class="dropdown-options" style="display: none" id="dropdown">
+		<table class="navigation nav-collapse">
+			<tr>
+				<td>
+					<a href="#">
+						<i class="icon-ok"></i>
+						<span>Done</span>
+					</a>
+				</td>
+				<td>
+					<a href="#">
+						<i class="icon-minus-sign"></i>
+						<span>Dismissed</span>
+					</a>
+				</td>
+				<td>
+					<a href="#">
+						<i class="icon-trash"></i>
+						<span>Delete</span>
+					</a>
+				</td>
+				<td>
+					<a href="forms.html">
+						<i class="icon-share"></i>
+						<span>Share</span>
+					</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+{% endblock header+dropdown_options %}

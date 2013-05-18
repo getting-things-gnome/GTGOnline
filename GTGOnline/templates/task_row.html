@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block task_row %}
+    <div class="task-row">
+		<div style="width: 7%" class="div-inline pull-left">
+			<input type="checkbox" class="checkbox">
+			<a data-toggle="collapse" data-target="#collapse11" href="#" style="text-decoration:none; color:#4d4d4d">
+                (2)
+            </a>
+		</div>
+		<div class="dropdown div-inline pull-left" style="width: 26%">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d">
+				<strong>Summer's here: Lets clean the house!</strong>
+			</a>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+				<li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
+				<li><a href="#"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+				<li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+			</ul>
+		</div>
+		<div style="width: 15%" class="div-inline">
+			<a href="#">
+                <span class="label label-important">Work</span>
+            </a>
+			<a href="#">
+                <span class="label label-warning">Downtown</span>
+            </a>
+		</div>
+		<div style="width: 32%" class="div-inline">
+			<a href="#" style="text-decoration:none">
+                <span class="muted">It's that time of the year again ...</span>
+			</a>
+		</div>
+		<div style="width: 10%" class="div-inline pull-right">
+			<a href="#" style="text-decoration:none; color:#4d4d4d">
+				<i class="icon-exclamation-sign"></i>
+				<span class="label label-red"><i class="icon-time"></i></span>
+				<strong>13.09.12</strong>
+			</a>
+		</div>
+		<div style="width: 10%" class="div-inline pull-right">
+			<a href="#" style="text-decoration:none; color:#4d4d4d">
+				<span class="label label-green"><i class="icon-time"></i></span>
+				<strong>06.09.12</strong>
+			</a>
+		</div>
+	</div>
+{% endblock task_row %}
