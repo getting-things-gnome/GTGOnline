@@ -909,14 +909,75 @@ div.whole-width {
 }
 
 div.task-row {
-  padding: 10px 0px 10px 10px;
+  padding: 10px 10px 10px 0px;
   /*margin-bottom: 20px;*/
   color: #999;
   border-bottom: 1px solid #dedede;
-  border-top: 1px solid #dedede;
+  /*border-top: 1px solid #dedede;*/
   /*width: 100%;*/
+  height: 20px;
+}
+
+.min-width25 {
+  min-width: 25px;
+}
+
+.min-width30 {
+  min-width: 30px;
+}
+
+.min-width60 {
+  min-width: 60px;
+}
+
+.min-width80 {
+  min-width: 80px;
+}
+
+.min-width100 {
+  min-width: 100px;
+}
+
+.min-width130 {
+  min-width: 130px;
+}
+
+.min-width150 {
+  min-width: 150px;
+}
+
+.min-width200 {
+  min-width: 200px;
+}
+
+.min-width300 {
+  min-width: 300px;
 }
 
 .min-width700 {
-  max-width: 700px;
+  min-width: 700px;
+}
+
+.min-width900 {
+  min-width: 900px;
+}
+
+.min-width1000 {
+  min-width: 1000px;
+}
+
+.task-checkbox {
+  margin: 2px;
+}
+
+.task-subtasks {
+  margin: 2px;
+}
+
+.task-tags {
+  margin: 2px;
+}
+
+.task-description {
+  margin-left: 2px;
 }

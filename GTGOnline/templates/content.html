@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% block content %}
 {% block header+dropdown_options %}
 	<div class="section-header" id="header">
 		<h1>Active Tasks</h1>
@@ -35,3 +36,5 @@
 		</table>
 	</div>
 {% endblock header+dropdown_options %}
+{% block task_row %}{% endblock task_row %}
+{% endblock content %}

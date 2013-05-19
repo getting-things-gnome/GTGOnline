@@ -1,16 +1,23 @@
-{% extends 'base.html' %}
+{% extends 'content.html' %}
 
 {% block task_row %}
-    <div class="task-row">
-		<div style="width: 7%" class="div-inline pull-left">
+	<div class="task-row min-width900">
+    <!--<div class="task-row min-width900" style=" background-image:url({{ STATIC_URL }}img/tickmark.png); background-repeat: no-repeat; background-size: 50px 40px; background-position: 6% 0%;">-->
+	<!--<div class="task-row min-width900" style=" background-image:url({{ STATIC_URL }}img/strikethrough.png); background-repeat: repeat-x; background-position: center;">-->
+		<div class="div-inline pull-left min-width25" style="margin-left: 2px">
 			<input type="checkbox" class="checkbox">
-			<a data-toggle="collapse" data-target="#collapse11" href="#" style="text-decoration:none; color:#4d4d4d">
-                (2)
+		</div>
+		
+		<div class="div-inline pull-left min-width30" style="margin-right: 2px; border-right: 1px solid #dedede;">
+			<a data-toggle="collapse" data-target="#collapse11" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 20px;">
+                +2
             </a>
 		</div>
-		<div class="dropdown div-inline pull-left" style="width: 26%">
-			<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d">
-				<strong>Summer's here: Lets clean the house!</strong>
+		
+		<div class="dropdown div-inline pull-left min-width300" style="width: 26%;">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 15px;">
+				<!--<strong>Summer's here: Lets clean the house!</strong>-->
+				<strong>Summer's here: Lets cle...</strong>
 			</a>
 			<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 				<li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
@@ -18,30 +25,33 @@
 				<li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
 			</ul>
 		</div>
-		<div style="width: 15%" class="div-inline">
-			<a href="#">
+		
+		<div style="width: 15%;" class="div-inline min-width200 task-tags">
+			<a href="#" style="text-decoration:none">
                 <span class="label label-important">Work</span>
             </a>
-			<a href="#">
+			<a href="#" style="text-decoration:none">
                 <span class="label label-warning">Downtown</span>
             </a>
 		</div>
-		<div style="width: 32%" class="div-inline">
+		
+		<div class="div-inline task-description" style="width: 32%">
 			<a href="#" style="text-decoration:none">
                 <span class="muted">It's that time of the year again ...</span>
 			</a>
 		</div>
-		<div style="width: 10%" class="div-inline pull-right">
-			<a href="#" style="text-decoration:none; color:#4d4d4d">
-				<i class="icon-exclamation-sign"></i>
-				<span class="label label-red"><i class="icon-time"></i></span>
-				<strong>13.09.12</strong>
+		
+		<div style="width: 10%" class="div-inline min-width130 pull-right">
+			<a href="#" style="text-decoration:none; color:#4d4d4d;">
+				<!--<strong style="font-size: 30px;">13.09.12</strong>-->
+				<strong style="font-size: 30px;">13.09.12</strong>
 			</a>
 		</div>
-		<div style="width: 10%" class="div-inline pull-right">
-			<a href="#" style="text-decoration:none; color:#4d4d4d">
-				<span class="label label-green"><i class="icon-time"></i></span>
-				<strong>06.09.12</strong>
+		
+		<div style="width: 10%" class="div-inline min-width80 pull-right">
+			<a href="#" style="text-decoration:none; color:#4d4d4d;">
+				<!--<strong>06.09.12</strong>-->
+				<strong>2 days ago</strong>
 			</a>
 		</div>
 	</div>
