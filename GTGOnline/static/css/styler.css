@@ -72,7 +72,8 @@ body .navbar .searchform {
   background: #fff;
   border-radius: 3px;
   padding: 3px 8px;
-  margin: 10px 15px;
+  margin: 10px;
+  width: 44%;
 }
 body .navbar .searchform button[type=submit] {
   border: 0;
@@ -85,7 +86,9 @@ body .navbar .searchform input[type=text] {
   font-size: 13px;
   margin: 0;
   box-shadow: none;
+  width: 90%;
 }
+
 body .navbar ul.nav li a {
   padding: 21px 15px;
   line-height: 1;
@@ -142,6 +145,7 @@ body .navbar .dropdown-menu li > a:focus {
 body .navbar .dropdown-submenu:hover > a {
   background: #15aaff;
 }
+
 body .content .section.menu {
   /*height: 90px;*/
   /*float: right;*/
@@ -389,10 +393,12 @@ body .content .section.main .statistic-list-chart ul.listing li p.sub {
   display: inline-block;
 }
 body .content .section.sidebar {
+  max-width: 250px;
+  min-width: 150px;
   width: 250px;
   float: left;
-  background: #f7f7f7;
   /*position: fixed;*/
+  background: #f7f7f7;
   display: block;
   height: 100%;
   right: 0;
@@ -859,6 +865,10 @@ form fieldset .control-group .controls span.info {
   text-shadow: none;
 }
 
+.topbar-properties {
+  min-width: 800px;
+}
+
 .modern {
   width: 220px;
   display: inline-block;
@@ -980,4 +990,16 @@ div.task-row {
 
 .task-description {
   margin-left: 2px;
+}
+
+.modal-font-normal {
+  font: 400 20px/1 'Open Sans', Helvetica, sans-serif;
+}
+
+.font-header {
+  font: 700 40px/1 'Open Sans', Helvetica, sans-serif;
+}
+
+.pull-center {
+  text-align: center;
 }
