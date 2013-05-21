@@ -30,3 +30,8 @@ FUZZY_DATES = ['now', 'soon', 'someday']
 #FUZZY_SOON_DAY = 2
 #FUZZY_SOMEDAY_DAY = 3
 ##############################################################################
+
+# User related
+USER_LOGGED_IN = 0
+USER_ACCOUNT_DISABLED = 1
+USER_INVALID = 2

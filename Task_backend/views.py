@@ -25,6 +25,6 @@ def get_json_tasks(request):
     return HttpResponse(json.dumps(tasks, indent=4), mimetype='application/json')
 
 def show_title(request):
-    template = loader.get_template('task_row.html')
+    template = loader.get_template('landing.html')
     context = RequestContext(request, {})
     return HttpResponse(template.render(context))

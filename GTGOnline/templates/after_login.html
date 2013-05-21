@@ -1,0 +1,7 @@
+Congratulations!
+You have logged in :)
+<form action="{% url 'user:check' %}" method='POST'>
+    {% csrf_token %}
+    <input type="text">
+    <button type="submit">Submit</button>
+</form>
