@@ -49,7 +49,7 @@ def get_tags_details(task):
     tags = []
     for tag in task.tags.all():
         tags.append({"name": tag.name, "color": tag.color, "icon": tag.icon})
-    return json.dumps(tags)
+    return tags
 
 def get_tag_object(user, tag_name = None, tag_id = None):
     user = get_user_object(user)

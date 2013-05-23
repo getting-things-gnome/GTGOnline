@@ -1,3 +1,5 @@
+import json
+
 from Task_backend.models import Task
 from User_backend.user import get_user_object
 from Tag_backend.tag import find_tags, create_tag_objects, get_tags_details
@@ -44,12 +46,15 @@ def get_task_details(user, task):
         #return ('', '', '', '' ,[], [], [])
     start_date = get_datetime_str(user, task.start_date)
     due_date = get_datetime_str(user, task.due_date)
-    return {"name": task.name, "description": task.description, \
+    closed_date = get_datetime_str(user, task.closed_date)
+    last_modified_date = get_datetime_str(user, task.last_modified_date)
+    return {"id": task.id, "name": task.name, \
+            "description": task.description, \
             "start_date": start_date, "due_date": due_date, \
-            "closed_date": task.closed_date, \
-            "last_modified_date": task.last_modified_date, \
+            "closed_date": closed_date, \
+            "last_modified_date": last_modified_date, \
             "status": task.status, "tags": get_tags_details(task), \
-            "subtasks": get_subtasks_details(task)}
+            "subtasks": get_task_tree(user, task.subtasks.all())}
 
 def update_task_name(user, new_name, task_object, tag_list = None):
     task_object.name = new_name
@@ -129,5 +134,6 @@ def get_all_parents(task):
 def get_task_tree(user, task_list):
     task_tree = []
     for task in task_list:
-        if not task.task_set.exists() and not visited(task):
-            task_tree.append(get_task_details(user, task))
+        #if not task.task_set.exists() and not visited(task):
+        task_tree.append(get_task_details(user, task))
+    return task_tree
