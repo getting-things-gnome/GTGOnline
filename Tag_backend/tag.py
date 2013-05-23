@@ -1,4 +1,5 @@
 import re
+import json
 
 from Tag_backend.models import Tag
 from User_backend.user import get_user_object
@@ -44,6 +45,12 @@ def create_tag_objects(user, tag_list):
 def create_bulk_tags(tag_objects):
     Tag.objects.bulk_create(tag_objects)
     
+def get_tags_details(task):
+    tags = []
+    for tag in task.tags.all():
+        tags.append({"name": tag.name, "color": tag.color, "icon": tag.icon})
+    return json.dumps(tags)
+
 def get_tag_object(user, tag_name = None, tag_id = None):
     user = get_user_object(user)
     if tag_id != None:
@@ -86,15 +93,3 @@ def delete_tag(user, tag_name = None, tag_id = None):
 def get_task_count(user, tag_name = None, tag_id = None):
     tag = get_tag_object(user, tag_name, tag_id)
     return tag.task_set.count()
-
-
-
-
-    
-
-
-
-
-
-    
-

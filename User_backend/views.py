@@ -16,7 +16,7 @@ def landing(request):
 def login(request):
     response = login_user(request)
     if response == USER_LOGGED_IN:
-        return HttpResponseRedirect('/user/after_login/')
+        return HttpResponseRedirect('/tasks/json_dumps/')
     elif response == USER_ACCOUNT_DISABLED:
         return 'Account has been disabled'
     else:

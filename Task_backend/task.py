@@ -1,6 +1,6 @@
 from Task_backend.models import Task
 from User_backend.user import get_user_object
-from Tag_backend.tag import find_tags, create_tag_objects
+from Tag_backend.tag import find_tags, create_tag_objects, get_tags_details
 from Tools.constants import *
 from Tools.dates import get_datetime_object, get_datetime_str
 
@@ -33,14 +33,23 @@ def add_task(user, name, description = "", start_date = None, \
     new_task.tags.add(*(new_tags+existing_tags))
     return new_task
 
-def get_task_details(user, task_id):
-    task = get_task_object(user, task_id)
-    if task == None:
-        return ('', '', '', '' ,[], [], [])
+def get_task_details(user, task):
+    '''
+    Takes input an user object and a task object, and returns a dictionary of all
+    the task details. This dictionary can then be appended to the JSON object.
+    User object is needed to get the datetime in string format based on his
+    preferences
+    '''
+    #if task == None:
+        #return ('', '', '', '' ,[], [], [])
     start_date = get_datetime_str(user, task.start_date)
     due_date = get_datetime_str(user, task.due_date)
-    return (task.name, task.description, start_date, due_date, \
-            task.tags.all(), task.subtasks.all(), task.task_set.all())
+    return {"name": task.name, "description": task.description, \
+            "start_date": start_date, "due_date": due_date, \
+            "closed_date": task.closed_date, \
+            "last_modified_date": task.last_modified_date, \
+            "status": task.status, "tags": get_tags_details(task), \
+            "subtasks": get_subtasks_details(task)}
 
 def update_task_name(user, new_name, task_object, tag_list = None):
     task_object.name = new_name
@@ -116,6 +125,9 @@ def get_all_parents(task):
     for task in parents:
         print str(task.id) + " " + task.name
         get_all_parents(task)
-    
 
-    
+def get_task_tree(user, task_list):
+    task_tree = []
+    for task in task_list:
+        if not task.task_set.exists() and not visited(task):
+            task_tree.append(get_task_details(user, task))
