@@ -5,6 +5,7 @@ import json
 from django.core import serializers
 from django.http import HttpResponse
 from django.template import loader, RequestContext
+from django.contrib.auth.decorators import login_required
 
 from Task_backend.models import Task
 from Task_backend.task import get_task_tree
@@ -16,6 +17,7 @@ def get_serialized_tasks(request):
     data = serializers.serialize('json', all_tasks, indent = 4)
     return HttpResponse(data, mimetype='application/json')
 
+@login_required
 def get_json_tasks(request):
     tasks = []
     task_tree = get_task_tree(request.user, \
@@ -27,6 +29,7 @@ def get_json_tasks(request):
     return HttpResponse(json.dumps(task_tree, indent=4), \
                         mimetype='application/json')
 
+@login_required
 def show_title(request):
     template = loader.get_template('task_row.html')
     context = RequestContext(request, {})

@@ -5,7 +5,7 @@ import sys
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader, RequestContext
 
-from User_backend.user import register_user, login_user
+from User_backend.user import register_user, login_user, logout_user
 from Tools.constants import *
 
 def landing(request):
@@ -16,11 +16,15 @@ def landing(request):
 def login(request):
     response = login_user(request)
     if response == USER_LOGGED_IN:
-        return HttpResponseRedirect('/tasks/json_dumps/')
+        return HttpResponseRedirect('/tasks/main/')
     elif response == USER_ACCOUNT_DISABLED:
         return 'Account has been disabled'
     else:
         return 'Invalid Login'
+
+def logout(request):
+    logout_user(request)
+    return HttpResponseRedirect('/user/landing/')
 
 def after_login(request):
     template = loader.get_template('after_login.html')

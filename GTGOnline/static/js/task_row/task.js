@@ -37,6 +37,8 @@ function show_tasks(task_tree) {
     
 }
 
+var task_array;
+
 function get_tasks_ajax() {
     var xmlHttp = new XMLHttpRequest();
 	
@@ -48,8 +50,9 @@ function get_tasks_ajax() {
             {
                 var obj = JSON.parse(xmlHttp.responseText);
                 //var arr = ko.observableArray([]);
-                var arr = ko.mapping.fromJS(obj);
-                alert(arr()[1].subtasks().length);
+                task_array = ko.mapping.fromJS(obj);
+                //alert(task_array()[1].subtasks().length);
+                ko.applyBindings(task_array());
             }
         }
         xmlHttp.send(null);

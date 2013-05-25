@@ -960,6 +960,10 @@ div.task-row {
   min-width: 200px;
 }
 
+.min-width250 {
+  min-width: 250px;
+}
+
 .min-width300 {
   min-width: 300px;
 }
@@ -968,12 +972,21 @@ div.task-row {
   min-width: 700px;
 }
 
+.min-width800 {
+  min-width: 800px;
+}
+
 .min-width900 {
   min-width: 900px;
 }
 
 .min-width1000 {
   min-width: 1000px;
+}
+
+.max-width350 {
+  max-width: 330px;
+  overflow: hidden;
 }
 
 .task-checkbox {

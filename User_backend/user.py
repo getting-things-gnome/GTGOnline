@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from User_backend.models import User_preferences
 
@@ -27,6 +27,9 @@ def login_user(request):
             return USER_ACCOUNT_DISABLED
     else:
         return USER_INVALID
+
+def logout_user(request):
+    logout(request)
 
 def register_user(username, email, password, first_name, last_name):
     try:    # Remove this try and validate via js on the clientside itself

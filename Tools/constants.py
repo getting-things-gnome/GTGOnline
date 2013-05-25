@@ -12,8 +12,11 @@ TIME_FORMAT_24_HR = 0
 TIME_FORMAT_12_HR = 1
 
 # Conversion strings for both the time formats
-CONVERT_24_HR = '%d/%m/%Y %H:%M'
-CONVERT_12_HR = '%d/%m/%Y %I:%M %p'
+CONVERT_24_HR = '%d/%m/%y'
+CONVERT_12_HR = '%d/%m/%y'
+
+CONVERT_24_HR_WITH_TIME = '%d/%m/%y %H:%M'
+CONVERT_12_HR_WITH_TIME = '%d/%m/%y %I:%M %p'
 
 # Fuzzy date list
 FUZZY_DATES = ['now', 'soon', 'someday']

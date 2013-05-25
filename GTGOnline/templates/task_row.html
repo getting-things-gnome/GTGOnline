@@ -1,18 +1,19 @@
 {% extends 'content.html' %}
 
 {% block task_row %}
-	<div class="task-row min-width900" id="task_row" style="display: block">
+	<div data-bind="foreach: task_array, visible: task_array().length > 0">
+	<div class="task-row min-width800" id="task_row" style="display: block">
 		<div class="div-inline pull-left min-width25" style="margin-left: 5px">
 			<input type="checkbox" class="checkbox" id="task_row_checkbox">
 		</div>
 		
 		<div class="div-inline pull-left min-width30" style="margin-right: 2px; border-right: 1px solid #dedede;">
 			<a data-toggle="collapse" data-target="#collapse11" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 20px;" id="subtask_count" onclick="get_ajax()">
-                <span data-bind="text: subtask_count"></span>
+                <span>+2</span>
             </a>
 		</div>
 		
-		<div class="dropdown div-inline pull-left min-width300" style="width: 26%;">
+		<div class="dropdown div-inline pull-left min-width250" style="width: 26%;">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 15px;" id="name_link">
 				<!--<strong>Summer's here: Lets clean the house!</strong>-->
 				<strong id="name" data-bind="text: name"></strong>
@@ -33,7 +34,7 @@
             </a>
 		</div>
 		
-		<div class="div-inline task-description" style="width: 32%">
+		<div class="div-inline task-description max-width350" style="width: 32%;">
 			<a href="#" style="text-decoration:none">
                 <span class="muted" id="description" data-bind="text: description"></span>
 			</a>
@@ -52,6 +53,7 @@
 				<strong id="start_date" data-bind="text: due_date"></strong>
 			</a>
 		</div>
+	</div>
 	</div>
 {% endblock task_row %}
 
@@ -91,7 +93,7 @@
 	$(document).ready(function(){
 		var obj = get_tasks_ajax();
 		//alert(obj);
-		//ko.applyBindings(new viewModel2());
+		//ko.applyBindings(task_array());
 	});
 </script>
 
