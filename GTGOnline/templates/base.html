@@ -37,7 +37,7 @@
 		{% block topbar %}{% endblock topbar %}
 	<div class="content clearfix">
 	    {% block sidebar %}{% endblock sidebar %}
-	    <div class="section main">
+	    <div class="section main" id="main_div">
 				{% block main %}{% endblock main %}
 	    </div>
 	</div>
@@ -125,7 +125,7 @@
 	</script>
 	<script type="text/javascript">
     $(window).load(function(){
-        $('#startup_modal').modal('show');
+        //$('#startup_modal').modal('show');
     });
 	</script>
 	{% endblock external_js %}

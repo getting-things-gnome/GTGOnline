@@ -1,23 +1,21 @@
 {% extends 'content.html' %}
 
 {% block task_row %}
-	<div class="task-row min-width900">
-    <!--<div class="task-row min-width900" style=" background-image:url({{ STATIC_URL }}img/tickmark.png); background-repeat: no-repeat; background-size: 50px 40px; background-position: 6% 0%;">-->
-	<!--<div class="task-row min-width900" style=" background-image:url({{ STATIC_URL }}img/strikethrough.png); background-repeat: repeat-x; background-position: center;">-->
-		<div class="div-inline pull-left min-width25" style="margin-left: 2px">
-			<input type="checkbox" class="checkbox">
+	<div class="task-row min-width900" id="task_row" style="display: block">
+		<div class="div-inline pull-left min-width25" style="margin-left: 5px">
+			<input type="checkbox" class="checkbox" id="task_row_checkbox">
 		</div>
 		
 		<div class="div-inline pull-left min-width30" style="margin-right: 2px; border-right: 1px solid #dedede;">
-			<a data-toggle="collapse" data-target="#collapse11" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 20px;">
-                +2
+			<a data-toggle="collapse" data-target="#collapse11" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 20px;" id="subtask_count" onclick="get_ajax()">
+                <span data-bind="text: subtask_count"></span>
             </a>
 		</div>
 		
 		<div class="dropdown div-inline pull-left min-width300" style="width: 26%;">
-			<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 15px;">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 15px;" id="name_link">
 				<!--<strong>Summer's here: Lets clean the house!</strong>-->
-				<strong>Summer's here: Lets cle...</strong>
+				<strong id="name" data-bind="text: name"></strong>
 			</a>
 			<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 				<li><a href="#"><i class="icon-ok"></i>&nbsp;Done</a></li>
@@ -26,7 +24,7 @@
 			</ul>
 		</div>
 		
-		<div style="width: 15%;" class="div-inline min-width200 task-tags">
+		<div style="width: 15%;" class="div-inline min-width200 task-tags" id="tags">
 			<a href="#" style="text-decoration:none">
                 <span class="label label-important">Work</span>
             </a>
@@ -37,21 +35,21 @@
 		
 		<div class="div-inline task-description" style="width: 32%">
 			<a href="#" style="text-decoration:none">
-                <span class="muted">It's that time of the year again ...</span>
+                <span class="muted" id="description" data-bind="text: description"></span>
 			</a>
 		</div>
 		
 		<div style="width: 10%" class="div-inline min-width130 pull-right">
 			<a href="#" style="text-decoration:none; color:#4D4D4D;">
 				<!--<strong style="font-size: 30px;">13.09.12</strong>-->
-				<strong style="font-size: 30px;">13.09.12</strong>
+				<strong style="font-size: 30px;" id="due_date" data-bind="text: due_date"></strong>
 			</a>
 		</div>
 		
 		<div style="width: 10%" class="div-inline min-width80 pull-right">
 			<a href="#" style="text-decoration:none; color:#4d4d4d;">
 				<!--<strong>06.09.12</strong>-->
-				<strong>2 days ago</strong>
+				<strong id="start_date" data-bind="text: due_date"></strong>
 			</a>
 		</div>
 	</div>
@@ -60,11 +58,41 @@
 {% block external_js %}
 {{ block.super }}
 
+<script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/task_row/task.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/task_row/knockout-mapping-plugin.js"></script>
 <script type="text/javascript">
 	$(window).load(function(){
-        //hello_world();
+		/*{% autoescape off %}
+		var task_tree = {{ task_tree }}
+		{% endautoescape %}*/
+        //show_tasks(task_tree);
     });
+	
+	$("#subtask_count2").click(function() { 
+		$("#task_row4").fadeToggle();
+		return false;
+	});
+	
+	$("#subtask_count").click(function() {
+		/*$.getJSON("/tasks/json_dumps/", function(result){
+			var items = [];
+			$.each(result, function(key, val) {
+				items.push('<li id="' + key + '">' + val + '</li>');
+			});
+			
+			$('<ul/>', {
+				'class': 'my-new-list',
+				html: items.join('')
+			}).appendTo('#main_div');
+		});*/
+	});
+	
+	$(document).ready(function(){
+		var obj = get_tasks_ajax();
+		//alert(obj);
+		//ko.applyBindings(new viewModel2());
+	});
 </script>
 
 {% endblock external_js %}

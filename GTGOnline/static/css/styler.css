@@ -1003,3 +1003,66 @@ div.task-row {
 .pull-center {
   text-align: center;
 }
+
+.task-done {
+  background-image:url({{ STATIC_URL }}img/tickmark.png);
+  background-repeat: no-repeat;
+  background-size: 50px 40px;
+  background-position: 6% 0%;
+}
+
+.task-dismissed {
+  background-image:url({{ STATIC_URL }}img/strikethrough.png);
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+.marginleft5 {
+  margin-left: 5px;
+}
+
+.subtasks-div {
+  margin-right: 2px;
+  border-right: 1px solid #dedede;
+}
+
+.subtasks-link {
+  text-decoration:none;
+  color:#4d4d4d;
+  font-size: 20px;
+}
+
+.task-name-link {
+  text-decoration: none;
+  color: #4d4d4d;
+  font-size: 15px;
+}
+
+.width10p {
+  width: 10%;
+}
+
+.width15p {
+  width: 15%;
+}
+
+.width26p {
+  width: 26%;
+}
+
+.width32p {
+  width: 32%;
+}
+
+.date-link {
+  text-decoration:none;
+  color:#4D4D4D;
+}
+
+.font-size30p {
+  font-size: 30px;
+}
+
+.no-decoration {
+  text-decoration: none;
+}

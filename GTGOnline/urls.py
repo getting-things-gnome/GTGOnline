@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     
     url(r'^tasks/', include('Task_backend.urls', namespace='tasks')),
     url(r'^user/', include('User_backend.urls', namespace='user')),
+    url(r'^accounts/', include('User_backend.urls', namespace='user')),
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 )
