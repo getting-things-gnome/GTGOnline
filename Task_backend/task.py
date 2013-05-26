@@ -88,7 +88,7 @@ def update_tag_set(task_object, latest_tags):
     to_be_deleted = list(set(task_object.tags.all()) - set(latest_tags))
     to_be_added = list(set(latest_tags) - set(task_object.tags.all()))
     task_object.tags.remove(*to_be_deleted)
-    task_object.tags.all(*to_be_added)
+    task_object.tags.add(*to_be_added)
 
 def get_task_name(user, task_id):
     return Task.objects.get(user = user, id = task_id).name

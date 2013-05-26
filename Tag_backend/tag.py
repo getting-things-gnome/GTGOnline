@@ -52,7 +52,7 @@ def get_tags_details(task):
     return tags
 
 def get_tag_object(user, tag_name = None, tag_id = None):
-    user = get_user_object(user)
+    #user = get_user_object(user)
     if tag_id != None:
         try:
             return Tag.objects.get(user = user, id = tag_id)

@@ -7,9 +7,9 @@
 			<input type="checkbox" class="checkbox" id="task_row_checkbox">
 		</div>
 		
-		<div class="div-inline pull-left min-width30" style="margin-right: 2px; border-right: 1px solid #dedede;">
+		<div class="div-inline pull-left min-width30" style="margin-right: 2px; border-right: 1px solid #dedede; min-width: 30px;">
 			<a data-toggle="collapse" data-target="#collapse11" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 20px;" id="subtask_count" onclick="get_ajax()">
-                <span>+2</span>
+                +<span data-bind="text: subtasks().length"></span>
             </a>
 		</div>
 		
@@ -25,12 +25,9 @@
 			</ul>
 		</div>
 		
-		<div style="width: 15%;" class="div-inline min-width200 task-tags" id="tags">
+		<div style="width: 15%;" class="div-inline min-width200 task-tags" id="tags" data-bind="foreach: tags">
 			<a href="#" style="text-decoration:none">
-                <span class="label label-important">Work</span>
-            </a>
-			<a href="#" style="text-decoration:none">
-                <span class="label label-warning">Downtown</span>
+                <span class="label" data-bind="text: name, style: { backgroundColor: color }"></span>
             </a>
 		</div>
 		
