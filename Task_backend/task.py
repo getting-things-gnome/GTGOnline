@@ -2,7 +2,7 @@ import json
 
 from Task_backend.models import Task
 from User_backend.user import get_user_object
-from Tag_backend.tag import find_tags, create_tag_objects, get_tags_details
+from Tag_backend.tag import find_tags, create_tag_objects, get_tags_by_task
 from Tools.constants import *
 from Tools.dates import get_datetime_object, get_datetime_str
 
@@ -53,7 +53,7 @@ def get_task_details(user, task):
             "start_date": start_date, "due_date": due_date, \
             "closed_date": closed_date, \
             "last_modified_date": last_modified_date, \
-            "status": task.status, "tags": get_tags_details(task), \
+            "status": task.status, "tags": get_tags_by_task(task), \
             "subtasks": get_task_tree(user, task.subtasks.all())}
 
 def update_task_name(user, new_name, task_object, tag_list = None):

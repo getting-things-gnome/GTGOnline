@@ -1,7 +1,7 @@
 {% extends 'content.html' %}
 
 {% block task_row %}
-	<div data-bind="foreach: task_array, visible: task_array().length > 0">
+	<div data-bind="foreach: task_array, visible: task_array().length > 0" id="task_rows_container">
 	<div class="task-row min-width800" id="task_row" style="display: block">
 		<div class="div-inline pull-left min-width25" style="margin-left: 5px">
 			<input type="checkbox" class="checkbox" id="task_row_checkbox">
@@ -58,13 +58,10 @@
 {{ block.super }}
 
 <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/task_row/task.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/task_row/knockout-mapping-plugin.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/data/tasks.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/data/knockout-mapping-plugin.js"></script>
 <script type="text/javascript">
 	$(window).load(function(){
-		/*{% autoescape off %}
-		var task_tree = {{ task_tree }}
-		{% endautoescape %}*/
         //show_tasks(task_tree);
     });
 	
@@ -89,6 +86,7 @@
 	
 	$(document).ready(function(){
 		var obj = get_tasks_ajax();
+		//get_tags_by_user();
 		//alert(obj);
 		//ko.applyBindings(task_array());
 	});

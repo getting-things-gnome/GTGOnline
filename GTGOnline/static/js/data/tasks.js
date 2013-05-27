@@ -51,8 +51,8 @@ function get_tasks_ajax() {
                 var obj = JSON.parse(xmlHttp.responseText);
                 //var arr = ko.observableArray([]);
                 task_array = ko.mapping.fromJS(obj);
-                //alert(task_array()[1].subtasks().length);
-                ko.applyBindings(task_array());
+                //alert(task_array()[1].tags()[0].color());
+                ko.applyBindings(task_array(), document.getElementById('task_rows_container'));
             }
         }
         xmlHttp.send(null);

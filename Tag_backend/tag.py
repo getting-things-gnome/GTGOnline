@@ -45,10 +45,19 @@ def create_tag_objects(user, tag_list):
 def create_bulk_tags(tag_objects):
     Tag.objects.bulk_create(tag_objects)
     
-def get_tags_details(task):
+def get_tag_details(tag):
+    return {"name": tag.name, "color": tag.color, "icon": tag.icon}
+
+def get_tags_by_task(task):
     tags = []
     for tag in task.tags.all():
-        tags.append({"name": tag.name, "color": tag.color, "icon": tag.icon})
+        tags.append(get_tag_details(tag))
+    return tags
+
+def get_tags_by_user(user):
+    tags = []
+    for tag in Tag.objects.filter(user = user):
+        tags.append(get_tag_details(tag))
     return tags
 
 def get_tag_object(user, tag_name = None, tag_id = None):

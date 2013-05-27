@@ -17,7 +17,7 @@ def get_serialized_tasks(request):
     data = serializers.serialize('json', all_tasks, indent = 4)
     return HttpResponse(data, mimetype='application/json')
 
-@login_required
+#@login_required
 def get_json_tasks(request):
     tasks = []
     task_tree = get_task_tree(request.user, \
