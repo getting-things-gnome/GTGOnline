@@ -55,7 +55,8 @@ def get_task_details(user, task, indent, visited_list):
             "closed_date": closed_date, \
             "last_modified_date": last_modified_date, \
             "status": task.status, "tags": get_tags_by_task(task), \
-            "subtasks": get_task_tree(user, task.subtasks.all(), \
+            "subtasks": get_task_tree(user, \
+                                      task.subtasks.filter(status=task.status),\
                                       indent+1, visited_list), \
             "indent": indent}
 
@@ -64,6 +65,8 @@ def get_task_tree(user, task_list, indent, visited_list):
     # Initializing visited_list faces problems
     #visited_list = []
     for task in task_list:
+        # The following condition will have to changed in the future
+        # to enable tasks with multiple parents
         if not visited(task, visited_list):
             task_tree.append(get_task_details(user, task, indent, visited_list))
             visited_list = set_visited(task, visited_list)
@@ -155,5 +158,13 @@ def visited(task, visited_list):
 def change_task_tree_status(user, task_id, new_status):
     task = get_task_object(user, task_id)
     task.status = new_status
+    
+    # This works only for 1 level. We need to modify the status of the
+    # whole tree underneath it
     task.subtasks.all().update(status = new_status)
     task.save()
+
+def change_task_tree_due_dates(user, task_id, new_date):
+    task = get_task_object(user, task_id)
+    new_date = get_datetime_object(new_date)
+    

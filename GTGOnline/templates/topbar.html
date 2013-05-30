@@ -30,8 +30,8 @@
             </form>
             <div class="pull-right user">
             	<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
-            		<img src="{{ STATIC_URL }}img/styler/user-thumb.jpg"> 
-            		<p><span>Tony Montana</span></p> 
+            		<img src="{{ STATIC_URL }}img/styler/user-thumb.jpg">
+            		<p><span id="topbar_first_name"></span></p> 
             		<b class="caret"></b>
             		<ul class="dropdown-menu" role="menu">
                         <li><a tabindex="-1" href="#">View Profile</a></li>
@@ -45,3 +45,18 @@
         </div>
     </div>
 {% endblock topbar %}
+
+{% block external_js %}
+{{ block.super }}
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		var first_name = "{{ name }}";
+		if (first_name == '') {
+			first_name = 'User'
+		}
+		document.getElementById('topbar_first_name').innerHTML = first_name;
+	});
+</script>
+
+{% endblock external_js %}

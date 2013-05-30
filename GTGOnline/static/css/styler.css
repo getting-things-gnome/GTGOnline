@@ -1051,15 +1051,15 @@ div.task-row {
   text-align: center;
 }
 
-.task-done {
-  background-image:url({{ STATIC_URL }}img/tickmark.png);
+.taskDone {
+  background-image:url(../img/tickmark.png);
   background-repeat: no-repeat;
   background-size: 50px 40px;
   background-position: 6% 0%;
 }
 
-.task-dismissed {
-  background-image:url({{ STATIC_URL }}img/strikethrough.png);
+.taskDismissed {
+  background-image:url(../img/strikethrough.png);
   background-repeat: repeat-x;
   background-position: center;
 }
