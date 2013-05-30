@@ -29,18 +29,21 @@ def get_tasks(request):
         'Dismissed': IS_DISMISSED,
     }
     
-    folder_state = folder_dict[request.GET['folder']]
+    if request.GET.has_key('folder'):
+        folder_state = folder_dict[request.GET['folder']]
+    else:
+        folder_state = IS_ACTIVE
     if request.GET.has_key('due'):
         date_filter = True
         due_date = request.GET['due']
     
     if folder_state == -1:
         task_tree = get_task_tree(request.user, \
-                              Task.objects.filter(user = request.user))
+                              Task.objects.filter(user = request.user), 0, [])
     else:
         task_tree = get_task_tree(request.user, \
                               Task.objects.filter(user = request.user, \
-                                                  status = folder_state))
+                                                  status = folder_state), 0, [])
     #template = loader.get_template('task_row.html')
     #context = RequestContext(request, {'task_tree':json.dumps(task_tree)})
     #return HttpResponse(template.render(context))
@@ -50,5 +53,12 @@ def get_tasks(request):
 @login_required
 def show_title(request):
     template = loader.get_template('task_row.html')
-    context = RequestContext(request, {})
+    context = RequestContext(request, {'username': request.user.username, \
+                                       'name': request.user.first_name})
     return HttpResponse(template.render(context))
+
+def modify_status(request):
+    new_status = request.GET['status']
+    task_id = request.GET['task_id']
+    change_task_tree_status(request.user, task_id, new_status)
+    return

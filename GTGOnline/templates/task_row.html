@@ -2,7 +2,7 @@
 
 {% block task_row %}
 	<div data-bind="foreach: tasks_list" id="task_rows_container" class="min-width900">
-	<div class="task-row min-width900" id="task_row" style="display: block">
+	<div class="task-row min-width900" id="task_row" style="display: block" data-bind="style: { marginLeft: (40*indent) + 'px', borderLeft: indent > 0 ? '1px solid #dedede' : 'none'}">
 		<div class="div-inline pull-left min-width25" style="margin-left: 5px">
 			<input type="checkbox" class="checkbox" id="task_row_checkbox">
 		</div>
@@ -51,6 +51,9 @@
 			</a>
 		</div>
 	</div>
+	
+	<!-- ko template: { name: 'task_rows_container', foreach: subtasks } -->
+	<!-- /ko -->
 	</div>
 {% endblock task_row %}
 

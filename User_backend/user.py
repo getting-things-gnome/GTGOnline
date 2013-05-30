@@ -1,3 +1,5 @@
+import sys
+
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
@@ -29,6 +31,7 @@ def login_user(request):
         return USER_INVALID
 
 def logout_user(request):
+    print >>sys.stderr, "logout username = " + request.user.username
     logout(request)
 
 def register_user(username, email, password, first_name, last_name):

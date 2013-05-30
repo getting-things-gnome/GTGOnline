@@ -1,10 +1,12 @@
 import json
+import sys
 
 from Task_backend.models import Task
 from User_backend.user import get_user_object
 from Tag_backend.tag import find_tags, create_tag_objects, get_tags_by_task
 from Tools.constants import *
 from Tools.dates import get_datetime_object, get_datetime_str
+
 
 def get_task_object(user, task_id):
     try:
@@ -35,15 +37,14 @@ def add_task(user, name, description = "", start_date = None, \
     new_task.tags.add(*(new_tags+existing_tags))
     return new_task
 
-def get_task_details(user, task):
+def get_task_details(user, task, indent, visited_list):
     '''
     Takes input an user object and a task object, and returns a dictionary of all
     the task details. This dictionary can then be appended to the JSON object.
     User object is needed to get the datetime in string format based on his
     preferences
     '''
-    #if task == None:
-        #return ('', '', '', '' ,[], [], [])
+    
     start_date = get_datetime_str(user, task.start_date)
     due_date = get_datetime_str(user, task.due_date)
     closed_date = get_datetime_str(user, task.closed_date)
@@ -54,7 +55,20 @@ def get_task_details(user, task):
             "closed_date": closed_date, \
             "last_modified_date": last_modified_date, \
             "status": task.status, "tags": get_tags_by_task(task), \
-            "subtasks": get_task_tree(user, task.subtasks.all())}
+            "subtasks": get_task_tree(user, task.subtasks.all(), \
+                                      indent+1, visited_list), \
+            "indent": indent}
+
+def get_task_tree(user, task_list, indent, visited_list):
+    task_tree = []
+    # Initializing visited_list faces problems
+    #visited_list = []
+    for task in task_list:
+        if not visited(task, visited_list):
+            task_tree.append(get_task_details(user, task, indent, visited_list))
+            visited_list = set_visited(task, visited_list)
+            print >>sys.stderr, visited_list
+    return task_tree
 
 def update_task_name(user, new_name, task_object, tag_list = None):
     task_object.name = new_name
@@ -131,9 +145,15 @@ def get_all_parents(task):
         print str(task.id) + " " + task.name
         get_all_parents(task)
 
-def get_task_tree(user, task_list):
-    task_tree = []
-    for task in task_list:
-        #if not task.task_set.exists() and not visited(task):
-        task_tree.append(get_task_details(user, task))
-    return task_tree
+def set_visited(task, visited_list):
+    visited_list.append(task)
+    return visited_list
+
+def visited(task, visited_list):
+    return task in visited_list
+
+def change_task_tree_status(user, task_id, new_status):
+    task = get_task_object(user, task_id)
+    task.status = new_status
+    task.subtasks.all().update(status = new_status)
+    task.save()

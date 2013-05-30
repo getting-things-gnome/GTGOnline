@@ -24,6 +24,7 @@ def login(request):
 
 def logout(request):
     logout_user(request)
+    print >>sys.stderr, "User logout successful"
     return HttpResponseRedirect('/user/landing/')
 
 def after_login(request):
