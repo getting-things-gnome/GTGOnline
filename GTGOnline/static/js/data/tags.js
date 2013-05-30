@@ -12,7 +12,7 @@ function get_tags_by_user() {
                 var obj = JSON.parse(xmlHttp.responseText);
                 //var arr = ko.observableArray([]);
                 tag_array = ko.mapping.fromJS(obj);
-                alert(tag_array()[0].name());
+                //alert(tag_array()[0].name());
                 ko.applyBindings(tag_array(), document.getElementById('sidebar_tags_list'));
             }
         }

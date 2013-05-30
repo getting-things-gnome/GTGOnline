@@ -1,56 +1,54 @@
 {% extends 'topbar.html' %}
 
 {% block sidebar %}
-    <div style="position: fixed; width: 18%;">
-        <div class="section sidebar">
-			<!--<div style="width: 88%">-->
-				<button class="modern" id="showhide">
-					<span class="">New Task</span>
-				</button>
-			<!--</div>-->
+    <div style="position: fixed; min-width: 100px;" id="sidebar">
+        <div class="section sidebar" style="position: relative">
+			<button class="modern" id="showhide" style="width: 85%">
+				<span class="">New Task</span>
+			</button>
             <div class="widget">
-				<header class="widget-header">
+				<div class="widget-header" style="margin-bottom: 0px">
 						<h3 class="light">Tasks</h3>
-                </header>
-                <div class="widget-content">
+                </div>
+                <div class="widget-content" style="padding: 0px" id="task_folders">
                     <!--<ul class="unstyled user-list clearfix">-->
-                    <ul class="nav nav-list">
-                        <li>All</li>
-                        <li>Active</li>
-                        <li>Done</li>
-                        <li>Dismissed</li>
+                    <ul class="nav nav-list" data-bind="foreach: folders">
+                        <li data-bind="css: { active: $data == $root.chosenFolderId() }, click: $root.goToFolder">
+							<a href="#">
+								<span data-bind="text: $data"></span>
+								<span class="pull-right label"></span>
+							</a>
+						</li>
                     </ul>
                 </div>
             </div>
             <div class="widget bg-color blue">
-                <header class="widget-header">
+                <div class="widget-header">
                 	<h3>Tags</h3>
-                </header>
-                <div class="widget-content" data-bind="foreach: tag_array" id="sidebar_tags_list" style="min-height: 190px">
+                </div>
+                <div class="widget-content" data-bind="foreach: tags_list" id="sidebar_tags_list">
 					<span class="label" data-bind="text: name, style: { backgroundColor: color }"></span>
                 </div>
             </div>
             <div class="widget bg-color dark-grey">
-            	<header class="widget-header">
+            	<div class="widget-header" style="margin-bottom: 0px">
             		<h3>Due Dates</h3>
-            	</header>
-            	<div class="widget-content">
+            	</div>
+            	<div class="widget-content" style="padding: 0px">
             		<ul class="nav nav-list">
-            			<li>
-            			    <a href="#">
-                				<i class="icon-folder-close"></i> 
-                				<span class="font-bold">Due Today</span>
-                				<span class="pull-right label label-important">2</span>
-            			    </a>
-            			</li>
-            			<li>
-            			    <a href="#">
-                				<i class="icon-folder-close"></i> 
-                				<span class="font-bold">Due This Week</span>
-                				<span class="pull-right label label-warning">7</span>
-            			    </a>
-            			</li>
-            		</ul>
+                        <li>
+							<a href="#">
+								<span>Due Today</span>
+								<span class="pull-right label">3</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span>Due Week</span>
+								<span class="pull-right label">9</span>
+							</a>
+						</li>
+                    </ul>
             	</div>
             </div>
         </div>
@@ -61,9 +59,14 @@
 {{ block.super }}
 
 <script type="text/javascript" src="{{ STATIC_URL }}js/data/tags.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/data/sidebar.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/data/sammy.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		get_tags_by_user();
+		ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("wrapper"));
+		get_todays_date();
+		//ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("task_rows_container"));
 		//alert(obj);
 		//ko.applyBindings(task_array());
 	});

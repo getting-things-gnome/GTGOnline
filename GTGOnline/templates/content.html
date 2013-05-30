@@ -3,7 +3,7 @@
 {% block main %}
 {% block header+dropdown_options %}
 	<div class="section-header" id="header">
-		<h1>Active Tasks</h1>
+		<h1 data-bind="text: $root.chosenFolderId() + ' Tasks'"></h1>
 	</div>
 	<div class="dropdown-options" style="display: none" id="dropdown">
 		<table class="navigation nav-collapse">

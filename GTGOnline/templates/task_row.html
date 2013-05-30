@@ -1,15 +1,15 @@
 {% extends 'content.html' %}
 
 {% block task_row %}
-	<div data-bind="foreach: task_array, visible: task_array().length > 0" id="task_rows_container">
-	<div class="task-row min-width800" id="task_row" style="display: block">
+	<div data-bind="foreach: tasks_list" id="task_rows_container" class="min-width900">
+	<div class="task-row min-width900" id="task_row" style="display: block">
 		<div class="div-inline pull-left min-width25" style="margin-left: 5px">
 			<input type="checkbox" class="checkbox" id="task_row_checkbox">
 		</div>
 		
 		<div class="div-inline pull-left min-width30" style="margin-right: 2px; border-right: 1px solid #dedede; min-width: 30px;">
 			<a data-toggle="collapse" data-target="#collapse11" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 20px;" id="subtask_count" onclick="get_ajax()">
-                +<span data-bind="text: subtasks().length"></span>
+                <span data-bind="text: '+' + subtasks.length"></span>
             </a>
 		</div>
 		
@@ -85,7 +85,7 @@
 	});
 	
 	$(document).ready(function(){
-		var obj = get_tasks_ajax();
+		//var obj = get_tasks_ajax();
 		//get_tags_by_user();
 		//alert(obj);
 		//ko.applyBindings(task_array());

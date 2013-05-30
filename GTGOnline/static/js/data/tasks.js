@@ -43,7 +43,7 @@ function get_tasks_ajax() {
     var xmlHttp = new XMLHttpRequest();
 	
     try {
-		xmlHttp.open("GET", "/tasks/json_dumps/", true);
+		xmlHttp.open("GET", "/tasks/get", true);
 		xmlHttp.onreadystatechange = function ()
         {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200)

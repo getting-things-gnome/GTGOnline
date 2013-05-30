@@ -1,3 +1,37 @@
+div#topbar {
+  position: absolute;
+  top:0px;
+  left:0px;
+  right:0px;
+  height:60px
+}
+
+div#wrapper {
+  position: absolute;
+  top:60px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+}
+
+div#sidebar {
+  position: absolute;
+  top:60px;
+  bottom:0px;
+  left:0px;
+  width:18%;
+  overflow-y:auto
+}
+
+div#main_div {
+  position: absolute;
+  top:0px;
+  bottom:0px;
+  right:0px;
+  width: 82%;
+  overflow-y:auto
+}
+
 .gap-bottom {
   margin-bottom: 30px;
 }
@@ -262,7 +296,7 @@ body .content .section.main .widget .widget-title p {
   margin: 0;
 }
 body .content .section.main .widget .widget-content {
-  padding: 10px 15px;
+  /*padding: 10px 15px;*/
 }
 body .content .section.main .widget ul.listing {
   list-style: none;
@@ -393,16 +427,16 @@ body .content .section.main .statistic-list-chart ul.listing li p.sub {
   display: inline-block;
 }
 body .content .section.sidebar {
-  max-width: 250px;
-  min-width: 150px;
-  width: 250px;
-  float: left;
+  /*max-width: 250px;*/
+  /*min-width: 100px;*/
+  /*width: 250px;*/
+  /*float: left;*/
   /*position: fixed;*/
   background: #f7f7f7;
   display: block;
   height: 100%;
   right: 0;
-  top: 57px;
+  /*top: 57px;*/
   overflow: auto;
   border-right: #dedede solid 1px;
 }
@@ -870,7 +904,7 @@ form fieldset .control-group .controls span.info {
 }
 
 .modern {
-  width: 220px;
+  /*width: 86%;*/
   display: inline-block;
   margin: 15px;
   margin-bottom: 0px;
