@@ -5,28 +5,28 @@
 	<div class="section-header" id="header">
 		<h1 data-bind="text: $root.chosenFolderId() + ' Tasks'"></h1>
 	</div>
-	<div class="dropdown-options" style="display: none" id="dropdown">
-		<table class="navigation nav-collapse">
+	<div class="dropdown-options" style="display: none; height: 61px;" id="dropdown">
+		<table class="navigation nav-collapse" style="height: 61px">
 			<tr>
-				<td>
+				<td id="done">
 					<a href="#">
 						<i class="icon-ok"></i>
 						<span>Done</span>
 					</a>
 				</td>
-				<td>
+				<td id="dismissed">
 					<a href="#">
 						<i class="icon-minus-sign"></i>
 						<span>Dismissed</span>
 					</a>
 				</td>
-				<td>
+				<td id="delete">
 					<a href="#">
 						<i class="icon-trash"></i>
 						<span>Delete</span>
 					</a>
 				</td>
-				<td>
+				<td id="share">
 					<a href="forms.html">
 						<i class="icon-share"></i>
 						<span>Share</span>
@@ -38,3 +38,27 @@
 {% endblock header+dropdown_options %}
 {% block task_row %}{% endblock task_row %}
 {% endblock main %}
+
+{% block external_js %}
+{{ block.super }}
+
+<script type="text/javascript">
+	var $featartban = $("#featartban");
+	var $featartinside = $("#featartinside");
+	$featartban.toggle(function show() {
+		$featartinside.animate({
+			width: 730,
+			marginLeft: 1,
+			marginRight: -730,
+			display: 'toggle'
+		}, 'slow');
+	}, function hide() {
+		$featartinside.animate({
+			width: 0,
+			marginLeft: 730,
+			marginRight: 0,
+			display: 'toggle'
+	}, 'slow');
+	});
+</script>
+{% endblock external_js %}

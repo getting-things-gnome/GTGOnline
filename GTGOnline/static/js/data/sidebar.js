@@ -8,6 +8,7 @@ function TaskFoldersViewModel() {
     self.chosenFolderId = ko.observable();
     self.tasks_list = ko.observableArray();
     self.tags_list = ko.observableArray();
+    modify_selected = ko.observableArray();
     
     // Behaviours
     self.goToFolder = function(folder) {
@@ -27,6 +28,27 @@ function TaskFoldersViewModel() {
             this.app.runRoute('get', '#Active')
         });
     }).run();
+    
+    self.add_subtask = function(data) {
+        return;
+    };
+    
+    self.mark_active = function(data) {
+        return;
+    }
+    
+    self.change_status = function (id, new_status) {
+        //alert(new_status);
+        $.get('/tasks/modify/status', { task_id:id, status: new_status, folder: self.chosenFolderId() }, self.tasks_list);
+    };
+    
+    self.mark_dismissed = function(data) {
+        return;
+    };
+    
+    self.delete_task = function(data) {
+        return;
+    };
 };
 
 //ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("task_folders"));

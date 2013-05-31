@@ -4,7 +4,7 @@ import json
 import sys
 
 from django.core import serializers
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader, RequestContext
 from django.contrib.auth.decorators import login_required
 
@@ -59,6 +59,13 @@ def show_title(request):
 
 def modify_status(request):
     new_status = request.GET['status']
+    
+    if new_status < 0:
+        new_status = 0
+    elif new_status > 2:
+        new_status = 2
+    
     task_id = request.GET['task_id']
+    folder = request.GET['folder']
     change_task_tree_status(request.user, task_id, new_status)
-    return
+    return HttpResponseRedirect('/tasks/get/?folder='+folder)

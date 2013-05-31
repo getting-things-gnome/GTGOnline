@@ -112,12 +112,6 @@
 	<script src="{{ STATIC_URL }}js/bootstrap.js"></script>
 	<script src="{{ STATIC_URL }}js/data/jquery-cookie.js"></script>
 	<script type="text/javascript">
-	    $("#showhide").click(function() { 
-    // assumes element with id='button'
-    $("#dropdown").fadeToggle();
-    $("#dropdown2").fadeToggle();
-    $("#header").slideToggle();
-});
 	    $("#showhide2").click(function() { 
     // assumes element with id='button'
     $("#dropdown2").fadeToggle();
@@ -129,10 +123,10 @@
 		var a = $.cookie('startup_dialog_shown');
 		var username = "{{ username }}";
 		today = new Date();
-		today.setHours(0,0,0,0);
+		today = today.setHours(0,0,0,0);
 		if (a == null) {
 			date = new Date();
-			date.setHours(0,0,0,0);
+			date = date.setHours(0,0,0,0);
 			$.cookie('startup_dialog_shown', date, { expires: 1 });
 			$('#startup_modal').modal('show');
 		}

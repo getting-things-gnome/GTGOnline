@@ -3,12 +3,12 @@ div#topbar {
   top:0px;
   left:0px;
   right:0px;
-  height:60px
+  height:57px
 }
 
 div#wrapper {
   position: absolute;
-  top:60px;
+  top:57px;
   left:0px;
   right:0px;
   bottom:0px;
@@ -16,7 +16,7 @@ div#wrapper {
 
 div#sidebar {
   position: absolute;
-  top:60px;
+  top:57px;
   bottom:0px;
   left:0px;
   width:18%;
@@ -844,7 +844,7 @@ form fieldset .control-group .controls span.info {
 
 .dropdown-options{
   /*padding: 15px 20px;*/
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
   color: #999;
   border-bottom: 1px solid #dedede;
   display: block;
@@ -870,29 +870,48 @@ form fieldset .control-group .controls span.info {
   display: block;
   color: #777;
   font-size: 11px;
-  padding: 15px 10px;
+  /*padding: 15px 10px;*/
+  margin: 0px 5px;
   text-align: center;
   line-height: 1;
   border: rgba(0, 0, 0, 0) solid 1px;
 }
 .dropdown-options table.navigation td a i {
-  font-size: 30px;
-  margin-bottom: 5px;
+  font-size: 40px;
+  /*margin-bottom: 5px;*/
   color: #ccc;
 }
 .dropdown-options table.navigation td a span {
   display: block;
 }
 .dropdown-options table.navigation td.current a,
-.dropdown-options table.navigation td:hover a {
+.dropdown-options table.navigation td:hover a{
   color: #fff;
   text-decoration: none;
-  background: #15aaff;
-  border: #118bd0 solid 1px;
-  border-left: none;
+  /*background: #15aaff;*/
+  /*border: #118bd0 solid 1px;*/
+  /*border-left: none;*/
+  margin: 0px 15px;
   position: relative;
   /*margin-right: -1px;*/
 }
+
+.dropdown-options table.navigation #done:hover {
+  background: #36D143;
+}
+
+.dropdown-options table.navigation #dismissed:hover {
+  background: #15AAFF;
+}
+
+.dropdown-options table.navigation #delete:hover {
+  background: #FF0000;
+}
+
+.dropdown-options table.navigation #share:hover {
+  background: #CBDB3F;
+}
+
 .dropdown-options table.navigation td.current a i,
 .dropdown-options table.navigation td:hover a i {
   color: #fff;
