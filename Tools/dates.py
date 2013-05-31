@@ -46,3 +46,5 @@ def get_days_left(input_datetime):
         return 99999
     return (input_datetime - datetime.now()).days
 
+def get_current_datetime_object():
+    return datetime.now()

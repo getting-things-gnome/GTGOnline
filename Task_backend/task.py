@@ -5,7 +5,8 @@ from Task_backend.models import Task
 from User_backend.user import get_user_object
 from Tag_backend.tag import find_tags, create_tag_objects, get_tags_by_task
 from Tools.constants import *
-from Tools.dates import get_datetime_object, get_datetime_str
+from Tools.dates import get_datetime_object, get_datetime_str, \
+                        get_current_datetime_object
 
 
 def get_task_object(user, task_id):
@@ -22,10 +23,11 @@ def get_tasks(username):
         return []
 
 def add_task(user, name, description = "", start_date = None, \
-             due_date = None, tag_list = None):
+             due_date = None, tag_list = None, parent_id = None):
     user = get_user_object(user)
     start_date = get_datetime_object(user, start_date)
     due_date = get_datetime_object(user, due_date)
+    
     new_task = Task(user = user, name = name, description = description, \
                     start_date = start_date, due_date = due_date)
     
@@ -35,6 +37,11 @@ def add_task(user, name, description = "", start_date = None, \
     new_tags, existing_tags = create_tag_objects(user, tag_list)
     new_task.save()
     new_task.tags.add(*(new_tags+existing_tags))
+    
+    if parent_id != None:
+        parent = get_task_object(user, parent_id)
+        new_task.task_set.add(parent)
+    
     return new_task
 
 def get_task_details(user, task, indent, visited_list):
@@ -155,16 +162,36 @@ def set_visited(task, visited_list):
 def visited(task, visited_list):
     return task in visited_list
 
-def change_task_tree_status(user, task_id, new_status):
+def change_task_status(user, task_id, new_status):
     task = get_task_object(user, task_id)
     task.status = new_status
     
-    # This works only for 1 level. We need to modify the status of the
-    # whole tree underneath it
+    if new_status != IS_ACTIVE:
+        task.closed_date = get_current_datetime_object()
+    
+    task.save()
+    return task
+
+def change_task_tree_status(task, new_status):
     task.subtasks.all().update(status = new_status)
     task.save()
+    for subtask in task.subtasks.all():
+        change_task_tree_status(subtask, new_status)
 
-def change_task_tree_due_dates(user, task_id, new_date):
+def change_task_date(user, task_id, new_date_object, date_type):
     task = get_task_object(user, task_id)
-    new_date = get_datetime_object(new_date)
     
+    if date_type == IS_START_DATE:
+        task.start_date = new_date_object
+    elif date_type == IS_DUE_DATE:
+        task.due_date = new_date_object
+    task.save()
+    return task
+
+def change_task_tree_due_date(task, new_date_object):
+    for subtask in task.subtasks.all():
+        if subtask.due_date == None:
+            subtask.due_date = new_date_object
+        elif subtask.due_date.replace(tzinfo = None) > new_date_object:
+            subtask.due_date = new_date_object
+        change_task_tree_due_date(subtask, subtask.due_date)

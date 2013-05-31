@@ -9,7 +9,7 @@ from django.template import loader, RequestContext
 from django.contrib.auth.decorators import login_required
 
 from Task_backend.models import Task
-from Task_backend.task import get_task_tree
+from Task_backend.task import get_task_tree, change_task_status
 from Tag_backend.tag import find_tags
 from Tools.constants import *
 from Tools.dates import get_datetime_object
@@ -43,7 +43,7 @@ def get_tasks(request):
     else:
         task_tree = get_task_tree(request.user, \
                               Task.objects.filter(user = request.user, \
-                                                  status = folder_state), 0, [])
+                                                  status = folder_state), 0,[])
     #template = loader.get_template('task_row.html')
     #context = RequestContext(request, {'task_tree':json.dumps(task_tree)})
     #return HttpResponse(template.render(context))
@@ -67,5 +67,30 @@ def modify_status(request):
     
     task_id = request.GET['task_id']
     folder = request.GET['folder']
-    change_task_tree_status(request.user, task_id, new_status)
-    return HttpResponseRedirect('/tasks/get/?folder='+folder)
+    
+    task = change_task_status(request.user, task_id, new_status)
+    change_task_tree_status(task, new_status)
+    return HttpResponseRedirect('/tasks/get/?folder=' + folder)
+
+def modify_date(request):
+    task_id = request.GET['task_id']
+    folder = request.GET['folder']
+    
+    if request.GET.has_key('start_date'):
+        new_date_object = get_datetime_object(request.GET['start_date'])
+        task = change_task_date(request.user, task_id, \
+                                new_date_object, IS_START_DATE)
+    elif request.GET.has_key('due_date'):
+        new_date_object = get_datetime_object(request.GET['due_date'])
+        task = change_task_date(request.user, task_id, \
+                                new_date_object, IS_DUE_DATE)
+        if new_date_object != None:
+            change_task_tree_due_date(task, new_date_object)
+    return HttpResponseRedirect('/tasks/get/?folder=' + folder)
+
+def delete_task(request):
+    task_id = request.GET['task_id']
+    folder = request.GET['folder']
+    
+    
+    return HttpResponseRedirect('/tasks/get/?folder=' + folder)
