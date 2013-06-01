@@ -10,6 +10,7 @@
 		<div class="div-inline pull-left min-width30" style="margin-right: 2px; border-right: 1px solid #dedede; min-width: 30px;">
 			<a data-toggle="collapse" data-target="#collapse11" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 20px;" id="subtask_count" data-bind="visible: subtasks.length > 0">
                 <span data-bind="text: subtasks.length > 0 ? '+' + subtasks.length : ''"></span>
+				<!--<span data-bind="text: $index()"></span>-->
             </a>
 			<span data-bind="visible: subtasks.length == 0, text: '&nbsp;'"></span>
 		</div>
@@ -21,9 +22,9 @@
 			</a>
 			<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 				<li><a href="#" data-bind="click: $root.add_subtask.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
-				<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0)"><i class="icon-play"></i>&nbsp;Active</a></li>
-				<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1)"><i class="icon-ok"></i>&nbsp;Done</a></li>
-				<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2)"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+				<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
+				<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
+				<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
 				<li><a href="#" data-bind="click: $root.delete_task.bind($data, id)"><i class="icon-trash"></i>&nbsp;Delete</a></li>
 			</ul>
 		</div>

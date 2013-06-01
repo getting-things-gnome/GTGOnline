@@ -24,9 +24,18 @@ def get_tasks(username):
 
 def add_task(user, name, description = "", start_date = None, \
              due_date = None, tag_list = None, parent_id = None):
+    '''
+    Use this to add a new task. New task means completely new.
+    Updating name, description etc. has got it's own functions.
+    To create the task as a subtask, give the parent's id in parent_id
+    '''
     user = get_user_object(user)
     start_date = get_datetime_object(user, start_date)
     due_date = get_datetime_object(user, due_date)
+    
+    if start_date != None and due_date != None:
+        if start_date > due_date:
+            start_date = due_date
     
     new_task = Task(user = user, name = name, description = description, \
                     start_date = start_date, due_date = due_date)
@@ -69,15 +78,14 @@ def get_task_details(user, task, indent, visited_list):
 
 def get_task_tree(user, task_list, indent, visited_list):
     task_tree = []
-    # Initializing visited_list faces problems
-    #visited_list = []
-    for task in task_list:
+    for index, task in enumerate(task_list):
         # The following condition will have to changed in the future
         # to enable tasks with multiple parents
-        if not visited(task, visited_list):
+        # Detailed explanation - 
+        if not visited(task.id, visited_list) and ( not task.task_set.exists() \
+                or visited(get_parent_id(task), visited_list)):
+            visited_list = set_visited(task.id, visited_list)
             task_tree.append(get_task_details(user, task, indent, visited_list))
-            visited_list = set_visited(task, visited_list)
-            print >>sys.stderr, visited_list
     return task_tree
 
 def update_task_name(user, new_name, task_object, tag_list = None):
@@ -138,8 +146,20 @@ def get_tags(task):
 def get_subtasks(task):
     return task.subtasks.all()
 
-def get_parents(task):
-    return task.task_set.all()
+def get_parent_id(task):
+    if task.task_set.exists():
+        return task.task_set.all()[0].id
+    else:
+        return None
+
+def get_oldest_parent(task):
+    if task.task_set.exists():
+        # Note that this only works because we are assuming that a task
+        # only has ONE parent
+        return get_oldest_parent(task.task_set.all()[0])
+    else:
+        # List is returned because get_task_tree function accepts only lists
+        return [task]
 
 def print_task_tree(task):
     print str(task.id) + " " + task.name + "\n\t",
@@ -164,18 +184,26 @@ def visited(task, visited_list):
 
 def change_task_status(user, task_id, new_status):
     task = get_task_object(user, task_id)
+    print >>sys.stderr, "\n" + task.name + " was - " + str(task.status) + "new status = " + str(new_status)
     task.status = new_status
     
-    if new_status != IS_ACTIVE:
+    if new_status == IS_ACTIVE:
+        task.closed_date = None
+    else:
         task.closed_date = get_current_datetime_object()
     
     task.save()
+    print >>sys.stderr, "After saving, " + task.name + " is - " + str(task.status)
     return task
 
 def change_task_tree_status(task, new_status):
-    task.subtasks.all().update(status = new_status)
-    task.save()
-    for subtask in task.subtasks.all():
+    if new_status == IS_ACTIVE:
+        new_closed_date = None
+    else:
+        new_closed_date = get_current_datetime_object()
+    task.subtasks.all().update(status = new_status, \
+                               closed_date = new_closed_date)
+    for index, subtask in enumerate(task.subtasks.all()):
         change_task_tree_status(subtask, new_status)
 
 def change_task_date(user, task_id, new_date_object, date_type):
@@ -189,9 +217,27 @@ def change_task_date(user, task_id, new_date_object, date_type):
     return task
 
 def change_task_tree_due_date(task, new_date_object):
-    for subtask in task.subtasks.all():
-        if subtask.due_date == None:
+    update_children_due_date(task, new_date_object)
+    update_parent_due_date(task, new_date_object)
+    
+def update_children_due_date(task, new_date_object):
+    for index, subtask in enumerate(task.subtasks.all()):
+        if subtask.due_date == None or \
+            subtask.due_date.replace(tzinfo = None) > new_date_object:
             subtask.due_date = new_date_object
-        elif subtask.due_date.replace(tzinfo = None) > new_date_object:
-            subtask.due_date = new_date_object
-        change_task_tree_due_date(subtask, subtask.due_date)
+            
+            if subtask.start_date > subtask.due_date:
+                subtask.start_date = subtask.due_date
+        subtask.save()
+        update_children_due_date(subtask, subtask.due_date)
+
+def update_parent_due_date(task, new_date_object):
+    for index, parent in enumerate(task.task_set.all()):
+        if parent.due_date != None and \
+            parent.due_date.replace(tzinfo = None) < new_date_object:
+            parent.due_date = new_date_object
+            
+            if parent.start_date > parent.due_date:
+                parent.start_date = parent.due_date
+        parent.save()
+        update_parent_due_date(parent, parent.due_date)

@@ -9,7 +9,8 @@ from django.template import loader, RequestContext
 from django.contrib.auth.decorators import login_required
 
 from Task_backend.models import Task
-from Task_backend.task import get_task_tree, change_task_status
+from Task_backend.task import get_task_tree, change_task_status, \
+                              change_task_tree_status, get_oldest_parent
 from Tag_backend.tag import find_tags
 from Tools.constants import *
 from Tools.dates import get_datetime_object
@@ -47,7 +48,7 @@ def get_tasks(request):
     #template = loader.get_template('task_row.html')
     #context = RequestContext(request, {'task_tree':json.dumps(task_tree)})
     #return HttpResponse(template.render(context))
-    return HttpResponse(json.dumps(task_tree, indent=4), \
+    return HttpResponse(json.dumps(task_tree, indent = 4), \
                         mimetype='application/json')
 
 @login_required
@@ -65,12 +66,16 @@ def modify_status(request):
     elif new_status > 2:
         new_status = 2
     
+    print >>sys.stderr, "In view, new_status = " + str(new_status)
     task_id = request.GET['task_id']
     folder = request.GET['folder']
     
     task = change_task_status(request.user, task_id, new_status)
     change_task_tree_status(task, new_status)
+    task_tree = get_task_tree(request.user, get_oldest_parent(task), 0, [])
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)
+    #return HttpResponse(json.dumps(task_tree, indent = 4), \
+                        #mimetype='application/json')
 
 def modify_date(request):
     task_id = request.GET['task_id']

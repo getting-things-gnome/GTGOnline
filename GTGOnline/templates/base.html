@@ -123,16 +123,17 @@
 		var a = $.cookie('startup_dialog_shown');
 		var username = "{{ username }}";
 		today = new Date();
-		today = today.setHours(0,0,0,0);
+		today.setHours(0,0,0,0);
 		if (a == null) {
 			date = new Date();
-			date = date.setHours(0,0,0,0);
-			$.cookie('startup_dialog_shown', date, { expires: 1 });
-			$('#startup_modal').modal('show');
+			date.setHours(0,0,0,0);
+			$.cookie('startup_dialog_shown', date.setHours(0,0,0,0), { expires: 1 });
+			//$('#startup_modal').modal('show');
 		}
 		else if (today != a) {
+			//alert(today + " " + a);
 			$.cookie('startup_dialog_shown', new Date(), { expires: 1 });
-			$('#startup_modal').modal('show');
+			//$('#startup_modal').modal('show');
 		}
     });
 	</script>
