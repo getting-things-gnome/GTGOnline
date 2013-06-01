@@ -53,7 +53,7 @@ def add_task(user, name, description = "", start_date = None, \
     
     return new_task
 
-def get_task_details(user, task, indent, visited_list):
+def get_task_details(user, task, indent, visited_list, folder):
     '''
     Takes input an user object and a task object, and returns a dictionary of all
     the task details. This dictionary can then be appended to the JSON object.
@@ -65,27 +65,34 @@ def get_task_details(user, task, indent, visited_list):
     due_date = get_datetime_str(user, task.due_date)
     closed_date = get_datetime_str(user, task.closed_date)
     last_modified_date = get_datetime_str(user, task.last_modified_date)
-    return {"id": task.id, "name": task.name, \
-            "description": task.description, \
-            "start_date": start_date, "due_date": due_date, \
-            "closed_date": closed_date, \
-            "last_modified_date": last_modified_date, \
-            "status": task.status, "tags": get_tags_by_task(task), \
-            "subtasks": get_task_tree(user, \
-                                      task.subtasks.filter(status=task.status),\
-                                      indent+1, visited_list), \
-            "indent": indent}
+    if folder == -1:
+        subtasks_list = task.subtasks.all()
+    else:
+        subtasks_list = task.subtasks.filter(status=task.status)
+    details =  {"id": task.id, "name": task.name, \
+                "description": task.description, \
+                "start_date": start_date, "due_date": due_date, \
+                "closed_date": closed_date, \
+                "last_modified_date": last_modified_date, \
+                "status": task.status, "tags": get_tags_by_task(task), \
+                "subtasks": get_task_tree(user, subtasks_list, \
+                                          indent+1, visited_list, folder),
+                "indent": indent}    
+    return details
 
-def get_task_tree(user, task_list, indent, visited_list):
+def get_task_tree(user, task_list, indent, visited_list, folder):
     task_tree = []
     for index, task in enumerate(task_list):
         # The following condition will have to changed in the future
         # to enable tasks with multiple parents
         # Detailed explanation - 
-        if not visited(task.id, visited_list) and ( not task.task_set.exists() \
-                or visited(get_parent_id(task), visited_list)):
-            visited_list = set_visited(task.id, visited_list)
-            task_tree.append(get_task_details(user, task, indent, visited_list))
+        if not visited(task, visited_list) and ( not task.task_set.exists() \
+                or visited(get_parent(task), visited_list) \
+                or ( task.status != get_parent_status(task) and \
+                     folder != -1 )):
+            visited_list = set_visited(task, visited_list)
+            task_tree.append(get_task_details(user, task, \
+                                              indent, visited_list, folder))
     return task_tree
 
 def update_task_name(user, new_name, task_object, tag_list = None):
@@ -146,11 +153,18 @@ def get_tags(task):
 def get_subtasks(task):
     return task.subtasks.all()
 
-def get_parent_id(task):
+def get_parent(task):
     if task.task_set.exists():
-        return task.task_set.all()[0].id
+        return task.task_set.all()[0]
     else:
         return None
+
+def get_parent_status(task):
+    parent = get_parent(task)
+    if parent == None:
+        return None
+    else:
+        return parent.status
 
 def get_oldest_parent(task):
     if task.task_set.exists():
@@ -184,7 +198,7 @@ def visited(task, visited_list):
 
 def change_task_status(user, task_id, new_status):
     task = get_task_object(user, task_id)
-    print >>sys.stderr, "\n" + task.name + " was - " + str(task.status) + "new status = " + str(new_status)
+    print >>sys.stderr, "\n" + task.name + " was - " + str(task.status) + " new status = " + str(new_status)
     task.status = new_status
     
     if new_status == IS_ACTIVE:
@@ -197,6 +211,7 @@ def change_task_status(user, task_id, new_status):
     return task
 
 def change_task_tree_status(task, new_status):
+    print >>sys.stderr, "in task tree, updating - " + task.name + " was - " + str(task.status) + " new status - " + str(new_status)
     if new_status == IS_ACTIVE:
         new_closed_date = None
     else:
@@ -204,6 +219,7 @@ def change_task_tree_status(task, new_status):
     task.subtasks.all().update(status = new_status, \
                                closed_date = new_closed_date)
     for index, subtask in enumerate(task.subtasks.all()):
+        print >>sys.stderr, "subtask = " + subtask.name + " is - " + str(subtask.status) + " new_status - " + str(new_status)
         change_task_tree_status(subtask, new_status)
 
 def change_task_date(user, task_id, new_date_object, date_type):
@@ -241,3 +257,14 @@ def update_parent_due_date(task, new_date_object):
                 parent.start_date = parent.due_date
         parent.save()
         update_parent_due_date(parent, parent.due_date)
+
+def delete_task_tree(task):
+    for index, subtask in enumerate(task.subtasks.all()):
+        if subtask.subtasks.exists():
+            delete_task_tree(subtask)
+            subtask.delete()
+        else:
+            subtask.delete()
+
+def delete_task(task):
+    task.delete()

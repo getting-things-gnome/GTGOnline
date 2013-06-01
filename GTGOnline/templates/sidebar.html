@@ -48,6 +48,10 @@
 								<span class="pull-right label">9</span>
 							</a>
 						</li>
+						<!--<li>
+							<a href="#" data-bind="text: ko.toJSON($root.modify_selected)">
+							</a>
+						</li>-->
                     </ul>
             	</div>
             </div>
@@ -67,7 +71,6 @@
 		ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("wrapper"));
 		//get_todays_date();
 		//ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("task_rows_container"));
-		//TaskFoldersViewModel.modify_selected.push('4');
 	});
 </script>
 

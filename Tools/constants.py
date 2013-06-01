@@ -7,6 +7,7 @@ IS_ACTIVE = 0
 IS_DONE = 1
 IS_DISMISSED = 2
 
+
 # Task date
 IS_START_DATE = 0
 IS_DUE_DATE = 1
