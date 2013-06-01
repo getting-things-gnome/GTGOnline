@@ -9,25 +9,31 @@
 		<table class="navigation nav-collapse" style="height: 61px">
 			<tr>
 				<td id="done">
-					<a href="#" data-bind="click: $root.mark_done">
+					<a href="#" data-bind="click: $root.change_status.bind($data, -1, 0, 0)">
+						<i class="icon-play"></i>
+						<span>Active</span>
+					</a>
+				</td>
+				<td id="done">
+					<a href="#" data-bind="click: $root.change_status.bind($data, -1, 1, 0)">
 						<i class="icon-ok"></i>
 						<span>Done</span>
 					</a>
 				</td>
 				<td id="dismissed">
-					<a href="#">
+					<a href="#" data-bind="click: $root.change_status.bind($data, -1, 2, 0)">
 						<i class="icon-minus-sign"></i>
 						<span>Dismissed</span>
 					</a>
 				</td>
-				<td id="delete">
+				<td id="delete" data-bind="click: $root.delete_task.bind($data, -1, 0)">
 					<a href="#">
 						<i class="icon-trash"></i>
 						<span>Delete</span>
 					</a>
 				</td>
 				<td id="share">
-					<a href="forms.html">
+					<a href="#">
 						<i class="icon-share"></i>
 						<span>Share</span>
 					</a>

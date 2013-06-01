@@ -112,11 +112,12 @@
 	<script src="{{ STATIC_URL }}js/bootstrap.js"></script>
 	<script src="{{ STATIC_URL }}js/data/jquery-cookie.js"></script>
 	<script type="text/javascript">
-	    $("#showhide").click(function() { 
-    // assumes element with id='button'
-    $("#dropdown").fadeToggle();
-    $("#header").slideToggle();
-});
+	    $("input.show_dropdown").change(function(){
+				alert("checked");
+				$("#dropdown").fadeToggle();
+				$("#header").slideToggle();
+			//}
+		});
 	</script>
 	<script type="text/javascript">
     $(window).load(function(){

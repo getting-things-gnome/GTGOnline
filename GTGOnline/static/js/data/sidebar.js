@@ -34,22 +34,20 @@ function TaskFoldersViewModel() {
         return;
     };
     
-    self.mark_done = function () {
+    self.mark_done = function (new_status) {
         //alert(self.modify_selected());
-        var new_status = 1;
         $.get('/tasks/modify/status', { task_id:self.modify_selected(), status: new_status, folder: self.chosenFolderId() }, self.tasks_list);
-        alert(self.modify_selected());
+        //alert(self.modify_selected());
     }
     
     self.change_status = function (id, new_status, index) {
-        //alert(new_status);
-        $.get('/tasks/modify/status', { task_id:id, status: new_status, folder: self.chosenFolderId() }, self.tasks_list);
+        $.get('/tasks/modify/status', { task_id:id, task_id_list: self.modify_selected(), status: new_status, folder: self.chosenFolderId() }, self.tasks_list);
         //self.tasks_list.Elements.replace(self.tasks_list()[index], self.modified_tasks);
     };
     
     self.delete_task = function(id, index) {
         //alert(id);
-        $.get('/tasks/delete/', { task_id:id, folder: self.chosenFolderId() }, self.tasks_list);
+        $.get('/tasks/delete/', { task_id:id, task_id_list: self.modify_selected(), folder: self.chosenFolderId() }, self.tasks_list);
     };
 };
 

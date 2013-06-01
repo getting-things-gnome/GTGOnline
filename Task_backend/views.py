@@ -32,7 +32,7 @@ def get_tasks(request):
     }
     
     if request.GET.has_key('folder'):
-        folder_state = folder_dict[request.GET['folder']]
+        folder_state = folder_dict.get(request.GET['folder'], IS_ACTIVE)
     else:
         folder_state = IS_ACTIVE
     if request.GET.has_key('due'):
@@ -69,13 +69,20 @@ def modify_status(request):
     elif new_status > 2:
         new_status = 2
     
-    for val in request.GET.getlist('task_id[]'):
-        print val
     folder = request.GET['folder']
-    return HttpResponseRedirect('/tasks/get/?folder=' + folder)
+    task_id = request.GET['task_id']
+    task_id_list = request.GET.getlist('task_id_list[]')
+    if task_id_list != [] and ( task_id in task_id_list or \
+                               task_id == -1 ):
+        for task_id in task_id_list:
+            task = change_task_status(request.user, task_id, new_status)
+            change_task_tree_status(task, new_status)
+    else:
+        if task_id > -1:
+            task = change_task_status(request.user, task_id, new_status)
+            if task != None:
+                change_task_tree_status(task, new_status)
     
-    task = change_task_status(request.user, task_id, new_status)
-    change_task_tree_status(task, new_status)
     #task_tree = get_task_tree(request.user, get_oldest_parent(task), 0, [])
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)
     #return HttpResponse(json.dumps(task_tree, indent = 4), \
@@ -98,9 +105,20 @@ def modify_date(request):
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)
 
 def delete_task(request):
-    task_id = request.GET['task_id']
     folder = request.GET['folder']
-    task = get_task_object(request.user, task_id)
-    delete_task_tree(task)
-    task.delete()
+    
+    task_id_list = request.GET.getlist('task_id_list[]')
+    if task_id_list != []:
+        for task_id in task_id_list:
+            task = get_task_object(request.user, task_id)
+            if task != None:
+                delete_task_tree(task)
+                task.delete()
+    else:
+        task_id = request.GET['task_id']
+        if task_id > -1:
+            task = get_task_object(request.user, task_id)
+            if task != None:
+                delete_task_tree(task)
+                task.delete()
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)

@@ -198,7 +198,8 @@ def visited(task, visited_list):
 
 def change_task_status(user, task_id, new_status):
     task = get_task_object(user, task_id)
-    print >>sys.stderr, "\n" + task.name + " was - " + str(task.status) + " new status = " + str(new_status)
+    if task == None:
+        return None
     task.status = new_status
     
     if new_status == IS_ACTIVE:
@@ -207,11 +208,9 @@ def change_task_status(user, task_id, new_status):
         task.closed_date = get_current_datetime_object()
     
     task.save()
-    print >>sys.stderr, "After saving, " + task.name + " is - " + str(task.status)
     return task
 
 def change_task_tree_status(task, new_status):
-    print >>sys.stderr, "in task tree, updating - " + task.name + " was - " + str(task.status) + " new status - " + str(new_status)
     if new_status == IS_ACTIVE:
         new_closed_date = None
     else:
@@ -219,7 +218,6 @@ def change_task_tree_status(task, new_status):
     task.subtasks.all().update(status = new_status, \
                                closed_date = new_closed_date)
     for index, subtask in enumerate(task.subtasks.all()):
-        print >>sys.stderr, "subtask = " + subtask.name + " is - " + str(subtask.status) + " new_status - " + str(new_status)
         change_task_tree_status(subtask, new_status)
 
 def change_task_date(user, task_id, new_date_object, date_type):
