@@ -3,8 +3,8 @@
 {% block sidebar %}
     <div style="position: fixed; min-width: 100px;" id="sidebar">
         <div class="section sidebar" style="position: relative">
-			<button class="modern" id="showhide" style="width: 85%">
-				<span class="">New Task</span>
+			<button class="modern" id="showhide" style="width: 85%" data-bind="click: $root.new_task.bind($data, -1)">
+				<span>New Task</span>
 			</button>
             <div class="widget">
 				<div class="widget-header" style="margin-bottom: 0px">
@@ -26,8 +26,14 @@
                 <div class="widget-header">
                 	<h3>Tags</h3>
                 </div>
-                <div class="widget-content" data-bind="foreach: tags_list" id="sidebar_tags_list">
-					<span class="label" data-bind="text: name, style: { backgroundColor: color }"></span>
+                <div class="widget-content" data-bind="foreach: tags_list" id="sidebar_tags_list" style="padding: 5px 15px">
+					<a href="#" style="text-decoration: none;" class="dropdown-toggle" data-toggle="dropdown">
+						<span class="label" data-bind="text: name, style: { backgroundColor: color }, attr: { 'id': id }"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<li><a href="#"><i class="icon-wrench"></i>&nbsp;Edit</a></li>
+						<li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+					</ul>
                 </div>
             </div>
             <div class="widget bg-color dark-grey">
@@ -67,7 +73,7 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/data/sammy.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		get_tags_by_user();
+		//get_tags_by_user();
 		ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("wrapper"));
 		//get_todays_date();
 		//ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("task_rows_container"));

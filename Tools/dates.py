@@ -48,3 +48,16 @@ def get_days_left(input_datetime):
 
 def get_current_datetime_object():
     return datetime.now()
+
+def compare_dates(date1, date2):
+    if date1 == None:
+        return (0, None)
+    elif date2 == None:
+        return (0, None)
+    else:
+        if date1 < date2:
+            return (1, -1)
+        elif date1 > date2:
+            return (1, 1)
+        else:
+            return (1, 0)

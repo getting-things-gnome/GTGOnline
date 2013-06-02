@@ -10,4 +10,5 @@ urlpatterns = patterns('',
     url(r'^modify/date/$', views.modify_date, name='modify_date'),
     url(r'^delete/$', views.delete_task, name='delete_task'),
     url(r'^main/$', views.show_title, name='show_title'),
+    url(r'^new/$', views.new_task, name='new_task'),
 )

@@ -6,7 +6,7 @@ from User_backend.user import get_user_object
 from Tag_backend.tag import find_tags, create_tag_objects, get_tags_by_task
 from Tools.constants import *
 from Tools.dates import get_datetime_object, get_datetime_str, \
-                        get_current_datetime_object
+                        get_current_datetime_object, compare_dates
 
 
 def get_task_object(user, task_id):
@@ -22,14 +22,13 @@ def get_tasks(username):
     else:
         return []
 
-def add_task(user, name, description = "", start_date = None, \
-             due_date = None, tag_list = None, parent_id = None):
+def add_task(user, name, description, start_date, due_date, tag_list = None, \
+             parent_id = -1):
     '''
     Use this to add a new task. New task means completely new.
     Updating name, description etc. has got it's own functions.
     To create the task as a subtask, give the parent's id in parent_id
     '''
-    user = get_user_object(user)
     start_date = get_datetime_object(user, start_date)
     due_date = get_datetime_object(user, due_date)
     
@@ -47,9 +46,10 @@ def add_task(user, name, description = "", start_date = None, \
     new_task.save()
     new_task.tags.add(*(new_tags+existing_tags))
     
-    if parent_id != None:
+    if parent_id != -1:
         parent = get_task_object(user, parent_id)
-        new_task.task_set.add(parent)
+        if parent != None:
+            new_task.task_set.add(parent)
     
     return new_task
 
@@ -222,11 +222,19 @@ def change_task_tree_status(task, new_status):
 
 def change_task_date(user, task_id, new_date_object, date_type):
     task = get_task_object(user, task_id)
+    if task == None:
+        return None
     
     if date_type == IS_START_DATE:
         task.start_date = new_date_object
+        new_start_date = task.start_date
     elif date_type == IS_DUE_DATE:
         task.due_date = new_date_object
+        new_due_date = task.due_date
+        
+    compare_result = compare_dates(task.start_date, task.due_date)
+    if compare_result[0] and compare_result[1]:
+        task.start_date = task.due_date
     task.save()
     return task
 
@@ -240,7 +248,8 @@ def update_children_due_date(task, new_date_object):
             subtask.due_date.replace(tzinfo = None) > new_date_object:
             subtask.due_date = new_date_object
             
-            if subtask.start_date > subtask.due_date:
+            dates_diff = compare_dates(subtask.start_date, subtask.due_date)
+            if dates_diff[0] and dates_diff[1]:
                 subtask.start_date = subtask.due_date
         subtask.save()
         update_children_due_date(subtask, subtask.due_date)
@@ -251,10 +260,14 @@ def update_parent_due_date(task, new_date_object):
             parent.due_date.replace(tzinfo = None) < new_date_object:
             parent.due_date = new_date_object
             
-            if parent.start_date > parent.due_date:
+            dates_diff = compare_dates(parent.start_date, parent.due_date)
+            if dates_diff[0] and dates_diff[1]:
                 parent.start_date = parent.due_date
         parent.save()
         update_parent_due_date(parent, parent.due_date)
+
+def delete_task(task):
+    task.delete()
 
 def delete_task_tree(task):
     for index, subtask in enumerate(task.subtasks.all()):
@@ -263,6 +276,3 @@ def delete_task_tree(task):
             subtask.delete()
         else:
             subtask.delete()
-
-def delete_task(task):
-    task.delete()

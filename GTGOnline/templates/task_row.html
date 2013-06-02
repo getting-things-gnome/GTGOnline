@@ -21,7 +21,7 @@
 					<strong id="name" data-bind="text: name"></strong>
 				</a>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-					<li><a href="#" data-bind="click: $root.add_subtask.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
+					<li><a href="#" data-bind="click: $root.new_task.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
 					<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
 					<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
 					<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
@@ -33,7 +33,7 @@
 					<strong class="task_name" id="name" data-bind="text: shortify_name(name), attr: { 'data-content': name }" rel="popover" data-trigger="hover"></strong>
 				</a>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-					<li><a href="#" data-bind="click: $root.add_subtask.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
+					<li><a href="#" data-bind="click: $root.new_task.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
 					<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
 					<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
 					<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
@@ -51,7 +51,7 @@
 		<div class="div-inline task-description max-width350" style="width: 32%;">
 				<a href="#" style="text-decoration:none; color: #4D4D4D; font-size: 12px;">
 					<span data-bind="if: description_is_short(description)">
-						<span class="muted task_description" data-bind="text: description"></span>
+						<span class="muted" data-bind="text: description"></span>
 					</span>
 					<span data-bind="ifnot: description_is_short(description)">
 						<span class="muted task_description" data-bind="text: shortify_description(description), attr: { 'data-content': description }" rel="popover" data-trigger="hover"></span>

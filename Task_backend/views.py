@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from Task_backend.models import Task
 from Task_backend.task import get_task_object, get_task_tree, \
                               change_task_status, change_task_tree_status, \
-                              get_oldest_parent, delete_task_tree
+                              get_oldest_parent, delete_task_tree, add_task
 from Tag_backend.tag import find_tags
 from Tools.constants import *
 from Tools.dates import get_datetime_object
@@ -31,10 +31,8 @@ def get_tasks(request):
         'Dismissed': IS_DISMISSED,
     }
     
-    if request.GET.has_key('folder'):
-        folder_state = folder_dict.get(request.GET['folder'], IS_ACTIVE)
-    else:
-        folder_state = IS_ACTIVE
+    folder_get = request.GET.get('folder', 'Active')
+    folder_state = folder_dict[folder_get]
     if request.GET.has_key('due'):
         date_filter = True
         due_date = request.GET['due']
@@ -62,15 +60,15 @@ def show_title(request):
     return HttpResponse(template.render(context))
 
 def modify_status(request):
-    new_status = int(request.GET['status'])
+    new_status = int(request.GET.get('status', 0))
     
     if new_status < 0:
         new_status = 0
     elif new_status > 2:
         new_status = 2
     
-    folder = request.GET['folder']
-    task_id = request.GET['task_id']
+    folder = request.GET.get('folder', 'Active')
+    task_id = request.GET.get('task_id', -1)
     task_id_list = request.GET.getlist('task_id_list[]')
     if task_id_list != [] and ( task_id in task_id_list or \
                                task_id == -1 ):
@@ -89,8 +87,10 @@ def modify_status(request):
                         #mimetype='application/json')
 
 def modify_date(request):
-    task_id = request.GET['task_id']
-    folder = request.GET['folder']
+    task_id = request.GET.get('task_id', -1)
+    if task_id < 0:
+        return HttpResponseRedirect('/tasks/get/?folder=' + folder)
+    folder = request.GET.get('folder', 'Active')
     
     if request.GET.has_key('start_date'):
         new_date_object = get_datetime_object(request.GET['start_date'])
@@ -100,12 +100,12 @@ def modify_date(request):
         new_date_object = get_datetime_object(request.GET['due_date'])
         task = change_task_date(request.user, task_id, \
                                 new_date_object, IS_DUE_DATE)
-        if new_date_object != None:
+        if new_date_object != None and task != None:
             change_task_tree_due_date(task, new_date_object)
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)
 
 def delete_task(request):
-    folder = request.GET['folder']
+    folder = request.GET.get('folder', 'Active')
     
     task_id_list = request.GET.getlist('task_id_list[]')
     if task_id_list != []:
@@ -115,10 +115,22 @@ def delete_task(request):
                 delete_task_tree(task)
                 task.delete()
     else:
-        task_id = request.GET['task_id']
+        task_id = request.GET.get('task_id', -1)
         if task_id > -1:
             task = get_task_object(request.user, task_id)
             if task != None:
                 delete_task_tree(task)
                 task.delete()
+    return HttpResponseRedirect('/tasks/get/?folder=' + folder)
+
+def new_task(request):
+    folder = request.GET.get('folder', 'Active')
+    name = request.GET.get('name', 'No Name received')
+    description = request.GET.get('description', '')
+    start_date = request.GET.get('start_date', '')
+    due_date = request.GET.get('due_date', '')
+    parent_id = request.GET.get('parent_id', -1)
+    
+    task = add_task(request.user, name, description, start_date, due_date, \
+                    parent_id = parent_id)
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)

@@ -46,7 +46,7 @@ def create_bulk_tags(tag_objects):
     Tag.objects.bulk_create(tag_objects)
     
 def get_tag_details(tag):
-    return {"name": tag.name, "color": tag.color, "icon": tag.icon}
+    return {"id": tag.id, "name": tag.name, "color": tag.color, "icon": tag.icon}
 
 def get_tags_by_task(task):
     tags = []
@@ -102,3 +102,7 @@ def delete_tag(user, tag_name = None, tag_id = None):
 def get_task_count(user, tag_name = None, tag_id = None):
     tag = get_tag_object(user, tag_name, tag_id)
     return tag.task_set.count()
+
+def delete_tag_modify_tasks(user, tag_id):
+    # write this method
+    return

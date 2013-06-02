@@ -1,6 +1,6 @@
 // CONSTANTS
 var NAME_MAX_LENGTH = 30
-var DESCRIPTION_MAX_LENGTH = 50
+var DESCRIPTION_MAX_LENGTH = 40
 
 // Task Folders
 
@@ -41,8 +41,11 @@ function TaskFoldersViewModel() {
         });
     }).run();
     
-    self.add_subtask = function(data) {
-        return;
+    self.new_task = function(id) {
+        $('#new_task_modal').modal('show');
+        $.get('/tasks/new', {
+            
+        }, self.tasks_list);
     };
     
     self.mark_done = function (new_status) {

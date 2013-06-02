@@ -2874,7 +2874,7 @@ table th[class*="span"],
   z-index: 1000;
   display: none;
   float: left;
-  min-width: 160px;
+  /*min-width: 160px;*/
   padding: 5px 0;
   margin: 2px 0 0;
   list-style: none;
@@ -5154,14 +5154,6 @@ input[type="submit"].btn.btn-mini {
           background-clip: padding-box;
 }
 
-/*.modal.fade {
-  top: -25%;
-  -webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
-     -moz-transition: opacity 0.3s linear, top 0.3s ease-out;
-       -o-transition: opacity 0.3s linear, top 0.3s ease-out;
-          transition: opacity 0.3s linear, top 0.3s ease-out;
-}*/
-
 .modal.fade {
   top: -25%;
   -webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
@@ -5346,8 +5338,6 @@ input[type="submit"].btn.btn-mini {
      -moz-background-clip: padding;
           background-clip: padding-box;
 }
-
-.popover .task_
 
 .popover.top {
   margin-top: -10px;
