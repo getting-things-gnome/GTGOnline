@@ -16,17 +16,30 @@
 		</div>
 		
 		<div class="dropdown div-inline pull-left min-width250" style="width: 26%;">
-			<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 15px;" id="name_link">
-				<!--<strong>Summer's here: Lets clean the house!</strong>-->
-				<strong id="name" data-bind="text: name"></strong>
-			</a>
-			<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-				<li><a href="#" data-bind="click: $root.add_subtask.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
-				<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
-				<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
-				<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
-				<li><a href="#" data-bind="click: $root.delete_task.bind($data, id, $index())"><i class="icon-trash"></i>&nbsp;Delete</a></li>
-			</ul>
+			<div data-bind="if: name_is_short(name)">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 15px;">
+					<strong id="name" data-bind="text: name"></strong>
+				</a>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+					<li><a href="#" data-bind="click: $root.add_subtask.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
+					<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
+					<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
+					<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+					<li><a href="#" data-bind="click: $root.delete_task.bind($data, id, $index())"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+				</ul>
+			</div>
+			<div data-bind="ifnot: name_is_short(name)">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4D4D4D; font-size: 15px;">
+					<strong class="task_name" id="name" data-bind="text: shortify_name(name), attr: { 'data-content': name }" rel="popover" data-trigger="hover"></strong>
+				</a>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+					<li><a href="#" data-bind="click: $root.add_subtask.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
+					<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
+					<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
+					<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+					<li><a href="#" data-bind="click: $root.delete_task.bind($data, id, $index())"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+				</ul>
+			</div>
 		</div>
 		
 		<div style="width: 15%;" class="div-inline min-width200 task-tags" id="tags" data-bind="foreach: tags">
@@ -36,9 +49,14 @@
 		</div>
 		
 		<div class="div-inline task-description max-width350" style="width: 32%;">
-			<a href="#" style="text-decoration:none">
-                <span class="muted" id="description" data-bind="text: description"></span>
-			</a>
+				<a href="#" style="text-decoration:none; color: #4D4D4D; font-size: 12px;">
+					<span data-bind="if: description_is_short(description)">
+						<span class="muted task_description" data-bind="text: description"></span>
+					</span>
+					<span data-bind="ifnot: description_is_short(description)">
+						<span class="muted task_description" data-bind="text: shortify_description(description), attr: { 'data-content': description }" rel="popover" data-trigger="hover"></span>
+					</span>
+				</a>
 		</div>
 		
 		<div style="width: 10%" class="div-inline min-width130 pull-right">
@@ -75,20 +93,6 @@
 	$("#subtask_count2").click(function() { 
 		$("#task_row4").fadeToggle();
 		return false;
-	});
-	
-	$("#subtask_count").click(function() {
-		/*$.getJSON("/tasks/json_dumps/", function(result){
-			var items = [];
-			$.each(result, function(key, val) {
-				items.push('<li id="' + key + '">' + val + '</li>');
-			});
-			
-			$('<ul/>', {
-				'class': 'my-new-list',
-				html: items.join('')
-			}).appendTo('#main_div');
-		});*/
 	});
 	
 	$(document).ready(function(){

@@ -1,3 +1,6 @@
+// CONSTANTS
+var NAME_MAX_LENGTH = 30
+var DESCRIPTION_MAX_LENGTH = 50
 
 // Task Folders
 
@@ -22,7 +25,15 @@ function TaskFoldersViewModel() {
     Sammy(function() {
         this.get('#:folder', function() {
             self.chosenFolderId(this.params.folder);
-            $.get('/tasks/get', { folder: this.params.folder }, self.tasks_list);
+            $.get('/tasks/get', { folder: this.params.folder }, function(data) {
+                self.tasks_list(data);
+                $('strong.task_name').popover({
+                    placement: 'top'
+                });
+                $('span.task_description').popover({
+                    placement: 'top'
+                });
+            });
         });
         
         this.get('', function() {
@@ -49,6 +60,7 @@ function TaskFoldersViewModel() {
         //alert(id);
         $.get('/tasks/delete/', { task_id:id, task_id_list: self.modify_selected(), folder: self.chosenFolderId() }, self.tasks_list);
     };
+    
 };
 
 //ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("task_folders"));
@@ -69,4 +81,32 @@ function check_date_eq_today(date_str) {
     // date_str is in the form - 24/05/13
     var today = new Date();
     day = date_str.substring(0, 2)
+}
+
+function name_is_short(task_name) {
+	return task_name.length < NAME_MAX_LENGTH
+}
+
+function shortify_name(task_name) {
+    //return task_name.substring(0, NAME_MAX_LENGTH-3) + "<span style='color: #FF0000'>" + task_name.charAt(NAME_MAX_LENGTH-3) + "</span><span style='color: #EE0000'>" + task_name.charAt(NAME_MAX_LENGTH-2) + "</span><span style='color: #DD0000'>" + task_name.charAt(NAME_MAX_LENGTH-1) + "</span>"
+    return task_name.substring(0, NAME_MAX_LENGTH-3) + '...'
+}
+
+function description_is_short(task_description) {
+	return task_description.length < DESCRIPTION_MAX_LENGTH
+}
+
+function shortify_description(task_description) {
+    //return task_name.substring(0, NAME_MAX_LENGTH-3) + "<span style='color: #FF0000'>" + task_name.charAt(NAME_MAX_LENGTH-3) + "</span><span style='color: #EE0000'>" + task_name.charAt(NAME_MAX_LENGTH-2) + "</span><span style='color: #DD0000'>" + task_name.charAt(NAME_MAX_LENGTH-1) + "</span>"
+    return task_description.substring(0, DESCRIPTION_MAX_LENGTH-3) + '...'
+}
+
+function get_popover_placement(pop, dom_el) {
+    var height = window.innerHeight;
+    console.log('height' + height);
+    if (height<500) return 'bottom';
+    var left_pos = $(dom_el).offset().left;
+    console.log('left_pos' + left_pos);
+    if (height - left_pos > 400) return 'right';
+    return 'left';
 }

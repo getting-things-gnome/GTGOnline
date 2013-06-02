@@ -1132,3 +1132,8 @@ div.task-row {
 .no-decoration {
   text-decoration: none;
 }
+
+.horizontal-gradient {
+  background-image: -webkit-gradient(linear, 25% 0%, 0% 0%, from(rgb(176, 196, 222)), to(rgb(255, 255, 255)));
+  background-image: -moz-linear-gradient(center right, rgb(153, 255, 51) 25%, rgb(255, 102, 51) 80%);
+}

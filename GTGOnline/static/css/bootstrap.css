@@ -5328,16 +5328,17 @@ input[type="submit"].btn.btn-mini {
   left: 0;
   z-index: 1010;
   display: none;
-  width: 236px;
+  max-width: 250px;
+  max-height: 500px;
   padding: 1px;
   text-align: left;
-  white-space: normal;
+  white-space: pre-line;
   background-color: #ffffff;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  -webkit-border-radius: 6px;
-     -moz-border-radius: 6px;
-          border-radius: 6px;
+  -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+          border-radius: 3px;
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
      -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
           box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
@@ -5345,6 +5346,8 @@ input[type="submit"].btn.btn-mini {
      -moz-background-clip: padding;
           background-clip: padding-box;
 }
+
+.popover .task_
 
 .popover.top {
   margin-top: -10px;
@@ -5363,7 +5366,7 @@ input[type="submit"].btn.btn-mini {
 }
 
 .popover-title {
-  padding: 8px 14px;
+  /*padding: 8px 14px;
   margin: 0;
   font-size: 14px;
   font-weight: normal;
@@ -5372,11 +5375,13 @@ input[type="submit"].btn.btn-mini {
   border-bottom: 1px solid #ebebeb;
   -webkit-border-radius: 5px 5px 0 0;
      -moz-border-radius: 5px 5px 0 0;
-          border-radius: 5px 5px 0 0;
+          border-radius: 5px 5px 0 0;*/
+  display: none;
 }
 
 .popover-content {
-  padding: 9px 14px;
+  /*padding: 9px 14px;*/
+  padding: 5px 7px;
 }
 
 .popover .arrow,
