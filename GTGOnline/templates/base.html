@@ -38,6 +38,7 @@
 		{% block topbar %}{% endblock topbar %}
 	<div class="content clearfix" id="wrapper">
 	    {% block sidebar %}{% endblock sidebar %}
+		{% block new_task_modal %}{% endblock new_task_modal %}
 	    <div class="section main" id="main_div">
 				{% block main %}{% endblock main %}
 	    </div>
@@ -101,9 +102,6 @@
 		</div>
 	</div>
 	{% endblock startup_modal %}
-	
-	{% block new_task_modal %}
-	{% endblock new_task_modal %}
 	
 	{% block external_js %}
 	<!-- Le javascript

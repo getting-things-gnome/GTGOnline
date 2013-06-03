@@ -68,8 +68,10 @@
 {% block new_task_modal %}
 <div id="new_task_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 500px; margin-left: -250px">
 	<div class="modal-header" id="new_task_name_field" style="padding: 10px">
-		<input type="text" placeholder="Task Name" style="margin: 0px" class="input-task-name" data-bind="value: task_name_field, valueUpdate: 'afterkeydown'">
-		<p>You have typed: <span data-bind="text: task_name_field"></span></p>
+		<input type="text" placeholder="Task Name" style="margin: 0px;" class="input-task-name" data-bind="value: task_name_field, valueUpdate: 'afterkeydown'" />
+		<div data-bind="foreach: all_tags">
+			<span class="label" style="margin-right: 1px;" data-bind="text: $data"></span>
+		</div>
 	</div>
 	<div class="modal-body" style="padding: 10px;">
 		<textarea rows="10" placeholder="Task Description" class="input-task-name" style="margin: 0px; margin-bottom: 10px;"></textarea>

@@ -1,6 +1,7 @@
 // CONSTANTS
 var NAME_MAX_LENGTH = 30
 var DESCRIPTION_MAX_LENGTH = 40
+var TAG_REGEX = /(?:^|[\s])(@[\w\/\.\-\:]*\w)/g;
 
 // Task Folders
 
@@ -13,7 +14,13 @@ function TaskFoldersViewModel() {
     self.tags_list = ko.observableArray();
     self.modified_tasks = ko.observableArray();
     self.modify_selected = ko.observableArray();
-    task_name_field = ko.observable('');
+    self.task_name_field = ko.observable('');
+    
+    self.all_tags = ko.observableArray();
+    
+    self.task_name_field.subscribe(function (newValue) {
+        self.all_tags(newValue.match(TAG_REGEX));
+    }, self);
     
     // Behaviours
     self.goToFolder = function(folder) {
@@ -115,9 +122,13 @@ function get_popover_placement(pop, dom_el) {
     return 'left';
 }
 
+function find_tags(text) {
+    alert(text);
+}
+
 function get_date_object(date_str) {
     if (date_str == '') {
-        return
+        return null
     }
     var chunks = date_str.split('/');
     var formatted_date = chunks[1] + '-' + chunks[0] + '-' + chunks[2];
