@@ -2,7 +2,7 @@
 
 {% block task_row %}
 	<div data-bind="foreach: tasks_list" id="task_rows_container" class="min-width900">
-	<div class="task-row min-width900" id="task_row" style="display: block;" data-bind="style: { marginLeft: (40*indent) + 'px', borderLeft: indent > 0 ? '1px solid #dedede' : '0px'}, css: { taskDone: status == 1, taskDismissed: status == 2 }">
+	<div class="task-row min-width950" id="task_row" style="display: block;" data-bind="style: { marginLeft: (30*indent) + 'px', borderLeft: indent > 0 ? '1px solid #dedede' : '0px'}, css: { taskDone: status == 1, taskDismissed: status == 2 }">
 		<div class="div-inline pull-left min-width25" style="margin-left: 5px">
 			<input type="checkbox" class="checkbox show_dropdown" data-bind="attr: { 'value': id }, checked: $root.modify_selected">
 		</div>
@@ -59,17 +59,17 @@
 				</a>
 		</div>
 		
-		<div style="width: 10%" class="div-inline min-width130 pull-right">
+		<div style="width: 15%;" class="div-inline min-width160 pull-right">
 			<a href="#" style="text-decoration:none; color:#4D4D4D;">
 				<!--<strong style="font-size: 30px;">13.09.12</strong>-->
-				<strong style="font-size: 30px;" id="due_date" data-bind="text: due_date"></strong>
+				<strong id="due_date" data-bind="text: prettify(due_date), style: { fontSize: get_size_of_date(due_date) }"></strong>
 			</a>
 		</div>
 		
 		<div style="width: 10%" class="div-inline min-width80 pull-right">
 			<a href="#" style="text-decoration:none; color:#4d4d4d;">
 				<!--<strong>06.09.12</strong>-->
-				<strong id="start_date" data-bind="text: due_date"></strong>
+				<strong id="start_date" data-bind="text: prettify(start_date)"></strong>
 			</a>
 		</div>
 	</div>

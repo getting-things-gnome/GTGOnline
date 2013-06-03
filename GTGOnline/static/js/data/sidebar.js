@@ -13,6 +13,7 @@ function TaskFoldersViewModel() {
     self.tags_list = ko.observableArray();
     self.modified_tasks = ko.observableArray();
     self.modify_selected = ko.observableArray();
+    task_name_field = ko.observable('');
     
     // Behaviours
     self.goToFolder = function(folder) {
@@ -43,9 +44,9 @@ function TaskFoldersViewModel() {
     
     self.new_task = function(id) {
         $('#new_task_modal').modal('show');
-        $.get('/tasks/new', {
+        /*$.get('/tasks/new', {
             
-        }, self.tasks_list);
+        }, self.tasks_list);*/
     };
     
     self.mark_done = function (new_status) {
@@ -112,4 +113,69 @@ function get_popover_placement(pop, dom_el) {
     console.log('left_pos' + left_pos);
     if (height - left_pos > 400) return 'right';
     return 'left';
+}
+
+function get_date_object(date_str) {
+    if (date_str == '') {
+        return
+    }
+    var chunks = date_str.split('/');
+    var formatted_date = chunks[1] + '-' + chunks[0] + '-' + chunks[2];
+    var date_object = new Date(formatted_date);
+    //alert(date_object);
+    return date_object
+}
+
+function get_days_left(date) {
+    var date_object = get_date_object(date);
+    //alert(due_date_object);
+    var today_object = new Date();
+    today_object = new Date(today_object.toDateString());
+    //alert( due_date_object + " " + today_object );
+    var days_left = date_object - today_object;
+    var one_day = 1000*60*60*24;
+    days_left = Math.round(days_left/one_day);
+    //alert(days_left);
+    return days_left
+}
+
+function prettify(date) {
+    //alert(date);
+    if (date == '') {
+        return ''
+    }
+    var days_left = get_days_left(date);
+    if (days_left < -7) {
+        return date
+    }
+    else if (days_left < 0) {
+        return -days_left + ' days ago'
+    }
+    else if (days_left == 0) {
+        return 'Today'
+    }
+    else if (days_left == 1) {
+        return 'Tomorrow'
+    }
+    else if (days_left < 8) {
+        return 'In ' + days_left + ' days'
+    }
+    return date
+}
+
+function get_size_of_date(due_date) {
+    if (due_date == '') {
+        return '20px'
+    }
+    days_left = get_days_left(due_date);
+    if (days_left < 0) {
+        return '30px'
+    }
+    else if (days_left < 8) {
+        return 30 - days_left + 'px'
+    }
+    else if (days_left < 10) {
+        return '23px'
+    }
+    return '20px'
 }

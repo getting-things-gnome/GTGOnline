@@ -65,12 +65,53 @@
     </div>
 {% endblock sidebar %}
 
+{% block new_task_modal %}
+<div id="new_task_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 500px; margin-left: -250px">
+	<div class="modal-header" id="new_task_name_field" style="padding: 10px">
+		<input type="text" placeholder="Task Name" style="margin: 0px" class="input-task-name" data-bind="value: task_name_field, valueUpdate: 'afterkeydown'">
+		<p>You have typed: <span data-bind="text: task_name_field"></span></p>
+	</div>
+	<div class="modal-body" style="padding: 10px;">
+		<textarea rows="10" placeholder="Task Description" class="input-task-name" style="margin: 0px; margin-bottom: 10px;"></textarea>
+		<input size="16" type="text" readonly class="new_task_datepicker pull-left" id="start_date_field">
+		<input size="16" type="text" readonly class="new_task_datepicker pull-right" id="due_date_field">
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Hide</button>
+		<button class="btn btn-primary">Create</button>
+	</div>
+</div>
+{% endblock new_task_modal %}
+
 {% block external_js %}
 {{ block.super }}
 
 <script type="text/javascript" src="{{ STATIC_URL }}js/data/tags.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/data/sidebar.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/data/sammy.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/datetimepicker/bootstrap-datetimepicker.js"></script>
+
+<script type="text/javascript">
+	$("#start_date_field").datetimepicker({
+		format: 'dd/mm/yy',
+		minView: 2,
+		maxView: 3,
+		todayHighlight: true,
+		todayBtn: true,
+		autoclose: true,
+	});
+	$("#due_date_field").datetimepicker({
+		format: 'dd/mm/yy',
+		minView: 2,
+		maxView: 3,
+		todayHighlight: true,
+		todayBtn: true,
+		autoclose: true,
+		//startDate: get_date_object($('#start_date_field').val()),
+	});
+	//alert($('#start_date_field').val());
+</script>
+
 <script type="text/javascript">
 	$(document).ready(function(){
 		//get_tags_by_user();

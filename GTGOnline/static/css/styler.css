@@ -1009,6 +1009,10 @@ div.task-row {
   min-width: 150px;
 }
 
+.min-width160 {
+  min-width: 160px;
+}
+
 .min-width200 {
   min-width: 200px;
 }
@@ -1031,6 +1035,10 @@ div.task-row {
 
 .min-width900 {
   min-width: 900px;
+}
+
+.min-width950 {
+  min-width: 950px;
 }
 
 .min-width1000 {

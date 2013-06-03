@@ -3,7 +3,8 @@ import sys
 
 from Task_backend.models import Task
 from User_backend.user import get_user_object
-from Tag_backend.tag import find_tags, create_tag_objects, get_tags_by_task
+from Tag_backend.tag import find_tags, create_tag_objects, get_tags_by_task, \
+                            delete_orphan_tags
 from Tools.constants import *
 from Tools.dates import get_datetime_object, get_datetime_str, \
                         get_current_datetime_object, compare_dates
@@ -29,8 +30,8 @@ def add_task(user, name, description, start_date, due_date, tag_list = None, \
     Updating name, description etc. has got it's own functions.
     To create the task as a subtask, give the parent's id in parent_id
     '''
-    start_date = get_datetime_object(user, start_date)
-    due_date = get_datetime_object(user, due_date)
+    start_date = get_datetime_object(start_date)
+    due_date = get_datetime_object(due_date)
     
     if start_date != None and due_date != None:
         if start_date > due_date:
@@ -127,6 +128,7 @@ def update_tag_set(task_object, latest_tags):
     to_be_deleted = list(set(task_object.tags.all()) - set(latest_tags))
     to_be_added = list(set(latest_tags) - set(task_object.tags.all()))
     task_object.tags.remove(*to_be_deleted)
+    delete_orphan_tags(to_be_deleted)
     task_object.tags.add(*to_be_added)
 
 def get_task_name(user, task_id):
@@ -267,12 +269,14 @@ def update_parent_due_date(task, new_date_object):
         update_parent_due_date(parent, parent.due_date)
 
 def delete_task(task):
+    tags_list = task.tags.all()
     task.delete()
+    delete_orphan_tags(tags_list)
 
 def delete_task_tree(task):
     for index, subtask in enumerate(task.subtasks.all()):
         if subtask.subtasks.exists():
             delete_task_tree(subtask)
-            subtask.delete()
-        else:
-            subtask.delete()
+    tags_list = subtask.tags.all()
+    subtask.delete()
+    delete_orphan_tags(tags_list)

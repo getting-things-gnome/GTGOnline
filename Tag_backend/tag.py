@@ -74,35 +74,49 @@ def get_tag_object(user, tag_name = None, tag_id = None):
             return None
 
 def update_tag_name(user, tag_id, new_name):
-    user = get_user_object(user)
-    tag = Tag.objects.get(user = user, id = tag_id)
+    tag = get_tag_object(user, tag_id = tag_id)
+    if tag == None:
+        return
     tag.name = new_name
     tag.save()
     
 def update_tag_color(user, tag_id, new_color):
-    user = get_user_object(user)
-    tag = Tag.objects.get(user = user, id = tag_id)
+    tag = get_tag_object(user, tag_id = tag_id)
+    if tag == None:
+        return
     tag.color = new_color
     tag.save()
     
 def update_tag_icon(user, tag_id, new_icon):
-    user = get_user_object(user)
-    tag = Tag.objects.get(user = user, id = tag_id)
+    tag = get_tag_object(user, tag_id = tag_id)
+    if tag == None:
+        return
     tag.icon = new_icon
     tag.save()
     
 # Instead of using this function, use Task.tags.add(tag) in task.py
 def update_task_set(user, task, tag):
     tag.task_set.add(task)
-    
-def delete_tag(user, tag_name = None, tag_id = None):
-    tag = get_tag_object(user, tag_name, tag_id)
-    tag.delete()
-        
+
 def get_task_count(user, tag_name = None, tag_id = None):
     tag = get_tag_object(user, tag_name, tag_id)
     return tag.task_set.count()
 
 def delete_tag_modify_tasks(user, tag_id):
-    # write this method
+    tag = get_tag_object(user, tag_id = tag_id)
+    if tag == None:
+        return
+    tag_name = tag.name
+    tasks_of_tag = tag.task_set.all()
+    for task in tasks_of_tag:
+        task.name = task.name.replace('@', '')
+        task.description = task.description.replace('@', '')
+        task.tags.remove(tag)
+        task.save()
+    tag.delete()
     return
+
+def delete_orphan_tags(tags_list):
+    for index, tag in enumerate(tags_list):
+        if not tag.task_set.exists():
+            tag.delete()

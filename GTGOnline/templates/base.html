@@ -16,6 +16,7 @@
 		<link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel="stylesheet">
 		<link href="{{ STATIC_URL }}css/styler.css" rel="stylesheet">
 		<link href="{{ STATIC_URL }}css/font-awesome.min.css" rel="stylesheet">
+		<link href="{{ STATIC_URL }}css/datetimepicker.css" rel="stylesheet">
 		<link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500' rel='stylesheet' type='text/css'>
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
 
@@ -100,6 +101,9 @@
 		</div>
 	</div>
 	{% endblock startup_modal %}
+	
+	{% block new_task_modal %}
+	{% endblock new_task_modal %}
 	
 	{% block external_js %}
 	<!-- Le javascript

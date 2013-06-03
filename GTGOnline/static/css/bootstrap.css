@@ -1285,6 +1285,11 @@ textarea::-webkit-input-placeholder {
   width: 530px;
 }
 
+.input-task-name {
+  width: 466px;
+  max-width: 466px;
+}
+
 input[class*="span"],
 select[class*="span"],
 textarea[class*="span"],
