@@ -68,7 +68,7 @@
 {% block new_task_modal %}
 <div id="new_task_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 500px; margin-left: -250px">
 	<div class="modal-header" id="new_task_name_field" style="padding: 10px">
-		<input type="text" placeholder="Task Name" style="margin: 0px;" class="input-task-name" data-bind="value: task_name_field, valueUpdate: 'afterkeydown'" />
+		<input type="text" id="task_name_input" placeholder="Task Name" style="margin: 0px;" class="input-task-name" data-bind="value: task_name_field, valueUpdate: 'afterkeydown'" />
 		<div data-bind="foreach: all_tags" style="margin-top: 10px">
 			<span class="label" style="margin-right: 1px;" data-bind="text: $data"></span>
 		</div>
@@ -124,7 +124,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		//get_tags_by_user();
-		ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("wrapper"));
+		ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("html_page"));
 		//get_todays_date();
 		//ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("task_rows_container"));
 	});

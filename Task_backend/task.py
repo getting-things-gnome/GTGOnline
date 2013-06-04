@@ -32,13 +32,14 @@ def add_task(user, name, description, start_date, due_date, tag_list = None, \
     '''
     start_date = get_datetime_object(start_date)
     due_date = get_datetime_object(due_date)
+    print >>sys.stderr, "due_date start = " + str(due_date)
     
     if start_date != None and due_date != None:
         if start_date > due_date:
             start_date = due_date
     
     new_task = Task(user = user, name = name, description = description, \
-                    start_date = start_date)
+                    start_date = start_date, due_date = due_date)
     
     # Try to remove this function and use tag_list obtained from client instead
     tag_list = find_tags(name + " " + description)
@@ -205,7 +206,7 @@ def update_tag_set(task_object, latest_tags):
     to_be_deleted = list(set(task_object.tags.all()) - set(latest_tags))
     to_be_added = list(set(latest_tags) - set(task_object.tags.all()))
     task_object.tags.remove(*to_be_deleted)
-    delete_orphan_tags(to_be_deleted)
+    delete_orphan_tags(task_object, to_be_deleted)
     task_object.tags.add(*to_be_added)
 
 def get_task_name(user, task_id):
@@ -304,7 +305,11 @@ def change_task_date(user, task, new_date_object, date_type):
         task.start_date = new_date_object
     elif date_type == IS_DUE_DATE:
         task.due_date = new_date_object
-        
+        if task.task_set.exists():
+            parent = task.task_set.all()[0]
+            if new_date_object == None and parent.due_date != None:
+                task.due_date = parent.due_date
+            
     compare_result = compare_dates(task.start_date, task.due_date)
     if compare_result[0] and compare_result[1]:
         task.start_date = task.due_date
@@ -341,18 +346,20 @@ def update_parent_due_date(task, new_date_object):
         parent.save()
         update_parent_due_date(parent, parent.due_date)
 
-def delete_task(task):
+def delete_single_task(task):
     tags_list = task.tags.all()
+    delete_orphan_tags(task, tags_list)
     task.delete()
-    delete_orphan_tags(tags_list)
+    print >>sys.stderr, "after delete, tags_list = " + str(tags_list)
 
 def delete_task_tree(task):
     for index, subtask in enumerate(task.subtasks.all()):
         if subtask.subtasks.exists():
             delete_task_tree(subtask)
         tags_list = subtask.tags.all()
+        delete_orphan_tags(subtask, tags_list)
         subtask.delete()
-        delete_orphan_tags(tags_list)
+        print >>sys.stderr, "after delete, tags_list = " + str(tags_list)
 
 def get_tasks_by_tag(user, tag_id, task_status):
     tag = get_tag_object(user, tag_id = tag_id)

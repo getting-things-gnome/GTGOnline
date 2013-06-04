@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block pagetitle %}
-    3 Active Tasks
+    <title data-bind="text: $root.chosenFolderId() + ' Tasks'"></title>
 {% endblock pagetitle %}
 
 {% block topbar %}
@@ -38,7 +38,7 @@
                         <li><a tabindex="-1" href="#">Manage Account</a></li>
                         <li><a tabindex="-1" href="#">Feedback</a></li>
 						<li class="divider"></li>
-                        <li><a tabindex="-1" href="{% url 'user:logout' %}">Logout</a></li>
+                        <li><a tabindex="-1" onclick="window.location = '{% url "user:logout" %}'" href='#'>Logout</a></li>
                     </ul>
             	</a>
             </div>
@@ -57,6 +57,10 @@
 		}
 		document.getElementById('topbar_first_name').innerHTML = first_name;
 	});
+	
+	function goToExternaLink(url) {
+		window.location = url;
+	}
 </script>
 
 {% endblock external_js %}

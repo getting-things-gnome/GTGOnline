@@ -28,7 +28,7 @@ function TaskFoldersViewModel() {
     self.all_tags = ko.observableArray();
     
     self.tasks_list.subscribe(function (newValue) {
-        self.tasks_list_length(self.tasks_list().length);
+        self.tasks_list_length(newValue.length);
     }, self);
     
     self.task_name_field.subscribe(function (newValue) {
@@ -58,7 +58,7 @@ function TaskFoldersViewModel() {
     $.get('/tags/all', self.tags_list);
     
     // Client-side routes
-    Sammy(function() {
+    Sammy('#wrapper', function() {
         this.get('#:folder', function() {
             self.chosenFolderId(this.params.folder);
             $.get('/tasks/get', { folder: this.params.folder }, function(data) {
@@ -82,6 +82,10 @@ function TaskFoldersViewModel() {
                 });*/
             });
         });
+        
+        this.get('/user/logout', function() {
+    window.location = '/user/logout';
+});
         
         this.get('', function() {
             this.app.runRoute('get', '#Active')
@@ -119,6 +123,10 @@ function TaskFoldersViewModel() {
             self.tasks_list(data);
             $.get('/tags/all', self.tags_list);
             setParentId(-1);
+            self.task_name_field('');
+            self.task_description_field('');
+            self.task_start_date_field('');
+            self.task_due_date_field('');
             $('strong.task_name').popover({
                     placement: 'top',
                     trigger: 'hover',

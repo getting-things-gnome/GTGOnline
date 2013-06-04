@@ -1,5 +1,6 @@
 import re
 import json
+import sys
 
 from Tag_backend.models import Tag
 from User_backend.user import get_user_object
@@ -118,7 +119,9 @@ def delete_tag_modify_tasks(user, tag_id):
     tag.delete()
     return
 
-def delete_orphan_tags(tags_list):
+def delete_orphan_tags(task, tags_list):
     for index, tag in enumerate(tags_list):
-        if not tag.task_set.exists():
+        print >>sys.stderr, "for tag = " + tag.name + " task_set = " + str(tag.task_set.all())
+        all_tasks = tag.task_set.all()
+        if all_tasks.count() == 0 or ( all_tasks.count() == 1 and task in all_tasks ):
             tag.delete()

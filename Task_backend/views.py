@@ -12,7 +12,8 @@ from Task_backend.models import Task
 from Task_backend.task import get_task_object, get_task_tree, \
                               change_task_status, change_task_tree_status, \
                               get_oldest_parent, delete_task_tree, add_task, \
-                              get_tasks_from_due_date, update_task_details
+                              get_tasks_from_due_date, update_task_details, \
+                              delete_single_task
 from Tag_backend.tag import find_tags
 from Tools.constants import *
 from Tools.dates import get_datetime_object
@@ -115,14 +116,14 @@ def delete_task(request):
             task = get_task_object(request.user, task_id)
             if task != None:
                 delete_task_tree(task)
-                task.delete()
+                delete_single_task(task)
     else:
         task_id = request.GET.get('task_id', -1)
         if task_id != '-1':
             task = get_task_object(request.user, task_id)
             if task != None:
                 delete_task_tree(task)
-                task.delete()
+                delete_single_task(task)
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)
 
 def new_task(request):
