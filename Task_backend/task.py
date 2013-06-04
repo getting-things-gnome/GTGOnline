@@ -4,7 +4,7 @@ import sys
 from Task_backend.models import Task
 from User_backend.user import get_user_object
 from Tag_backend.tag import find_tags, create_tag_objects, get_tags_by_task, \
-                            delete_orphan_tags
+                            delete_orphan_tags, get_tag_object
 from Tools.constants import *
 from Tools.dates import get_datetime_object, get_datetime_str, \
                         get_current_datetime_object, compare_dates
@@ -38,7 +38,7 @@ def add_task(user, name, description, start_date, due_date, tag_list = None, \
             start_date = due_date
     
     new_task = Task(user = user, name = name, description = description, \
-                    start_date = start_date, due_date = due_date)
+                    start_date = start_date)
     
     # Try to remove this function and use tag_list obtained from client instead
     tag_list = find_tags(name + " " + description)
@@ -51,13 +51,68 @@ def add_task(user, name, description, start_date, due_date, tag_list = None, \
         parent = get_task_object(user, parent_id)
         if parent != None:
             new_task.task_set.add(parent)
-    
+            modify_parents_dates(new_task, parent, due_date)
+            
     return new_task
 
-def get_task_details(user, task, indent, visited_list, folder):
+def modify_parents_dates(task, parent, new_due_date):
+    if new_due_date == None and parent.due_date != None:
+        task.due_date = parent.due_date
+        task.save()
+        return
+    if new_due_date != None and parent.due_date == None:
+        oldest_parent = get_oldest_parent(parent)
+        oldest_parent.due_date = new_due_date
+        oldest_parent.save()
+        set_task_tree_dates(oldest_parent, new_due_date)
+        return
+    if parent.due_date < new_due_date:
+        parent.due_date = new_due_date
+        parent.save()
+        change_parents_due_dates(parent)
+
+def set_task_tree_dates(task, new_due_date):
+    all_subtasks = task.subtasks.all()
+    all_subtasks.update(due_date = new_due_date)
+    for index, subtask in enumerate(all_subtasks):
+        set_task_tree_dates(subtask, new_due_date)
+
+def change_parents_due_dates(task):
+    if not task.task_set.exists():
+        return
+    parent_set = task.task_set.all()
+    parent = parent_set[0]
+    if parent.due_date < task.due_date:
+        parent_set.update(due_date = task.due_date)
+        change_parents_due_dates(parent)
+
+def get_task_details(user, task):
+    '''
+    Takes input an user object and a task object, and returns a dictionary of
+    only the details of that particular task. 'subtasks' key will be set to
+    empty list, and 'indent' key will be set to 0.
+    This dictionary can then be appended to the JSON object.
+    User object is needed to get the datetime in string format based on his
+    preferences
+    '''
+    start_date = get_datetime_str(user, task.start_date)
+    due_date = get_datetime_str(user, task.due_date)
+    closed_date = get_datetime_str(user, task.closed_date)
+    last_modified_date = get_datetime_str(user, task.last_modified_date)
+    details =  {"id": task.id, "name": task.name, \
+                "description": task.description, \
+                "start_date": start_date, "due_date": due_date, \
+                "closed_date": closed_date, \
+                "last_modified_date": last_modified_date, \
+                "status": task.status, "tags": get_tags_by_task(task), \
+                "subtasks": [], "indent": 0}    
+    return details
+
+def get_task_tree_details(user, task, indent, visited_list, folder):
     '''
     Takes input an user object and a task object, and returns a dictionary of all
-    the task details. This dictionary can then be appended to the JSON object.
+    the details for the task AND all of it's subtasks having the same status.
+    This dictionary can then be appended to the JSON object.
     User object is needed to get the datetime in string format based on his
     preferences
     '''
@@ -92,32 +147,54 @@ def get_task_tree(user, task_list, indent, visited_list, folder):
                 or ( task.status != get_parent_status(task) and \
                      folder != -1 )):
             visited_list = set_visited(task, visited_list)
-            task_tree.append(get_task_details(user, task, \
+            task_tree.append(get_task_tree_details(user, task, \
                                               indent, visited_list, folder))
     return task_tree
 
-def update_task_name(user, new_name, task_object, tag_list = None):
-    task_object.name = new_name
-    
-    # Try to remove this function and use tag_list obtained from client instead
-    tag_list = find_tags(new_name + " " + task_object.description)
-    
-    new_tags, existing_tags = create_tag_objects(user, tag_list)
-    update_tag_set(task_object, new_tags + existing_tags)
-    task_object.save()
-    return task_object
-    
-def update_task_description(user, new_description, task_object, \
-                            tag_list = None):
-    task_object.description = new_description
-    
-    # Try to remove this function and use tag_list obtained from client instead
-    tag_list = find_tags(task_object.name + " " + new_description)
+def update_task_details(user, task_id, new_name, new_description, \
+                        new_start_date, new_due_date):
+    task = get_task_object(user, task_id)
+    if task == None:
+        return
+    task.name = new_name
+    task.description = new_description
+    tag_list = find_tags(new_name + " " + new_description)
     
     new_tags, existing_tags = create_tag_objects(user, tag_list)
-    update_tag_set(task_object, new_tags + existing_tags)
-    task_object.save()
-    return task_object
+    update_tag_set(task, new_tags + existing_tags)
+    
+    new_start_date = get_datetime_object(new_start_date)
+    task = change_task_date(user, task, \
+                            new_start_date, IS_START_DATE)
+    new_due_date = get_datetime_object(new_due_date)
+    task = change_task_date(user, task, \
+                            new_due_date, IS_DUE_DATE)
+    if new_due_date != None and task != None:
+            change_task_tree_due_date(task, new_due_date)
+    task.save()
+
+#def update_task_name(user, new_name, task_object, tag_list = None):
+#    task_object.name = new_name
+#    
+#    # Try to remove this function and use tag_list obtained from client instead
+#    tag_list = find_tags(new_name + " " + task_object.description)
+#    
+#    new_tags, existing_tags = create_tag_objects(user, tag_list)
+#    update_tag_set(task_object, new_tags + existing_tags)
+#    task_object.save()
+#    return task_object
+#    
+#def update_task_description(user, new_description, task_object, \
+#                            tag_list = None):
+#    task_object.description = new_description
+#    
+#    # Try to remove this function and use tag_list obtained from client instead
+#    tag_list = find_tags(task_object.name + " " + new_description)
+#    
+#    new_tags, existing_tags = create_tag_objects(user, tag_list)
+#    update_tag_set(task_object, new_tags + existing_tags)
+#    task_object.save()
+#    return task_object
     
 def update_tag_set(task_object, latest_tags):
     '''
@@ -222,17 +299,11 @@ def change_task_tree_status(task, new_status):
     for index, subtask in enumerate(task.subtasks.all()):
         change_task_tree_status(subtask, new_status)
 
-def change_task_date(user, task_id, new_date_object, date_type):
-    task = get_task_object(user, task_id)
-    if task == None:
-        return None
-    
+def change_task_date(user, task, new_date_object, date_type):
     if date_type == IS_START_DATE:
         task.start_date = new_date_object
-        new_start_date = task.start_date
     elif date_type == IS_DUE_DATE:
         task.due_date = new_date_object
-        new_due_date = task.due_date
         
     compare_result = compare_dates(task.start_date, task.due_date)
     if compare_result[0] and compare_result[1]:
@@ -258,9 +329,11 @@ def update_children_due_date(task, new_date_object):
 
 def update_parent_due_date(task, new_date_object):
     for index, parent in enumerate(task.task_set.all()):
-        if parent.due_date != None and \
-            parent.due_date.replace(tzinfo = None) < new_date_object:
-            parent.due_date = new_date_object
+        if parent.due_date != None:
+            if new_date_object == None:
+                task.due_date = parent.due_date
+            elif parent.due_date.replace(tzinfo = None) < new_date_object:
+                parent.due_date = new_date_object
             
             dates_diff = compare_dates(parent.start_date, parent.due_date)
             if dates_diff[0] and dates_diff[1]:
@@ -277,6 +350,23 @@ def delete_task_tree(task):
     for index, subtask in enumerate(task.subtasks.all()):
         if subtask.subtasks.exists():
             delete_task_tree(subtask)
-    tags_list = subtask.tags.all()
-    subtask.delete()
-    delete_orphan_tags(tags_list)
+        tags_list = subtask.tags.all()
+        subtask.delete()
+        delete_orphan_tags(tags_list)
+
+def get_tasks_by_tag(user, tag_id, task_status):
+    tag = get_tag_object(user, tag_id = tag_id)
+    if tag == None:
+        return []
+    task_list = []
+    if task_status == -1:
+        query_set = tag.task_set.all()
+    else:
+        query_set = tag.task_set.filter(status = task_status)
+    for task in query_set:
+        task_list.append(get_task_details(user, task))
+    return task_list
+
+def get_tasks_from_due_date(user, days_left, task_status):
+    date_object = get_date_from_days_left(days_left)
+    # still not finished !

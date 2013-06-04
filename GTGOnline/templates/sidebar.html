@@ -3,7 +3,7 @@
 {% block sidebar %}
     <div style="position: fixed; min-width: 100px;" id="sidebar">
         <div class="section sidebar" style="position: relative">
-			<button class="modern" id="showhide" style="width: 85%" data-bind="click: $root.new_task.bind($data, -1)">
+			<button class="modern" id="showhide" style="width: 85%" data-bind="click: $root.show_new_task_modal">
 				<span>New Task</span>
 			</button>
             <div class="widget">
@@ -27,13 +27,13 @@
                 	<h3>Tags</h3>
                 </div>
                 <div class="widget-content" data-bind="foreach: tags_list" id="sidebar_tags_list" style="padding: 5px 15px">
-					<a href="#" style="text-decoration: none;" class="dropdown-toggle" data-toggle="dropdown">
+					<a href="#" style="text-decoration: none;" data-bind="click: $root.get_tasks_by_tag.bind($data, id)">
 						<span class="label" data-bind="text: name, style: { backgroundColor: color }, attr: { 'id': id }"></span>
 					</a>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+					<!--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 						<li><a href="#"><i class="icon-wrench"></i>&nbsp;Edit</a></li>
 						<li><a href="#"><i class="icon-trash"></i>&nbsp;Delete</a></li>
-					</ul>
+					</ul>-->
                 </div>
             </div>
             <div class="widget bg-color dark-grey">
@@ -69,18 +69,26 @@
 <div id="new_task_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 500px; margin-left: -250px">
 	<div class="modal-header" id="new_task_name_field" style="padding: 10px">
 		<input type="text" placeholder="Task Name" style="margin: 0px;" class="input-task-name" data-bind="value: task_name_field, valueUpdate: 'afterkeydown'" />
-		<div data-bind="foreach: all_tags">
+		<div data-bind="foreach: all_tags" style="margin-top: 10px">
 			<span class="label" style="margin-right: 1px;" data-bind="text: $data"></span>
 		</div>
 	</div>
 	<div class="modal-body" style="padding: 10px;">
-		<textarea rows="10" placeholder="Task Description" class="input-task-name" style="margin: 0px; margin-bottom: 10px;"></textarea>
-		<input size="16" type="text" readonly class="new_task_datepicker pull-left" id="start_date_field">
-		<input size="16" type="text" readonly class="new_task_datepicker pull-right" id="due_date_field">
+		<textarea rows="10" placeholder="Task Description" class="input-task-name" style="margin: 0px; margin-bottom: 10px;" data-bind="value: task_description_field, valueUpdate: 'afterkeydown'"></textarea>
+		
+		<div class="input-append date form_datetime pull-left">
+			<input size="10" type="text" readonly class="task_start_datepicker input-medium" id="start_date_field" data-bind="value: task_start_date_field">
+			<span class="add-on"><i class="icon-remove" data-bind="click: $root.reset_start_date_field"></i></span>
+		</div>
+		
+		<div class="input-append date form_datetime pull-right">
+			<input size="10" type="text" readonly class="task_due_datepicker input-medium" id="due_date_field" data-bind="value: task_due_date_field">
+			<span class="add-on"><i class="icon-remove" data-bind="click: $root.reset_due_date_field"></i></span>
+		</div>
 	</div>
 	<div class="modal-footer">
 		<button class="btn" data-dismiss="modal" aria-hidden="true">Hide</button>
-		<button class="btn btn-primary">Create</button>
+		<button class="btn btn-primary" data-bind="click: $root.new_task">Create</button>
 	</div>
 </div>
 {% endblock new_task_modal %}
@@ -94,7 +102,7 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/datetimepicker/bootstrap-datetimepicker.js"></script>
 
 <script type="text/javascript">
-	$("#start_date_field").datetimepicker({
+	$(".task_start_datepicker").datetimepicker({
 		format: 'dd/mm/yy',
 		minView: 2,
 		maxView: 3,
@@ -102,14 +110,13 @@
 		todayBtn: true,
 		autoclose: true,
 	});
-	$("#due_date_field").datetimepicker({
+	$(".task_due_datepicker").datetimepicker({
 		format: 'dd/mm/yy',
 		minView: 2,
 		maxView: 3,
 		todayHighlight: true,
 		todayBtn: true,
 		autoclose: true,
-		//startDate: get_date_object($('#start_date_field').val()),
 	});
 	//alert($('#start_date_field').val());
 </script>

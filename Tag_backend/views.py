@@ -5,12 +5,30 @@ import json
 from django.http import HttpResponse, HttpResponseRedirect
 
 from Task_backend.models import Task
+from Task_backend.task import get_tasks_by_tag
 from Tag_backend.tag import get_tags_by_user, delete_tag_modify_tasks, \
                             update_tag_color, update_tag_icon
+from Tools.constants import *
 
 def get_all_tags(request):
     tags = get_tags_by_user(request.user)
     return HttpResponse(json.dumps(tags, indent=4), \
+                        mimetype="application/json")
+
+def get_tasks(request):
+    tag_id = request.GET.get('tag_id', -1)
+    folder = request.GET.get('folder', 'Active')
+    
+    folder_dict = {
+        'All': -1,
+        'Active': IS_ACTIVE,
+        'Done': IS_DONE,
+        'Dismissed': IS_DISMISSED
+    }
+    task_status = folder_dict[folder]
+    
+    tasks_by_tag = get_tasks_by_tag(request.user, tag_id, task_status)
+    return HttpResponse(json.dumps(tasks_by_tag, indent=4), \
                         mimetype="application/json")
 
 def add_tag(request):

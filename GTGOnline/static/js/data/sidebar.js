@@ -3,6 +3,9 @@ var NAME_MAX_LENGTH = 30
 var DESCRIPTION_MAX_LENGTH = 40
 var TAG_REGEX = /(?:^|[\s])(@[\w\/\.\-\:]*\w)/g;
 
+// GLOBAL VARIABLES
+var parentId = -1
+
 // Task Folders
 
 function TaskFoldersViewModel() {
@@ -11,16 +14,41 @@ function TaskFoldersViewModel() {
     self.folders = ['All', 'Active', 'Done', 'Dismissed'];
     self.chosenFolderId = ko.observable();
     self.tasks_list = ko.observableArray();
+    self.tasks_list_length = ko.observable('0');
+    
     self.tags_list = ko.observableArray();
     self.modified_tasks = ko.observableArray();
     self.modify_selected = ko.observableArray();
+    
     self.task_name_field = ko.observable('');
+    self.task_description_field = ko.observable('');
+    self.task_start_date_field = ko.observable('');
+    self.task_due_date_field = ko.observable('');
     
     self.all_tags = ko.observableArray();
     
-    self.task_name_field.subscribe(function (newValue) {
-        self.all_tags(newValue.match(TAG_REGEX));
+    self.tasks_list.subscribe(function (newValue) {
+        self.tasks_list_length(self.tasks_list().length);
     }, self);
+    
+    self.task_name_field.subscribe(function (newValue) {
+        self.all_tags((newValue + " " + self.task_description_field()).match(TAG_REGEX));
+    }, self);
+    
+    self.task_description_field.subscribe(function (newValue) {
+        self.all_tags((self.task_name_field() + " " + newValue).match(TAG_REGEX));
+    }, self);
+    
+    self.modify_selected.subscribe(function (newValue) {
+        if (self.modify_selected().length > 0) {
+            $("#dropdown").show();
+            $("#header").hide();
+        }
+        else {
+            $("#dropdown").hide();
+            $("#header").show();
+        }
+    });
     
     // Behaviours
     self.goToFolder = function(folder) {
@@ -36,11 +64,22 @@ function TaskFoldersViewModel() {
             $.get('/tasks/get', { folder: this.params.folder }, function(data) {
                 self.tasks_list(data);
                 $('strong.task_name').popover({
-                    placement: 'top'
+                    placement: 'top',
+                    trigger: 'hover',
                 });
                 $('span.task_description').popover({
-                    placement: 'top'
+                    placement: 'top',
+                    trigger: 'hover',
                 });
+                /*$('.show_dropdown').click(function() {
+                    if( $(this).is(':checked')) {
+                        $("#dropdown").show();
+                        $("#header").hide();
+                    } else {
+                        $("#dropdown").hide();
+                        $("#header").show();
+                    }
+                });*/
             });
         });
         
@@ -49,29 +88,154 @@ function TaskFoldersViewModel() {
         });
     }).run();
     
-    self.new_task = function(id) {
+    self.show_new_task_modal = function() {
         $('#new_task_modal').modal('show');
-        /*$.get('/tasks/new', {
-            
-        }, self.tasks_list);*/
+        setParentId(-1);
+    }
+    
+    self.show_new_subtask_modal = function(parent_id) {
+        self.task_name_field('');
+        self.task_description_field('');
+        self.task_start_date_field('');
+        self.task_due_date_field('');
+        setParentId(parent_id);
+        $('#new_task_modal').modal('show');
+    }
+    
+    self.new_task = function() {
+        if (self.task_name_field() == '') {
+            alert("Task name cannot be empty");
+            return
+        }
+        $('#new_task_modal').modal('hide');
+        $.get('/tasks/new', {
+            name: self.task_name_field(),
+            description: self.task_description_field(),
+            start_date: self.task_start_date_field(),
+            due_date: self.task_due_date_field(),
+            folder: self.chosenFolderId(),
+            parent_id: getParentID(),
+        }, function(data) {
+            self.tasks_list(data);
+            $.get('/tags/all', self.tags_list);
+            setParentId(-1);
+            $('strong.task_name').popover({
+                    placement: 'top',
+                    trigger: 'hover',
+            });
+            $('span.task_description').popover({
+                placement: 'top',
+                trigger: 'hover',
+            });
+        });
     };
+    
+    self.update_task = function() {
+        if (self.task_name_field() == '') {
+            alert("Task name cannot be empty");
+            return
+        }
+        $('#edit_task_modal').modal('hide');
+        $.get('/tasks/update', {
+            name: self.task_name_field(),
+            description: self.task_description_field(),
+            start_date: self.task_start_date_field(),
+            due_date: self.task_due_date_field(),
+            folder: self.chosenFolderId(),
+            task_id: getParentID(),
+        }, function(data) {
+            self.tasks_list(data);
+            $.get('/tags/all', self.tags_list);
+            setParentId(-1);
+            $('strong.task_name').popover({
+                    placement: 'top',
+                    trigger: 'hover',
+            });
+            $('span.task_description').popover({
+                placement: 'top',
+                trigger: 'hover',
+            });
+        });
+    };
+    
+    self.show_edit_task_modal = function(id, name, description, start_date, due_date) {
+        self.task_name_field(name);
+        self.task_description_field(description);
+        self.task_start_date_field(start_date);
+        self.task_due_date_field(due_date);
+        setParentId(id);
+        $('#edit_task_modal').modal('show');
+    }
+    
+    self.reset_start_date_field = function() {
+        self.task_start_date_field('')
+    }
+    
+    self.reset_due_date_field = function() {
+        self.task_due_date_field('')
+    }
     
     self.mark_done = function (new_status) {
         //alert(self.modify_selected());
-        $.get('/tasks/modify/status', { task_id:self.modify_selected(), status: new_status, folder: self.chosenFolderId() }, self.tasks_list);
+        $.get('/tasks/modify/status', { task_id:self.modify_selected(), status: new_status, folder: self.chosenFolderId() }, function(data) {
+            self.tasks_list(data);
+            $('strong.task_name').popover({
+                    placement: 'top',
+                    trigger: 'hover',
+            });
+            $('span.task_description').popover({
+                placement: 'top',
+                trigger: 'hover',
+            });
+        });
         //alert(self.modify_selected());
     }
     
     self.change_status = function (id, new_status, index) {
-        $.get('/tasks/modify/status', { task_id:id, task_id_list: self.modify_selected(), status: new_status, folder: self.chosenFolderId() }, self.tasks_list);
+        $.get('/tasks/modify/status', { task_id:id, task_id_list: self.modify_selected(), status: new_status, folder: self.chosenFolderId() }, function(data) {
+            self.tasks_list(data);
+            $('strong.task_name').popover({
+                placement: 'top',
+                trigger: 'hover',
+            });
+            $('span.task_description').popover({
+                placement: 'top',
+                trigger: 'hover',
+            });
+            self.modify_selected([]);
+        });
         //self.tasks_list.Elements.replace(self.tasks_list()[index], self.modified_tasks);
     };
     
     self.delete_task = function(id, index) {
         //alert(id);
-        $.get('/tasks/delete/', { task_id:id, task_id_list: self.modify_selected(), folder: self.chosenFolderId() }, self.tasks_list);
+        $.get('/tasks/delete/', { task_id:id, task_id_list: self.modify_selected(), folder: self.chosenFolderId() }, function(data) {
+            self.tasks_list(data);
+            $('strong.task_name').popover({
+                    placement: 'top',
+                    trigger: 'hover',
+            });
+            $('span.task_description').popover({
+                placement: 'top',
+                trigger: 'hover',
+            });
+            $.get('/tags/all', self.tags_list);
+        });
     };
     
+    self.get_tasks_by_tag = function(id) {
+        $.get('/tags/get_tasks', { tag_id:id, folder: self.chosenFolderId() }, function(data) {
+            self.tasks_list(data);
+            $('strong.task_name').popover({
+                    placement: 'top',
+                    trigger: 'hover',
+            });
+            $('span.task_description').popover({
+                placement: 'top',
+                trigger: 'hover',
+            });
+        });
+    }
 };
 
 //ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("task_folders"));
@@ -126,12 +290,17 @@ function find_tags(text) {
     alert(text);
 }
 
+function get_formatted_date(date_str) {
+    var chunks = date_str.split('/');
+    var formatted_date = chunks[1] + '-' + chunks[0] + '-' + chunks[2];
+    return formatted_date
+}
+
 function get_date_object(date_str) {
     if (date_str == '') {
         return null
     }
-    var chunks = date_str.split('/');
-    var formatted_date = chunks[1] + '-' + chunks[0] + '-' + chunks[2];
+    var formatted_date = get_formatted_date(date_str)
     var date_object = new Date(formatted_date);
     //alert(date_object);
     return date_object
@@ -153,13 +322,16 @@ function get_days_left(date) {
 function prettify(date) {
     //alert(date);
     if (date == '') {
-        return ''
+        return '&nbsp;'
     }
     var days_left = get_days_left(date);
     if (days_left < -7) {
         return date
     }
-    else if (days_left < 0) {
+    else if (days_left == -1) {
+        return 'Yesterday'
+    }
+    else if (days_left < -1) {
         return -days_left + ' days ago'
     }
     else if (days_left == 0) {
@@ -189,4 +361,12 @@ function get_size_of_date(due_date) {
         return '23px'
     }
     return '20px'
+}
+
+function setParentId(new_parent_id) {
+    parentId = new_parent_id;
+}
+
+function getParentID() {
+    return parentId
 }

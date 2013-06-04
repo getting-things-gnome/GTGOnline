@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from User_backend.user import get_time_format
 from constants import *
 
@@ -56,8 +56,12 @@ def compare_dates(date1, date2):
         return (0, None)
     else:
         if date1 < date2:
-            return (1, -1)
+            return (1, 0)
         elif date1 > date2:
             return (1, 1)
         else:
-            return (1, 0)
+            return (1, None)
+
+def get_date_object_from_days_left(days_left):
+    that_date = datetime.now() + timedelta(days = days_left)
+    return that_date.date()

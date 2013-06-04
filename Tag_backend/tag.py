@@ -4,6 +4,7 @@ import json
 from Tag_backend.models import Tag
 from User_backend.user import get_user_object
 from Tools.constants import *
+from Tools.dates import get_datetime_str
 
 def find_tags(text):
     tags_list = re.findall(TAG_REGEX, text)
@@ -46,7 +47,8 @@ def create_bulk_tags(tag_objects):
     Tag.objects.bulk_create(tag_objects)
     
 def get_tag_details(tag):
-    return {"id": tag.id, "name": tag.name, "color": tag.color, "icon": tag.icon}
+    return {"id": tag.id, "name": tag.name, \
+            "color": tag.color, "icon": tag.icon}
 
 def get_tags_by_task(task):
     tags = []

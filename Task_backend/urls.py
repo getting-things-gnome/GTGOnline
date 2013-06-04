@@ -5,7 +5,9 @@ from Task_backend import views
 
 urlpatterns = patterns('',
     url(r'^serialize/$', views.get_serialized_tasks, name='serialize'),
+    url(r'^get/due_by/$', views.get_tasks_due_by, name='get_tasks_due_by'),
     url(r'^get/$', views.get_tasks, name='get_tasks'),
+    url(r'^update/$', views.update_task, name='update_task'),
     url(r'^modify/status/$', views.modify_status, name='modify_status'),
     url(r'^modify/date/$', views.modify_date, name='modify_date'),
     url(r'^delete/$', views.delete_task, name='delete_task'),
