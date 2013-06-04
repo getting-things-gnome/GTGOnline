@@ -55,4 +55,4 @@ def get_first_name(username):
     return user.get_short_name()
 
 def get_time_format(user):
-    return User_preferences.objects.get(user = user).time_format
+    return 0
