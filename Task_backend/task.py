@@ -158,8 +158,8 @@ def update_task_details(user, task_id, new_name, new_description, \
         return
     task.name = new_name
     task.description = new_description
-    tag_list = find_tags(new_name + " " + new_description)
     
+    tag_list = find_tags(new_name + " " + new_description)
     new_tags, existing_tags = create_tag_objects(user, tag_list)
     update_tag_set(task, new_tags + existing_tags)
     
