@@ -112,7 +112,6 @@ function TaskFoldersViewModel() {
             alert(match.name);
         }*/
         
-        
         $('#new_task_modal').modal('show');
         setParentId(-1);
     }
