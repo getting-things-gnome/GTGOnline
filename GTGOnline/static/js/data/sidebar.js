@@ -83,9 +83,9 @@ function TaskFoldersViewModel() {
             });
         });
         
-        /*this.get('', function() {
+        this.get('', function() {
             this.app.runRoute('get', '#Active')
-        });*/
+        });
     }).run();
     
     self.show_new_task_modal = function() {
