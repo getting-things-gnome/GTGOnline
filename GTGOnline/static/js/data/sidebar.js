@@ -83,16 +83,34 @@ function TaskFoldersViewModel() {
             });
         });
         
-        this.get('/user/logout', function() {
-    window.location = '/user/logout';
-});
-        
         /*this.get('', function() {
             this.app.runRoute('get', '#Active')
         });*/
-    }).run('#Active');
+    }).run();
     
     self.show_new_task_modal = function() {
+        var match = ko.utils.arrayFirst(self.tasks_list(), function(item) {
+           return 28 === item.id;
+        });
+        
+        if (!match) {
+            alert('no match found');
+        }
+        else {
+            var old_id =  match.id
+            self.tasks_list.replace(match, {
+                id: old_id,
+                name: 'hey',
+                description: 'none',
+                indent: 0,
+                subtasks: [],
+                tags: [],
+                start_date: '23/05/13',
+                due_date: '6/06/13',
+            });
+            alert(match.name);
+        }
+        
         $('#new_task_modal').modal('show');
         setParentId(-1);
     }
