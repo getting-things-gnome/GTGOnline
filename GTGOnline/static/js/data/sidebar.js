@@ -33,6 +33,18 @@ function TaskFoldersViewModel() {
     
     self.task_name_field.subscribe(function (newValue) {
         self.all_tags((newValue + " " + self.task_description_field()).match(TAG_REGEX));
+        $.each(self.items(), function (index, item) {
+            var alreadyAdded = false;
+                for (i in filteredArray) {
+                    if (filteredArray[i].name == item.name) {
+                        alreadyAdded = true;
+                    }
+                }
+                if (!alreadyAdded) {
+                    filteredArray.push(item);
+                }
+            });
+        return  filteredArray;
     }, self);
     
     self.task_description_field.subscribe(function (newValue) {
@@ -263,6 +275,23 @@ function TaskFoldersViewModel() {
     
     self.change_status = function (id, new_status, index) {
         $.get('/tasks/modify/status', { task_id:id, task_id_list: self.modify_selected(), status: new_status, folder: self.chosenFolderId() }, function(data) {
+            /*if (self.modify_selected().length == 0) {
+                var match = ko.utils.arrayFirst(self.tasks_list(), function(item) {
+                    //alert(data[0].id);
+                    return data[0].id === item.id;
+                });
+                if (match) {
+                    //alert(match.name);
+                    self.tasks_list.replace(match, data[0]);
+                    //alert(match.name);
+                }
+                else {
+                    alert("no match found");
+                }
+            }
+            else {
+                self.tasks_list(data);
+            }*/
             self.tasks_list(data);
             $('strong.task_name').popover({
                 placement: 'top',

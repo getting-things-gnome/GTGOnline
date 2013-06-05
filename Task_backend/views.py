@@ -82,12 +82,12 @@ def modify_status(request):
             task = change_task_status(request.user, task_id, new_status)
             if task != None:
                 change_task_tree_status(task, new_status)
-    
-    #task_tree = get_task_tree(request.user, get_oldest_parent(task), 0, [])
+                #task_tree = get_task_tree(request.user, \
+                                          #get_oldest_parent(task), \
+                                          #0, [], folder)
+                #return HttpResponse(json.dumps(task_tree, indent=4),
+                                    #mimetype='applicatin/json')
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)
-    #return HttpResponse(json.dumps(task_tree, indent = 4), \
-                        #mimetype='application/json')
-
 
 def modify_date(request):
 #    task_id = request.GET.get('task_id', -1)
