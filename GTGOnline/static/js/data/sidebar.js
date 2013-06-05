@@ -33,7 +33,7 @@ function TaskFoldersViewModel() {
     
     self.task_name_field.subscribe(function (newValue) {
         self.all_tags((newValue + " " + self.task_description_field()).match(TAG_REGEX));
-        $.each(self.items(), function (index, item) {
+        /*$.each(self.items(), function (index, item) {
             var alreadyAdded = false;
                 for (i in filteredArray) {
                     if (filteredArray[i].name == item.name) {
@@ -44,7 +44,7 @@ function TaskFoldersViewModel() {
                     filteredArray.push(item);
                 }
             });
-        return  filteredArray;
+        return  filteredArray;*/
     }, self);
     
     self.task_description_field.subscribe(function (newValue) {
