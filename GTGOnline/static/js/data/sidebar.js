@@ -90,7 +90,7 @@ function TaskFoldersViewModel() {
     }).run();
     
     self.show_new_task_modal = function() {
-        var match = ko.utils.arrayFirst(self.tasks_list(), function(item) {
+        /*var match = ko.utils.arrayFirst(self.tasks_list(), function(item) {
            return 28 === item.id;
         });
         
@@ -110,7 +110,7 @@ function TaskFoldersViewModel() {
                 due_date: '6/06/13',
             });
             alert(match.name);
-        }
+        }*/
         
         $('#new_task_modal').modal('show');
         setParentId(-1);
