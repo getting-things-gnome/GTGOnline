@@ -131,6 +131,20 @@ function TaskFoldersViewModel() {
             return
         }
         $('#new_task_modal').modal('hide');
+        
+        if (getParentID() == -1) {
+            self.tasks_list.splice(0, 0, {
+                id: -9,
+                name: self.task_name_field(),
+                description: self.task_description_field(),
+                start_date: self.task_start_date_field(),
+                due_date: self.task_due_date_field(),
+                subtasks: [],
+                indent: 0,
+                tags: [],
+            });
+        }
+        
         $.get('/tasks/new', {
             name: self.task_name_field(),
             description: self.task_description_field(),
@@ -154,7 +168,9 @@ function TaskFoldersViewModel() {
                     alert("no match found");
                 }
             }
-            self.tasks_list(data);
+            else {
+                self.tasks_list(data);
+            }
             $.get('/tags/all', self.tags_list);
             setParentId(-1);
             self.task_name_field('');
