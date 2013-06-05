@@ -32,23 +32,14 @@ function TaskFoldersViewModel() {
     }, self);
     
     self.task_name_field.subscribe(function (newValue) {
-        self.all_tags((newValue + " " + self.task_description_field()).match(TAG_REGEX));
-        /*$.each(self.items(), function (index, item) {
-            var alreadyAdded = false;
-                for (i in filteredArray) {
-                    if (filteredArray[i].name == item.name) {
-                        alreadyAdded = true;
-                    }
-                }
-                if (!alreadyAdded) {
-                    filteredArray.push(item);
-                }
-            });
-        return  filteredArray;*/
+        self.all_tags(eliminateDuplicates((newValue + " " + self.task_description_field()).match(TAG_REGEX)));
+        //self.all_tags();
+
     }, self);
     
     self.task_description_field.subscribe(function (newValue) {
-        self.all_tags((self.task_name_field() + " " + newValue).match(TAG_REGEX));
+        self.all_tags(eliminateDuplicates((self.task_name_field() + " " + newValue).match(TAG_REGEX)));
+        //self.all_tags((self.task_name_field() + " " + newValue).match(TAG_REGEX));
     }, self);
     
     self.modify_selected.subscribe(function (newValue) {
@@ -468,4 +459,22 @@ function setParentId(new_parent_id) {
 
 function getParentID() {
     return parentId
+}
+
+function eliminateDuplicates(arr) {
+    var i, out=[], obj={};
+    if (arr != null) {
+        var len = arr.length;
+    }
+    else {
+        var len = 0;
+    }
+    
+    for (i=0;i<len;i++) {
+        obj[arr[i]]=0;
+    }
+    for (i in obj) {
+        out.push(i);
+    }
+    return out;
 }

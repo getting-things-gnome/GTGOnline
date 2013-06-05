@@ -49,7 +49,8 @@ def create_bulk_tags(tag_objects):
     
 def get_tag_details(tag):
     return {"id": tag.id, "name": tag.name, \
-            "color": tag.color, "icon": tag.icon}
+            "color": tag.color, "icon": tag.icon, \
+            "count": tag.task_set.count()}
 
 def get_tags_by_task(task):
     tags = []

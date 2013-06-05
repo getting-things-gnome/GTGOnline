@@ -128,7 +128,7 @@ def get_task_tree_details(user, task, indent, visited_list, folder):
     if folder == -1:
         subtasks_list = task.subtasks.all()
     else:
-        subtasks_list = task.subtasks.filter(status=task.status)
+        subtasks_list = task.subtasks.filter(status = task.status)
     details =  {"id": task.id, "name": task.name, \
                 "description": task.description, \
                 "start_date": start_date, "due_date": due_date, \

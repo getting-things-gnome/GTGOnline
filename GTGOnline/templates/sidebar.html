@@ -28,7 +28,7 @@
                 </div>
                 <div class="widget-content" data-bind="foreach: tags_list" id="sidebar_tags_list" style="padding: 5px 15px">
 					<a href="#" style="text-decoration: none;" data-bind="click: $root.get_tasks_by_tag.bind($data, id)">
-						<span class="label" data-bind="text: name, style: { backgroundColor: color }, attr: { 'id': id }"></span>
+						<span class="label" data-bind="text: name + '|' + count, style: { backgroundColor: color }, attr: { 'id': id }"></span>
 					</a>
 					<!--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 						<li><a href="#"><i class="icon-wrench"></i>&nbsp;Edit</a></li>
