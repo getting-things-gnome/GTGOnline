@@ -58,7 +58,7 @@ function TaskFoldersViewModel() {
     $.get('/tags/all', self.tags_list);
     
     // Client-side routes
-    Sammy('#wrapper', function() {
+    Sammy(function() {
         this.get('#:folder', function() {
             self.chosenFolderId(this.params.folder);
             $.get('/tasks/get', { folder: this.params.folder }, function(data) {
@@ -87,10 +87,10 @@ function TaskFoldersViewModel() {
     window.location = '/user/logout';
 });
         
-        this.get('', function() {
+        /*this.get('', function() {
             this.app.runRoute('get', '#Active')
-        });
-    }).run();
+        });*/
+    }).run('#Active');
     
     self.show_new_task_modal = function() {
         $('#new_task_modal').modal('show');
