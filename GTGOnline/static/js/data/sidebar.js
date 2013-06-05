@@ -171,7 +171,19 @@ function TaskFoldersViewModel() {
             folder: self.chosenFolderId(),
             task_id: getParentID(),
         }, function(data) {
-            self.tasks_list(data);
+            //self.tasks_list(data);
+            var match = ko.utils.arrayFirst(self.tasks_list(), function(item) {
+                //alert(data[0].id);
+                return data[0].id === item.id;
+            });
+            if (match) {
+                //alert(match.name);
+                self.tasks_list.replace(match, data[0]);
+                //alert(match.name);
+            }
+            else {
+                alert("no match found");
+            }
             $.get('/tags/all', self.tags_list);
             setParentId(-1);
             $('strong.task_name').popover({

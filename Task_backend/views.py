@@ -149,10 +149,12 @@ def update_task(request):
     if task_id < 0:
         return HttpResponseRedirect('/tasks/get/?folder=' + folder)
     
-    update_task_details(request.user, task_id, name, description, \
-                        start_date, due_date)
-    return HttpResponseRedirect('/tasks/get/?folder=' + folder)
-    
+    task_tree = update_task_details(request.user, task_id, name, description, \
+                        start_date, due_date, folder)
+    #return HttpResponseRedirect('/tasks/get/?folder=' + folder)
+    print >>sys.stderr, task_tree
+    return HttpResponse(json.dumps(task_tree, indent = 4), \
+                        mimetype='application/json')
 
 def get_tasks_due_by(request):
     folder = request.GET.get('folder', 'Active')

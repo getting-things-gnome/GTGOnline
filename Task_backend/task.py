@@ -60,17 +60,18 @@ def modify_parents_dates(task, parent, new_due_date):
     if new_due_date == None and parent.due_date != None:
         task.due_date = parent.due_date
         task.save()
-        return
+        return None
     if new_due_date != None and parent.due_date == None:
         oldest_parent = get_oldest_parent(parent)
         oldest_parent.due_date = new_due_date
         oldest_parent.save()
         set_task_tree_dates(oldest_parent, new_due_date)
-        return
+        return oldest_parent
     if parent.due_date < new_due_date:
         parent.due_date = new_due_date
         parent.save()
         change_parents_due_dates(parent)
+        return None
 
 def set_task_tree_dates(task, new_due_date):
     all_subtasks = task.subtasks.all()
@@ -153,7 +154,7 @@ def get_task_tree(user, task_list, indent, visited_list, folder):
     return task_tree
 
 def update_task_details(user, task_id, new_name, new_description, \
-                        new_start_date, new_due_date):
+                        new_start_date, new_due_date, folder):
     task = get_task_object(user, task_id)
     if task == None:
         return
@@ -165,14 +166,14 @@ def update_task_details(user, task_id, new_name, new_description, \
     update_tag_set(task, new_tags + existing_tags)
     
     new_start_date = get_datetime_object(new_start_date)
-    task = change_task_date(user, task, \
-                            new_start_date, IS_START_DATE)
+    task = change_task_date(user, task, new_start_date, IS_START_DATE)
     new_due_date = get_datetime_object(new_due_date)
-    task = change_task_date(user, task, \
-                            new_due_date, IS_DUE_DATE)
-    if new_due_date != None and task != None:
-            change_task_tree_due_date(task, new_due_date)
+    task = change_task_date(user, task, new_due_date, IS_DUE_DATE)
+    
+    change_task_tree_due_date(task, new_due_date)
     task.save()
+    print >>sys.stderr, str(get_oldest_parent(task))
+    return get_task_tree(user, get_oldest_parent(task), 0, [], folder)
 
 #def update_task_name(user, new_name, task_object, tag_list = None):
 #    task_object.name = new_name
@@ -317,31 +318,39 @@ def change_task_date(user, task, new_date_object, date_type):
     return task
 
 def change_task_tree_due_date(task, new_date_object):
+    print >>sys.stderr, "new_date_object" + str(new_date_object)
     update_children_due_date(task, new_date_object)
     update_parent_due_date(task, new_date_object)
     
 def update_children_due_date(task, new_date_object):
     for index, subtask in enumerate(task.subtasks.all()):
+        print >>sys.stderr, "updating subtask = " + subtask.name
         if subtask.due_date == None or \
             subtask.due_date.replace(tzinfo = None) > new_date_object:
+            print >>sys.stderr, "subtask due date replaced = " + str(new_date_object)
             subtask.due_date = new_date_object
             
             dates_diff = compare_dates(subtask.start_date, subtask.due_date)
             if dates_diff[0] and dates_diff[1]:
+                print >>sys.stderr, "subtask start date replaced = " + str(new_date_object)
                 subtask.start_date = subtask.due_date
         subtask.save()
         update_children_due_date(subtask, subtask.due_date)
 
 def update_parent_due_date(task, new_date_object):
     for index, parent in enumerate(task.task_set.all()):
+        print >>sys.stderr, "updating parent = " + parent.name + " due date = " + str(parent.due_date)
         if parent.due_date != None:
             if new_date_object == None:
+                print >>sys.stderr, "task due date replaced = " + str(new_date_object)
                 task.due_date = parent.due_date
             elif parent.due_date.replace(tzinfo = None) < new_date_object:
+                print >>sys.stderr, "parent due date replaced = " + str(new_date_object)
                 parent.due_date = new_date_object
             
             dates_diff = compare_dates(parent.start_date, parent.due_date)
             if dates_diff[0] and dates_diff[1]:
+                print >>sys.stderr, "parent start date replaced = " + str(new_date_object)
                 parent.start_date = parent.due_date
         parent.save()
         update_parent_due_date(parent, parent.due_date)
