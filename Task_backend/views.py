@@ -41,12 +41,12 @@ def get_tasks(request):
     
     if folder_state == -1:
         task_tree = get_task_tree(request.user, \
-                                  Task.objects.filter(user = request.user), \
+                                  Task.objects.filter(user = request.user).order_by('due_date'), \
                                   0, [], folder_state)
     else:
         task_tree = get_task_tree(request.user, \
                                   Task.objects.filter(user = request.user, \
-                                                      status = folder_state), \
+                                                      status = folder_state).order_by('due_date'), \
                                   0, [], folder_state)
     #template = loader.get_template('task_row.html')
     #context = RequestContext(request, {'task_tree':json.dumps(task_tree)})
@@ -134,8 +134,12 @@ def new_task(request):
     due_date = request.GET.get('due_date', '')
     parent_id = request.GET.get('parent_id', -1)
     
-    task = add_task(request.user, name, description, start_date, due_date, \
-                    parent_id = parent_id)
+    task, parent = add_task(request.user, name, description, \
+                            start_date, due_date, folder, \
+                            parent_id = parent_id)
+    if parent != None:
+        return HttpResponse(json.dumps(task, indent=4), \
+                            mimetype='application/json')
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)
 
 def update_task(request):

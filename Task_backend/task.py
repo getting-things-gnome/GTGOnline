@@ -23,8 +23,8 @@ def get_tasks(username):
     else:
         return []
 
-def add_task(user, name, description, start_date, due_date, tag_list = None, \
-             parent_id = -1):
+def add_task(user, name, description, start_date, due_date, folder, \
+             tag_list = None, parent_id = -1):
     '''
     Use this to add a new task. New task means completely new.
     Updating name, description etc. has got it's own functions.
@@ -53,8 +53,10 @@ def add_task(user, name, description, start_date, due_date, tag_list = None, \
         if parent != None:
             new_task.task_set.add(parent)
             modify_parents_dates(new_task, parent, due_date)
+            new_task = get_task_tree(user, get_oldest_parent(parent), \
+                                      0, [], folder)
             
-    return new_task
+    return new_task, parent
 
 def modify_parents_dates(task, parent, new_due_date):
     if new_due_date == None and parent.due_date != None:
