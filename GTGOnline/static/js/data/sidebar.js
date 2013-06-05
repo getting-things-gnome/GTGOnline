@@ -83,7 +83,6 @@ function TaskFoldersViewModel() {
             });
         });
         
-        
         this.get('', function() {
             this.app.runRoute('get', '#Active')
         });
