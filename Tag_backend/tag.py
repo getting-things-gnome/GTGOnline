@@ -8,7 +8,7 @@ from Tools.constants import *
 from Tools.dates import get_datetime_str
 
 def find_tags(text):
-    print >>sys.stderr, text + str(type(text))
+    #print >>sys.stderr, text + str(type(text))
     tags_list = re.findall(TAG_REGEX, text, re.UNICODE)
     tags_list = [x[1:].lower() for x in tags_list]
     return list(set(tags_list))
