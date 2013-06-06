@@ -1,6 +1,6 @@
 // CONSTANTS
-var NAME_MAX_LENGTH = 30
-var DESCRIPTION_MAX_LENGTH = 40
+var NAME_MAX_LENGTH = 30;
+var DESCRIPTION_MAX_LENGTH = 40;
 var TAG_REGEX = /(?:^|[\s])(@[\w\/\.\-\:]*\w)/g;
 
 // GLOBAL VARIABLES

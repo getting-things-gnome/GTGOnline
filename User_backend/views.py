@@ -33,17 +33,17 @@ def after_login(request):
     return HttpResponse(template.render(context))
 
 def check(request):
-    print >>sys.stderr, "User = " + str(request.user)
+    #print >>sys.stderr, "User = " + str(request.user)
     return HttpResponseRedirect('/user/landing/')
 
 def register(request):
     if request.method == 'POST':
-        print >>sys.stderr, "register user request has been identified as POST"
-        print >>sys.stderr, "Username = " + request.POST['username']
-        print >>sys.stderr, "Email = " + request.POST['email']
-        print >>sys.stderr, "First Name = " + request.POST['first_name']
-        print >>sys.stderr, "Last Name = " + request.POST['last_name']
-        print >>sys.stderr, "Password = " + request.POST['password']
+        #print >>sys.stderr, "register user request has been identified as POST"
+        #print >>sys.stderr, "Username = " + request.POST['username']
+        #print >>sys.stderr, "Email = " + request.POST['email']
+        #print >>sys.stderr, "First Name = " + request.POST['first_name']
+        #print >>sys.stderr, "Last Name = " + request.POST['last_name']
+        #print >>sys.stderr, "Password = " + request.POST['password']
         register_user(request.POST['username'], request.POST['email'], \
                       request.POST['password'], request.POST['first_name'], \
                       request.POST['last_name']) 
