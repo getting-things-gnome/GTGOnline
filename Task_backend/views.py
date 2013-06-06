@@ -12,7 +12,7 @@ from Task_backend.models import Task
 from Task_backend.task import get_task_object, get_task_tree, \
                               change_task_status, change_task_tree_status, \
                               get_oldest_parent, delete_task_tree, add_task, \
-                              get_tasks_from_due_date, update_task_details, \
+                              get_tasks_by_due_date, update_task_details, \
                               delete_single_task
 from Tag_backend.tag import find_tags
 from Tools.constants import *
@@ -35,9 +35,6 @@ def get_tasks(request):
     
     folder_get = request.GET.get('folder', 'Active')
     folder_state = folder_dict[folder_get]
-    if request.GET.has_key('due'):
-        date_filter = True
-        due_date = request.GET['due']
     
     if folder_state == -1:
         task_tree = get_task_tree(request.user, \
@@ -162,7 +159,7 @@ def update_task(request):
 
 def get_tasks_due_by(request):
     folder = request.GET.get('folder', 'Active')
-    days_left = request.GET.get('days_left', 0)
+    days_left = int(request.GET.get('days_left', 0))
     
     folder_dict = {
         'All': -1,
@@ -173,6 +170,6 @@ def get_tasks_due_by(request):
     task_status = folder_dict[folder]
     
     due_by = request.GET.get('due_by', '0/0/0')
-    tasks_list = get_tasks_from_due_date(request.user, days_left, task_status)
+    tasks_list = get_tasks_by_due_date(request.user, days_left, task_status)
     return HttpResponse(json.dumps(tasks_list, indent=4), \
                         mimetype="application/json")

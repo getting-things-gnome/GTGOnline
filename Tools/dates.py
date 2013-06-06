@@ -62,6 +62,6 @@ def compare_dates(date1, date2):
         else:
             return (1, None)
 
-def get_date_object_from_days_left(days_left):
+def get_datetime_from_days_left(days_left):
     that_date = datetime.now() + timedelta(days = days_left)
-    return that_date.date()
+    return datetime(that_date.year, that_date.month, that_date.day)

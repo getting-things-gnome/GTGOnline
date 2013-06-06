@@ -16,6 +16,7 @@ function TaskFoldersViewModel() {
     self.chosenFolderId = ko.observable();
     self.tasks_list = ko.observableArray();
     self.tasks_list_length = ko.observable('0');
+    self.todays_tasks = ko.observableArray();
     
     self.tags_list = ko.observableArray();
     self.modified_tasks = ko.observableArray();
@@ -58,6 +59,16 @@ function TaskFoldersViewModel() {
     self.goToFolder = function(folder) {
         location.hash = folder;
     };
+    
+    $.get('/tasks/get/due_by', { days_left: 0, folder: self.chosenFolderId() }, function(data) {
+                self.todays_tasks(data);
+                
+                if (self.todays_tasks().length > 0) {
+                    $('#startup_modal').modal('show');
+                }
+                
+                show_popover();
+            });
     
     $.get('/tags/all', self.tags_list);
     
@@ -458,4 +469,11 @@ function show_popover() {
         trigger: 'hover',
         html: true,
     });
+}
+
+function startup_modal_header_string(length) {
+    if (length > 1) {
+        return length + ' tasks'
+    }
+    return length + ' task'
 }

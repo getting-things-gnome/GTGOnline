@@ -7,7 +7,8 @@ from Tag_backend.tag import find_tags, create_tag_objects, get_tags_by_task, \
                             delete_orphan_tags, get_tag_object
 from Tools.constants import *
 from Tools.dates import get_datetime_object, get_datetime_str, \
-                        get_current_datetime_object, compare_dates
+                        get_current_datetime_object, compare_dates, \
+                        get_datetime_from_days_left
 
 
 def get_task_object(user, task_id):
@@ -17,7 +18,6 @@ def get_task_object(user, task_id):
         return None
     
 def get_tasks(username):
-    user = get_user_object(username)
     if user != None:
         return Task.objects.filter(user = user)
     else:
@@ -385,6 +385,11 @@ def get_tasks_by_tag(user, tag_id, task_status):
         task_list.append(get_task_details(user, task))
     return task_list
 
-def get_tasks_from_due_date(user, days_left, task_status):
-    date_object = get_date_from_days_left(days_left)
-    # still not finished !
+def get_tasks_by_due_date(user, days_left, task_status):
+    task_list = []
+    datetime_object = get_datetime_from_days_left(days_left)
+    tasks = Task.objects.filter(user = user, due_date = datetime_object, \
+                                status = task_status)
+    for task in tasks:
+        task_list.append(get_task_details(user, task))
+    return task_list
