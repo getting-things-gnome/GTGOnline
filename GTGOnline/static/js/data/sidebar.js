@@ -216,6 +216,7 @@ function TaskFoldersViewModel() {
             else {
                 alert("no match found");
             }
+            $.get('/tasks/get', { folder: self.chosenFolderId }, self.tasks_list)
             $.get('/tags/all', self.tags_list);
             setParentId(-1);
             show_popover();
