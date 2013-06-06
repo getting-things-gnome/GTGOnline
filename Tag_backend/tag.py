@@ -123,7 +123,7 @@ def delete_tag_modify_tasks(user, tag_id):
 
 def delete_orphan_tags(task, tags_list):
     for index, tag in enumerate(tags_list):
-        print >>sys.stderr, "for tag = " + tag.name + " task_set = " + str(tag.task_set.all())
+        #print >>sys.stderr, "for tag = " + tag.name + " task_set = " + str(tag.task_set.all())
         all_tasks = tag.task_set.all()
         if all_tasks.count() == 0 or ( all_tasks.count() == 1 and task in all_tasks ):
             tag.delete()
