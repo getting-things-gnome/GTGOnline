@@ -31,7 +31,7 @@ def login_user(request):
         return USER_INVALID
 
 def logout_user(request):
-    print >>sys.stderr, "logout username = " + request.user.username
+    #print >>sys.stderr, "logout username = " + request.user.username
     logout(request)
 
 def register_user(username, email, password, first_name, last_name):
