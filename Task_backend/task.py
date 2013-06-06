@@ -320,8 +320,8 @@ def change_task_date(user, task, new_date_object, date_type):
     return task
 
 def change_task_tree_due_date(task, new_date_object):
-    #print >>sys.stderr, "new_date_object" + str(new_date_object)
-    update_children_due_date(task, new_date_object)
+    if new_date_object != None:
+        update_children_due_date(task, new_date_object)
     update_parent_due_date(task, new_date_object)
     
 def update_children_due_date(task, new_date_object):
