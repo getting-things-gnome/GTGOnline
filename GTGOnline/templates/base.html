@@ -44,67 +44,66 @@
 	    <div class="section main" id="main_div">
 				{% block main %}{% endblock main %}
 				{% block edit_task_modal %}{% endblock edit_task_modal %}
-	    </div>
+				{% block startup_modal %}
+				<div id="startup_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-header pull-center">
+						<!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>-->
+						<span class="font-normal">You have<br></span>
+						<span class="font-header">12 tasks<br></span>
+						<span class="font-normal">due today<br></span>
+					</div>
+					<div class="modal-body">
+					{% block startup_task_accordion %}
+						<div class="accordion" id="accordion" >
+							<div class="accordion-group">
+								<div class="accordion-heading">
+									<a class="accordion-toggle" data-toggle="collapse" data-target="#collapseOne" href="#">
+										Bring a copy of 'Skyfall'
+									</a>
+								</div>
+								<div id="collapseOne" class=" collapse in">
+									<div class="accordion-inner">
+										Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+									</div>
+								</div>
+							</div>
+							<div class="accordion-group">
+								<div class="accordion-heading">
+									<a class="accordion-toggle" data-toggle="collapse" data-target="#collapseTwo" href="#">
+										Item #2
+									</a>
+								</div>
+								<div id="collapseTwo" class=" collapse">
+									<div class="accordion-inner">
+										Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+									</div>
+								</div>
+							</div>
+							<div class="accordion-group">
+								<div class="accordion-heading">
+									<a class="accordion-toggle" data-toggle="collapse" data-target="#collapseThree" href="#">
+										Item #3
+									</a>
+								</div>
+								<div id="collapseThree" class=" collapse">
+									<div class="accordion-inner">
+										Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endblock startup_task_accordion %}
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary pull-left">Done</button>
+						<button class="btn btn-primary pull-left">Dismiss</button>
+						<button class="btn btn-primary pull-left">Delete</button>
+						<button class="btn pull-right" data-dismiss="modal" aria-hidden="true">Dismiss</button>
+					</div>
+				</div>
+				{% endblock startup_modal %}
+		</div>
 	</div>
-	
-	{% block startup_modal %}
-	<div id="startup_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-header pull-center">
-				<!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>-->
-				<span class="font-normal">You have<br></span>
-				<span class="font-header">12 tasks<br></span>
-				<span class="font-normal">due today<br></span>
-		</div>
-		<div class="modal-body">
-			{% block startup_task_accordion %}
-			<div class="accordion" id="accordion" >
-				<div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse" data-target="#collapseOne" href="#">
-							Bring a copy of 'Skyfall'
-						</a>
-					</div>
-					<div id="collapseOne" class=" collapse in">
-						<div class="accordion-inner">
-							Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse" data-target="#collapseTwo" href="#">
-							Item #2
-						</a>
-					</div>
-					<div id="collapseTwo" class=" collapse">
-						<div class="accordion-inner">
-							Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse" data-target="#collapseThree" href="#">
-							Item #3
-						</a>
-					</div>
-					<div id="collapseThree" class=" collapse">
-						<div class="accordion-inner">
-							Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-						</div>
-					</div>
-				</div>
-			</div>
-			{% endblock startup_task_accordion %}
-		</div>
-		<div class="modal-footer">
-			<button class="btn btn-primary pull-left">Done</button>
-			<button class="btn btn-primary pull-left">Dismiss</button>
-			<button class="btn btn-primary pull-left">Delete</button>
-			<button class="btn pull-right" data-dismiss="modal" aria-hidden="true">Dismiss</button>
-		</div>
-	</div>
-	{% endblock startup_modal %}
 	
 	{% block external_js %}
 	<!-- Le javascript

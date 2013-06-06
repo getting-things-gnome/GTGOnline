@@ -42,12 +42,18 @@
 			</div>
 		</div>
 		
-		<div style="width: 15%;" class="div-inline min-width200 task-tags" id="tags" data-bind="foreach: tags">
-			<a href="#" style="text-decoration:none">
-                <span class="label" data-bind="text: name, style: { backgroundColor: color }"></span>
-            </a>
-		</div>
-		
+		<span data-bind="if: tags_are_less(tags.length)">
+			<div style="width: 15%;" class="div-inline min-width200 task-tags" id="tags" data-bind="foreach: tags">
+				<span class="label" data-bind="text: name, style: { backgroundColor: color }"></span>
+			</div>
+		</span>
+		<span data-bind="ifnot: tags_are_less(tags.length)">
+			<div style="width: 15%;" class="div-inline min-width200 task-tags" id="tags">
+				    <span class="label" data-bind="text: tags[0].name, style: { backgroundColor: tags[0].color }"></span>
+				    <span class="label" data-bind="text: tags[1].name, style: { backgroundColor: tags[1].color }"></span>
+				    <span class="label"><i class="icon-plus remaining_tags_icon" data-bind="attr: { 'data-content': get_remaining_tags(tags) }" rel="popover" data-trigger="hover"></i></span>
+			</div>
+		</span>
 		<div class="div-inline task-description max-width350" style="width: 32%;">
 				<a href="#" style="text-decoration:none; color: #4D4D4D; font-size: 12px;" data-bind="click: $root.show_edit_task_modal.bind($data, id, name, description, start_date, due_date)">
 					<span data-bind="if: description_is_short(description)">

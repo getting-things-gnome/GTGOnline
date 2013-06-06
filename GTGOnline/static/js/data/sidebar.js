@@ -1,6 +1,7 @@
 // CONSTANTS
 var NAME_MAX_LENGTH = 30;
 var DESCRIPTION_MAX_LENGTH = 40;
+var TAGS_MAX_LENGTH = 3;
 var TAG_REGEX = /(?:^|[\s])(@[\w\/\.\-\:]*\w)/g;
 
 // GLOBAL VARIABLES
@@ -66,14 +67,7 @@ function TaskFoldersViewModel() {
             self.chosenFolderId(this.params.folder);
             $.get('/tasks/get', { folder: this.params.folder }, function(data) {
                 self.tasks_list(data);
-                $('strong.task_name').popover({
-                    placement: 'top',
-                    trigger: 'hover',
-                });
-                $('span.task_description').popover({
-                    placement: 'top',
-                    trigger: 'hover',
-                });
+                show_popover();
                 /*$('.show_dropdown').click(function() {
                     if( $(this).is(':checked')) {
                         $("#dropdown").show();
@@ -180,14 +174,7 @@ function TaskFoldersViewModel() {
             self.task_description_field('');
             self.task_start_date_field('');
             self.task_due_date_field('');
-            $('strong.task_name').popover({
-                    placement: 'top',
-                    trigger: 'hover',
-            });
-            $('span.task_description').popover({
-                placement: 'top',
-                trigger: 'hover',
-            });
+            show_popover();
         });
     };
     
@@ -220,14 +207,7 @@ function TaskFoldersViewModel() {
             }
             $.get('/tags/all', self.tags_list);
             setParentId(-1);
-            $('strong.task_name').popover({
-                    placement: 'top',
-                    trigger: 'hover',
-            });
-            $('span.task_description').popover({
-                placement: 'top',
-                trigger: 'hover',
-            });
+            show_popover();
         });
     };
     
@@ -252,14 +232,7 @@ function TaskFoldersViewModel() {
         //alert(self.modify_selected());
         $.get('/tasks/modify/status', { task_id:self.modify_selected(), status: new_status, folder: self.chosenFolderId() }, function(data) {
             self.tasks_list(data);
-            $('strong.task_name').popover({
-                    placement: 'top',
-                    trigger: 'hover',
-            });
-            $('span.task_description').popover({
-                placement: 'top',
-                trigger: 'hover',
-            });
+            show_popover();
         });
         //alert(self.modify_selected());
     }
@@ -284,14 +257,7 @@ function TaskFoldersViewModel() {
                 self.tasks_list(data);
             }*/
             self.tasks_list(data);
-            $('strong.task_name').popover({
-                placement: 'top',
-                trigger: 'hover',
-            });
-            $('span.task_description').popover({
-                placement: 'top',
-                trigger: 'hover',
-            });
+            show_popover();
             self.modify_selected([]);
         });
         //self.tasks_list.Elements.replace(self.tasks_list()[index], self.modified_tasks);
@@ -301,14 +267,7 @@ function TaskFoldersViewModel() {
         //alert(id);
         $.get('/tasks/delete/', { task_id:id, task_id_list: self.modify_selected(), folder: self.chosenFolderId() }, function(data) {
             self.tasks_list(data);
-            $('strong.task_name').popover({
-                    placement: 'top',
-                    trigger: 'hover',
-            });
-            $('span.task_description').popover({
-                placement: 'top',
-                trigger: 'hover',
-            });
+            show_popover();
             $.get('/tags/all', self.tags_list);
         });
     };
@@ -316,14 +275,7 @@ function TaskFoldersViewModel() {
     self.get_tasks_by_tag = function(id) {
         $.get('/tags/get_tasks', { tag_id:id, folder: self.chosenFolderId() }, function(data) {
             self.tasks_list(data);
-            $('strong.task_name').popover({
-                    placement: 'top',
-                    trigger: 'hover',
-            });
-            $('span.task_description').popover({
-                placement: 'top',
-                trigger: 'hover',
-            });
+            show_popover();
         });
     }
 };
@@ -364,6 +316,19 @@ function description_is_short(task_description) {
 function shortify_description(task_description) {
     //return task_name.substring(0, NAME_MAX_LENGTH-3) + "<span style='color: #FF0000'>" + task_name.charAt(NAME_MAX_LENGTH-3) + "</span><span style='color: #EE0000'>" + task_name.charAt(NAME_MAX_LENGTH-2) + "</span><span style='color: #DD0000'>" + task_name.charAt(NAME_MAX_LENGTH-1) + "</span>"
     return task_description.substring(0, DESCRIPTION_MAX_LENGTH-3) + '...'
+}
+
+function tags_are_less(tags_length) {
+    //alert(tags_length);
+    return tags_length < TAGS_MAX_LENGTH
+}
+
+function get_remaining_tags(tags) {
+    var remaining_tags = '';
+    for (var i=TAGS_MAX_LENGTH-1; i < tags.length; i++) {
+        remaining_tags += '<span class="label" style="background-color: ' + tags[i].color + '">' + tags[i].name + '</span>&nbsp;'
+    }
+    return remaining_tags
 }
 
 function get_popover_placement(pop, dom_el) {
@@ -477,4 +442,20 @@ function eliminateDuplicates(arr) {
         out.push(i);
     }
     return out;
+}
+
+function show_popover() {
+    $('strong.task_name').popover({
+        placement: 'top',
+        trigger: 'hover',
+    });
+    $('span.task_description').popover({
+        placement: 'top',
+        trigger: 'hover',
+    });
+    $('i.remaining_tags_icon').popover({
+        placement: 'top',
+        trigger: 'hover',
+        html: true,
+    });
 }
