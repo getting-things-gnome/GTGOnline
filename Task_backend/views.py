@@ -153,7 +153,7 @@ def update_task(request):
     task_tree = update_task_details(request.user, task_id, name, description, \
                         start_date, due_date, folder)
     #return HttpResponseRedirect('/tasks/get/?folder=' + folder)
-    print >>sys.stderr, task_tree
+    #print >>sys.stderr, task_tree
     return HttpResponse(json.dumps(task_tree, indent = 4), \
                         mimetype='application/json')
 
