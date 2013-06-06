@@ -1,6 +1,6 @@
 
 # The regex used to extract tags from a text
-TAG_REGEX = '(?:^|[\s])(@[\w\/\.\-\:]*\w)'
+TAG_REGEX = ur'(?:^|[\s])(@[\w\/\.\-\:]*\w)'
 
 # Task status
 IS_ACTIVE = 0

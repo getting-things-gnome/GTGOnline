@@ -11,7 +11,7 @@ class Task(models.Model):
         (2, 'Dismissed'),
     )
     user = models.ForeignKey(get_user_model())
-    name = models.CharField(max_length = 300, null = False, blank = False)
+    name = models.CharField(max_length = 250, null = False, blank = False)
     description = models.TextField()
     start_date = models.DateTimeField(null = True, blank = True)
     due_date = models.DateTimeField(null = True, blank = True)

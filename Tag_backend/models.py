@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 
 class Tag(models.Model):
     user = models.ForeignKey(get_user_model())
-    name = models.CharField(max_length = 300)
+    name = models.CharField(max_length = 250)
     color = models.CharField(max_length = 10)
     icon = models.CharField(max_length = 50)
     
