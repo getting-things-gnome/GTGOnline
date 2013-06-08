@@ -12,10 +12,10 @@
 			</div>
 		
 			<div class="div-inline pull-left min-width30" style="margin-right: 2px; border-right: 1px solid #dedede; min-width: 30px;">
-				<a data-toggle="collapse" data-bind="attr: { 'data-target': '#row' + id }" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 20px;" id="subtask_count" data-bind="visible: subtasks.length > 0">
+				<span data-toggle="collapse" data-bind="attr: { 'data-target': '#row' + id }" style="text-decoration:none; color:#4d4d4d; font-size: 20px; cursor: pointer" id="subtask_count" data-bind="visible: subtasks.length > 0">
 		            <span data-bind="text: subtasks.length > 0 ? '+' + subtasks.length : ''"></span>
 					<!--<span data-bind="text: $index()"></span>-->
-		        </a>
+		        </span>
 				<span data-bind="visible: subtasks.length == 0, text: '&nbsp;'"></span>
 			</div>
 		
