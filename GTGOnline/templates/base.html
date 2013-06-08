@@ -58,12 +58,20 @@
 							<div class="accordion-group">
 								<div class="accordion-heading">
 									<a class="accordion-toggle" data-toggle="collapse" href="#" data-bind="attr: {'data-target': '#startup' + id}">
-										<span data-bind="text: name"></span>
+										<span data-bind="if: name_is_short(name)">
+											<span data-bind="text: name"></span>
+										</span>
+										<span data-bind="ifnot: name_is_short(name)">
+											<span data-bind="text: shortify_name(name)"></span>
+										</span>
 										<span class="pull-right" data-bind="text: 'started - ' + prettify(start_date)"></span>
 									</a>
 								</div>
 								<div class="collapse" data-bind="attr: {'id': 'startup' + id}">
 									<div class="accordion-inner">
+										<span data-bind="ifnot: name_is_short(name)">
+											<strong data-bind="text: name"></strong>
+										</span>
 										<div data-bind="foreach: tags">
 											<span class="label" data-bind="text: name, style: { backgroundColor: color }"></span>
 										</div>
@@ -96,31 +104,12 @@
 	<script src="{{ STATIC_URL }}js/bootstrap.js"></script>
 	<script src="{{ STATIC_URL }}js/data/jquery-cookie.js"></script>
 	<script type="text/javascript">
-	    $("input.show_dropdown").change(function(){
+	    /*$("input.show_dropdown").change(function(){
 				alert("checked");
 				$("#dropdown").fadeToggle();
 				$("#header").slideToggle();
 			//}
-		});
-	</script>
-	<script type="text/javascript">
-    $(window).load(function(){
-		var a = $.cookie('startup_dialog_shown');
-		var username = "{{ username }}";
-		today = new Date();
-		today.setHours(0,0,0,0);
-		if (a == null) {
-			date = new Date();
-			date.setHours(0,0,0,0);
-			$.cookie('startup_dialog_shown', date.setHours(0,0,0,0), { expires: 1 });
-			//$('#startup_modal').modal('show');
-		}
-		else if (today != a) {
-			//alert(today + " " + a);
-			$.cookie('startup_dialog_shown', new Date(), { expires: 1 });
-			//$('#startup_modal').modal('show');
-		}
-    });
+		})*/;
 	</script>
 	{% endblock external_js %}
   </body>

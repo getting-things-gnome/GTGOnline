@@ -62,14 +62,14 @@ function TaskFoldersViewModel() {
     };
     
     $.get('/tasks/get/due_by', { days_left: 0, folder: self.chosenFolderId() }, function(data) {
-                self.todays_tasks(data);
+        self.todays_tasks(data);
                 
-                if (self.todays_tasks().length > 0) {
-                    $('#startup_modal').modal('show');
-                }
+        if (self.todays_tasks().length > 0 && cookie_says_yes()) {
+            $('#startup_modal').modal('show');
+        }
                 
-                show_popover();
-            });
+        show_popover();
+    });
     
     $.get('/tags/all', self.tags_list);
     
@@ -231,6 +231,14 @@ function TaskFoldersViewModel() {
         self.task_due_date_field(due_date);
         setParentId(id);
         $('#edit_task_modal').modal('show');
+    }
+    
+    self.hide_edit_task_modal = function() {
+        $('#edit_task_modal').modal('hide');
+        self.task_name_field('');
+        self.task_description_field('');
+        self.task_start_date_field('');
+        self.task_due_date_field('');
     }
     
     self.reset_start_date_field = function() {
@@ -482,4 +490,21 @@ function startup_modal_header_string(length) {
         return length + ' tasks'
     }
     return length + ' task'
+}
+
+function cookie_says_yes() {
+    var a = $.cookie('startup_dialog_shown');
+	//var username = "{{ username }}";
+	today = new Date();
+	today.setHours(0,0,0,0);
+	if (a == null) {
+		$.cookie('startup_dialog_shown', today, { expires: 1 });
+		return true
+	}
+	else if (today != a) {
+		//alert(today + " " + a);
+		$.cookie('startup_dialog_shown', today, { expires: 1 });
+		return true
+	}
+	return false
 }
