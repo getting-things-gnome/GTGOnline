@@ -2,95 +2,89 @@
 
 {% block task_row %}
 	<div data-bind="foreach: tasks_list" id="task_rows_container" class="min-width950">
-		<!--<span data-bind="if: indent == 0">
-			<div class="accordion-group">
-		</span>-->
 		<div class="accordion-heading">
-		<div class="task-row min-width950" style="display: block;" data-bind="style: { marginLeft: (30*indent) + 'px', borderLeft: indent > 0 ? '1px solid #dedede' : '0px'}, css: { taskDone: status == 1, taskDismissed: status == 2 }">
-			<div class="div-inline pull-left min-width25" style="margin-left: 5px">
-				<input type="checkbox" class="checkbox show_dropdown" data-bind="attr: { 'value': id }, checked: $root.modify_selected" />
-			</div>
+			<div class="task-row min-width950" style="display: block;" data-bind="style: { marginLeft: (30*indent) + 'px', borderLeft: indent > 0 ? '1px solid #dedede' : '0px'}, css: { taskDone: status == 1, taskDismissed: status == 2 }">
+				<div class="div-inline pull-left min-width25" style="margin-left: 5px">
+					<input type="checkbox" class="checkbox show_dropdown" data-bind="attr: { 'value': id }, checked: $root.modify_selected" />
+				</div>
+				
+				<div class="div-inline pull-left min-width30" style="margin-right: 2px; border-right: 1px solid #dedede; min-width: 30px;">
+					<span data-toggle="collapse" data-bind="attr: { 'data-target': '#row' + id }" style="text-decoration:none; color:#4d4d4d; font-size: 20px; cursor: pointer" id="subtask_count" data-bind="visible: subtasks.length > 0">
+			            <span data-bind="text: subtasks.length > 0 ? '+' + subtasks.length : ''"></span>
+						<!--<span data-bind="text: $index()"></span>-->
+			        </span>
+					<span data-bind="visible: subtasks.length == 0, text: '&nbsp;'"></span>
+				</div>
 		
-			<div class="div-inline pull-left min-width30" style="margin-right: 2px; border-right: 1px solid #dedede; min-width: 30px;">
-				<span data-toggle="collapse" data-bind="attr: { 'data-target': '#row' + id }" style="text-decoration:none; color:#4d4d4d; font-size: 20px; cursor: pointer" id="subtask_count" data-bind="visible: subtasks.length > 0">
-		            <span data-bind="text: subtasks.length > 0 ? '+' + subtasks.length : ''"></span>
-					<!--<span data-bind="text: $index()"></span>-->
-		        </span>
-				<span data-bind="visible: subtasks.length == 0, text: '&nbsp;'"></span>
-			</div>
-		
-			<div class="dropdown div-inline pull-left min-width250" style="width: 26%;">
-				<div data-bind="if: name_is_short(name)">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 15px;">
-						<strong id="name" data-bind="text: name"></strong>
+				<div class="dropdown div-inline pull-left min-width250" style="width: 26%;">
+					<div data-bind="if: name_is_short(name)">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 15px;">
+							<strong id="name" data-bind="text: name"></strong>
+						</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="#" data-bind="click: $root.show_new_subtask_modal.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
+							<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
+							<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
+							<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+							<li><a href="#" data-bind="click: $root.delete_task.bind($data, id, $index())"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+						</ul>
+					</div>
+					<div data-bind="ifnot: name_is_short(name)">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4D4D4D; font-size: 15px;">
+							<strong class="task_name" id="name" data-bind="text: shortify_name(name), attr: { 'data-content': name }" rel="popover" data-trigger="hover"></strong>
+						</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="#" data-bind="click: $root.show_new_subtask_modal.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
+							<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
+							<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
+							<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
+							<li><a href="#" data-bind="click: $root.delete_task.bind($data, id, $index())"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+						</ul>
+					</div>
+				</div>
+			
+				<span data-bind="if: tags_are_less(tags.length)">
+					<div style="width: 15%;" class="div-inline min-width200 task-tags" id="tags" data-bind="foreach: tags">
+						<span class="label" data-bind="text: name, style: { backgroundColor: color }"></span>
+					</div>
+				</span>
+				<span data-bind="ifnot: tags_are_less(tags.length)">
+					<div style="width: 15%;" class="div-inline min-width200 task-tags" id="tags">
+						    <span class="label" data-bind="text: tags[0].name, style: { backgroundColor: tags[0].color }"></span>
+						    <span class="label" data-bind="text: tags[1].name, style: { backgroundColor: tags[1].color }"></span>
+						    <span class="label"><i class="icon-plus remaining_tags_icon" data-bind="attr: { 'data-content': get_remaining_tags(tags) }" rel="popover" data-trigger="hover"></i></span>
+					</div>
+				</span>
+				<div class="div-inline task-description max-width350" style="width: 32%;">
+					<a href="#" style="text-decoration:none; color: #4D4D4D; font-size: 12px;" data-bind="click: $root.show_edit_task_modal.bind($data, id, name, description, start_date, due_date)">
+						<span data-bind="if: description_is_short(description)">
+							<span class="muted" data-bind="text: description"></span>
+						</span>
+						<span data-bind="ifnot: description_is_short(description)">
+							<span class="muted task_description" data-bind="text: shortify_description(description), attr: { 'data-content': description }" rel="popover" data-trigger="hover"></span>
+						</span>
 					</a>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-						<li><a href="#" data-bind="click: $root.show_new_subtask_modal.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
-						<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
-						<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
-						<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
-						<li><a href="#" data-bind="click: $root.delete_task.bind($data, id, $index())"><i class="icon-trash"></i>&nbsp;Delete</a></li>
-					</ul>
 				</div>
-				<div data-bind="ifnot: name_is_short(name)">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4D4D4D; font-size: 15px;">
-						<strong class="task_name" id="name" data-bind="text: shortify_name(name), attr: { 'data-content': name }" rel="popover" data-trigger="hover"></strong>
+			
+				<div style="width: 15%;" class="div-inline min-width160 pull-right">
+					<a href="#" style="text-decoration:none; color:#4D4D4D;">
+						<!--<strong style="font-size: 30px;">13.09.12</strong>-->
+						<strong id="due_date" data-bind="html: prettify(due_date), style: { fontSize: get_size_of_date(due_date) }"></strong>
 					</a>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-						<li><a href="#" data-bind="click: $root.show_new_subtask_modal.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
-						<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
-						<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
-						<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
-						<li><a href="#" data-bind="click: $root.delete_task.bind($data, id, $index())"><i class="icon-trash"></i>&nbsp;Delete</a></li>
-					</ul>
+				</div>
+			
+				<div style="width: 10%" class="div-inline min-width80 pull-right">
+					<a href="#" style="text-decoration:none; color:#4d4d4d;" data-bind="click: $root.show_datepicker" class="task_row_start_date">
+						<!--<strong>06.09.12</strong>-->
+						<strong id="start_date" data-bind="html: prettify(start_date)"></strong>
+					</a>
 				</div>
 			</div>
-			
-			<span data-bind="if: tags_are_less(tags.length)">
-				<div style="width: 15%;" class="div-inline min-width200 task-tags" id="tags" data-bind="foreach: tags">
-					<span class="label" data-bind="text: name, style: { backgroundColor: color }"></span>
-				</div>
-			</span>
-			<span data-bind="ifnot: tags_are_less(tags.length)">
-				<div style="width: 15%;" class="div-inline min-width200 task-tags" id="tags">
-					    <span class="label" data-bind="text: tags[0].name, style: { backgroundColor: tags[0].color }"></span>
-					    <span class="label" data-bind="text: tags[1].name, style: { backgroundColor: tags[1].color }"></span>
-					    <span class="label"><i class="icon-plus remaining_tags_icon" data-bind="attr: { 'data-content': get_remaining_tags(tags) }" rel="popover" data-trigger="hover"></i></span>
-				</div>
-			</span>
-			<div class="div-inline task-description max-width350" style="width: 32%;">
-				<a href="#" style="text-decoration:none; color: #4D4D4D; font-size: 12px;" data-bind="click: $root.show_edit_task_modal.bind($data, id, name, description, start_date, due_date)">
-					<span data-bind="if: description_is_short(description)">
-						<span class="muted" data-bind="text: description"></span>
-					</span>
-					<span data-bind="ifnot: description_is_short(description)">
-						<span class="muted task_description" data-bind="text: shortify_description(description), attr: { 'data-content': description }" rel="popover" data-trigger="hover"></span>
-					</span>
-				</a>
-			</div>
-			
-			<div style="width: 15%;" class="div-inline min-width160 pull-right">
-				<a href="#" style="text-decoration:none; color:#4D4D4D;">
-					<!--<strong style="font-size: 30px;">13.09.12</strong>-->
-					<strong id="due_date" data-bind="html: prettify(due_date), style: { fontSize: get_size_of_date(due_date) }"></strong>
-				</a>
-			</div>
-			
-			<div style="width: 10%" class="div-inline min-width80 pull-right">
-				<a href="#" style="text-decoration:none; color:#4d4d4d;" data-bind="click: $root.show_datepicker" class="task_row_start_date">
-					<!--<strong>06.09.12</strong>-->
-					<strong id="start_date" data-bind="html: prettify(start_date)"></strong>
-				</a>
-			</div>
-		</div>
 		</div>
 		<div class="accordion-group collapse" data-bind="attr: { 'id': 'row' + id }">
 	<!-- ko template: { name: 'task_rows_container', foreach: subtasks } -->
 	<!-- /ko -->
 		</div>
-		<!--<span data-bind="if: indent == 0">
-			</div>
-		</span>-->
 	</div>
 {% endblock task_row %}
 
