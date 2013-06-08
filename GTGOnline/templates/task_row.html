@@ -22,7 +22,7 @@
 			<div class="dropdown div-inline pull-left min-width250" style="width: 26%;">
 				<div data-bind="if: name_is_short(name)">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 15px;">
-						<strong id="name" data-bind="text: id + ' ' + name"></strong>
+						<strong id="name" data-bind="text: name"></strong>
 					</a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 						<li><a href="#" data-bind="click: $root.show_new_subtask_modal.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
@@ -34,7 +34,7 @@
 				</div>
 				<div data-bind="ifnot: name_is_short(name)">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4D4D4D; font-size: 15px;">
-						<strong class="task_name" id="name" data-bind="text: id + ' ' + shortify_name(name), attr: { 'data-content': name }" rel="popover" data-trigger="hover"></strong>
+						<strong class="task_name" id="name" data-bind="text: shortify_name(name), attr: { 'data-content': name }" rel="popover" data-trigger="hover"></strong>
 					</a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 						<li><a href="#" data-bind="click: $root.show_new_subtask_modal.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
