@@ -31,6 +31,7 @@ function TaskFoldersViewModel() {
     
     self.tasks_list.subscribe(function (newValue) {
         self.tasks_list_length(newValue.length);
+        show_popover();
     }, self);
     
     self.task_name_field.subscribe(function (newValue) {
@@ -457,18 +458,22 @@ function eliminateDuplicates(arr) {
 }
 
 function show_popover() {
+    //alert('working');
     $('strong.task_name').popover({
         placement: 'top',
         trigger: 'hover',
+        //delay: { show: 400, hide: 0 },
     });
     $('span.task_description').popover({
         placement: 'top',
         trigger: 'hover',
+        //delay: { show: 400, hide: 0 },
     });
     $('i.remaining_tags_icon').popover({
         placement: 'top',
         trigger: 'hover',
         html: true,
+        //delay: { show: 400, hide: 0 },
     });
 }
 
