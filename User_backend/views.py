@@ -44,9 +44,8 @@ def register(request):
         #print >>sys.stderr, "First Name = " + request.POST['first_name']
         #print >>sys.stderr, "Last Name = " + request.POST['last_name']
         #print >>sys.stderr, "Password = " + request.POST['password']
-        register_user(request.POST['username'], request.POST['email'], \
-                      request.POST['password'], request.POST['first_name'], \
-                      request.POST['last_name']) 
+        register_user(request.POST['email'], request.POST['password'], \
+                      request.POST['first_name'], request.POST['last_name']) 
     else:
         print >>sys.stderr, "request is not POST"
     return HttpResponseRedirect('/user/landing/')

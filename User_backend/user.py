@@ -1,19 +1,20 @@
 import sys
 import logging
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from User_backend.models import User_preferences
 
 from Tools.constants import *
 
+User = get_user_model()
 log = logging.getLogger(__name__)
 
 def get_user_object(user):
     if isinstance(user, str) or isinstance(user, unicode):
         try:
-            return User.objects.get(username = user)
+            return User.objects.get(email = user)
         except User.DoesNotExist:
             return None
     elif isinstance(user, User):
@@ -22,12 +23,12 @@ def get_user_object(user):
         return None
     
 def login_user(request):
-    user = authenticate(username = request.POST['username'], \
+    user = authenticate(email = request.POST['email'], \
                         password = request.POST['password'])
     if user is not None:
         if user.is_active:
             login(request, user)
-            log.info("LogIN -- username = " + user.username + \
+            log.info("LogIN -- email = " + user.email + \
                      " | id = " + str(user.id))
             return USER_LOGGED_IN
         else:
@@ -36,13 +37,13 @@ def login_user(request):
         return USER_INVALID
 
 def logout_user(request):
-    log.info("LogOUT - username = " + request.user.username + \
+    log.info("LogOUT - email = " + request.user.email + \
              " | id = " + str(request.user.id))
     logout(request)
 
-def register_user(username, email, password, first_name, last_name):
+def register_user(email, password, first_name, last_name):
     try:    # Remove this try and validate via js on the clientside itself
-        user = User.objects.create_user(username, email, password)
+        user = User.objects.create_user(email, password)
     except IntegrityError:
         return False
     user.first_name = first_name
@@ -50,14 +51,10 @@ def register_user(username, email, password, first_name, last_name):
     user.save()
     return True
     
-def does_username_exist(username):
-    return User.objects.filter(username = username).exists()
-
 def does_email_exist(email):
     return User.objects.filter(email = email).exists()
 
-def get_first_name(username):
-    user = get_user_object(user)
+def get_first_name(user):
     return user.get_short_name()
 
 def get_time_format(user):

@@ -241,6 +241,10 @@ LOGGING = {
     }
 }
 
+# Here the custom user model is defined. Instead of original user model,
+# use this in an app
+AUTH_USER_MODEL = 'User_backend.MyUser'
+
 # Don't know what it does
 SOCIAL_AUTH_UID_LENGTH = 222
 SOCIAL_AUTH_NONCE_SERVER_URL_LENGTH = 200

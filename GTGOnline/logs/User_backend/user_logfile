@@ -1,2 +1,6 @@
 [09/Jun/2013 17:42:39] INFO [User_backend.user:31] LogIN -- username = cole | id = 2
 [09/Jun/2013 17:42:42] INFO [User_backend.user:40] LogOUT - username = cole | id = 2
+[09/Jun/2013 23:45:59] INFO [User_backend.user:32] LogIN -- email = nikobellic914@aol.com | id = 2
+[09/Jun/2013 23:47:32] INFO [User_backend.user:41] LogOUT - email = nikobellic914@aol.com | id = 2
+[09/Jun/2013 23:50:12] INFO [User_backend.user:32] LogIN -- email = nemámů@matušov.com | id = 3
+[09/Jun/2013 23:50:35] INFO [User_backend.user:41] LogOUT - email = nemámů@matušov.com | id = 3

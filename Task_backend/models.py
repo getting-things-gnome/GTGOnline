@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from Tag_backend.models import Tag
 
 # Create your models here.
@@ -10,7 +10,7 @@ class Task(models.Model):
         (1, 'Done'),
         (2, 'Dismissed'),
     )
-    user = models.ForeignKey(get_user_model())
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     name = models.CharField(max_length = 250, null = False, blank = False)
     description = models.TextField()
     start_date = models.DateTimeField(null = True, blank = True)

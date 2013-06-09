@@ -1,10 +1,10 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.conf import settings
 
 # Create your models here.
 
 class Tag(models.Model):
-    user = models.ForeignKey(get_user_model())
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     name = models.CharField(max_length = 250)
     color = models.CharField(max_length = 10)
     icon = models.CharField(max_length = 50)

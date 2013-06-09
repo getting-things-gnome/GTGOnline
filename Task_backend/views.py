@@ -54,7 +54,7 @@ def get_tasks(request):
 @login_required
 def show_title(request):
     template = loader.get_template('task_row.html')
-    context = RequestContext(request, {'username': request.user.username, \
+    context = RequestContext(request, {'email': request.user.email, \
                                        'name': request.user.first_name})
     return HttpResponse(template.render(context))
 
