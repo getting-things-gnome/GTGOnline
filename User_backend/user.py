@@ -1,4 +1,5 @@
 import sys
+import logging
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -6,6 +7,8 @@ from django.db import IntegrityError
 from User_backend.models import User_preferences
 
 from Tools.constants import *
+
+log = logging.getLogger(__name__)
 
 def get_user_object(user):
     if isinstance(user, str) or isinstance(user, unicode):
@@ -24,6 +27,8 @@ def login_user(request):
     if user is not None:
         if user.is_active:
             login(request, user)
+            log.info("LogIN -- username = " + user.username + \
+                     " | id = " + str(user.id))
             return USER_LOGGED_IN
         else:
             return USER_ACCOUNT_DISABLED
@@ -31,7 +36,8 @@ def login_user(request):
         return USER_INVALID
 
 def logout_user(request):
-    #print >>sys.stderr, "logout username = " + request.user.username
+    log.info("LogOUT - username = " + request.user.username + \
+             " | id = " + str(request.user.id))
     logout(request)
 
 def register_user(username, email, password, first_name, last_name):
