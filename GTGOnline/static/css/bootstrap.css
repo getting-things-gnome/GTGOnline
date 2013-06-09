@@ -5876,12 +5876,20 @@ a.badge:hover {
   margin-bottom: 20px;
 }
 
-.accordion-group {
+accordion-group {
   /*margin-bottom: 2px;
   border: 1px solid #e5e5e5;
   -webkit-border-radius: 2px;
      -moz-border-radius: 2px;
           border-radius: 2px;*/
+}
+
+.startup-accordion-group {
+  margin-bottom: 2px;
+  border: 1px solid #e5e5e5;
+  -webkit-border-radius: 2px;
+     -moz-border-radius: 2px;
+          border-radius: 2px;
 }
 
 .accordion-heading {
@@ -5891,6 +5899,10 @@ a.badge:hover {
 .accordion-heading .accordion-toggle {
   display: block;
   /*padding: 8px 15px;*/
+}
+
+.startup-accordion-heading {
+  padding: 8px 15px;
 }
 
 .accordion-toggle {

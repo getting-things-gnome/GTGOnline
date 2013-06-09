@@ -55,8 +55,8 @@
 					<div class="modal-body">
 					{% block startup_task_accordion %}
 						<div class="accordion" id="accordion" data-bind="foreach: todays_tasks">
-							<div class="accordion-group">
-								<div class="accordion-heading">
+							<div class="accordion-group startup-accordion-group">
+								<div class="accordion-heading startup-accordion-heading">
 									<a class="accordion-toggle" data-toggle="collapse" href="#" data-bind="attr: {'data-target': '#startup' + id}">
 										<span data-bind="if: name_is_short(name)">
 											<span data-bind="text: name"></span>
