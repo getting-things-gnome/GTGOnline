@@ -1146,7 +1146,7 @@ div.task-row {
   background-image: -moz-linear-gradient(center right, rgb(153, 255, 51) 25%, rgb(255, 102, 51) 80%);
 }
 
-#task_rows_container {
-  padding-bottom: 40px;
-  border-bottom: 4px solid #dedede;
-}
+/*#task_rows_container {
+  padding-bottom: 60px;
+  border-bottom: 4px solid #cccccc;
+}*/

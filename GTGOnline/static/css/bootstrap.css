@@ -3120,7 +3120,7 @@ table th[class*="span"],
           transition: height 0.35s ease;
 }
 
-.collapse.in {
+.collapse.in:hover {
   height: auto;
   overflow: visible;
 }
