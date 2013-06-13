@@ -67,13 +67,13 @@
 
 {% block new_task_modal %}
 <div id="new_task_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 500px; margin-left: -250px">
-	<div class="modal-header" id="new_task_name_field" style="padding: 10px">
+	<div class="modal-header" style="padding: 10px">
 		<!--<input type="text" id="task_name_input" placeholder="Task Name" style="margin: 0px;" class="input-task-name" data-bind="value: task_name_field, valueUpdate: 'afterkeydown'" />-->
 		<!--<div type="text" id="task_name_input" data-placeholder="Task Name" class="task_name_input" data-bind="htmlValue: task_name_htmlfield" contenteditable="true"></div>-->
 		<input id="task_name_field">
-		<div data-bind="foreach: all_tags" style="margin-top: 10px">
+		<!--<div data-bind="foreach: all_tags" style="margin-top: 10px">
 			<span class="label" style="margin-right: 1px;" data-bind="text: $data"></span>
-		</div>
+		</div>-->
 	</div>
 	<div class="modal-body" style="padding: 10px;">
 		<!--<textarea rows="10" placeholder="Task Description" class="input-task-name" style="margin: 0px; margin-bottom: 10px;" data-bind="value: task_description_field, valueUpdate: 'afterkeydown'"></textarea>-->
@@ -111,7 +111,7 @@
 		minView: 2,
 		maxView: 3,
 		todayHighlight: true,
-		todayBtn: true,
+		//todayBtn: true,
 		autoclose: true,
 	});
 	$(".task_due_datepicker").datetimepicker({
@@ -119,7 +119,7 @@
 		minView: 2,
 		maxView: 3,
 		todayHighlight: true,
-		todayBtn: true,
+		//todayBtn: true,
 		autoclose: true,
 	});
 </script>
@@ -131,12 +131,11 @@
 	$(document).ready(function(){
 		//var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('task_description_textarea'));
 		
-		var text = '';
-		console.log(a.task_description_field());
-		
 		start_codemirror('task_name_field', 'task_description_textarea');
 		start_codemirror('edit_name_field', 'edit_description_textarea');
 		
+		task_name_editor.refresh();
+        task_description_editor.refresh();
 		
 		//editor.setValue(a.task_description_field());
 		//editor.refresh();
@@ -151,9 +150,9 @@
 		//ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("task_rows_container"));
 	});
 	
-	$('#task_name_input').click(function() {
+	/*$('#task_name_input').click(function() {
 		update_description(editor.getValue());
-	});
+	});*/
 	
 </script>
 

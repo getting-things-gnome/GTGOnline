@@ -5,6 +5,8 @@ var TAGS_MAX_LENGTH = 3;
 //var TAG_REGEX = /(?:^|[\s])(@[\w\/\.\-\:]*\w)/g;
 var TAG_REGEX = /(?:^|[\s])(@\s*[\w\/\.\-\:]*\w)/g;
 var a;
+var task_name_editor;
+var task_description_editor;
 
 // GLOBAL VARIABLES
 var parentId = -1
@@ -95,11 +97,16 @@ function TaskFoldersViewModel() {
         var newvalue = get_date_object(newValue);
         var due_date_val = self.task_due_date_field();
         var due_date = get_date_object(due_date_val);
+        
+        $('.task_due_datepicker').datetimepicker('setStartDate', newvalue);
+        console.log('newvalue = ' + newValue + ' due_date = ' + due_date_val);
+        
         if ((newValue != '' && due_date_val != '') && (newvalue > due_date)) {
+            console.log('changed');
             $('.task_due_datepicker').datetimepicker('setDate', newvalue);
         }
         
-        $('.task_due_datepicker').datetimepicker('setStartDate', newvalue);
+        //$('.task_due_datepicker').datetimepicker('setStartDate', newvalue);
         //$('.task_due_datepicker').datetimepicker('show');
     }, self);
     
@@ -214,6 +221,9 @@ function TaskFoldersViewModel() {
             });
         }
         
+        console.log('name: ' + self.task_name_field());
+        console.log('description: ' + self.task_description_field());
+        
         $.get('/tasks/new', {
             name: self.task_name_field(),
             description: self.task_description_field(),
@@ -256,6 +266,10 @@ function TaskFoldersViewModel() {
             return
         }
         $('#edit_task_modal').modal('hide');
+        
+        console.log('edit name: ' + self.task_name_field());
+        console.log('edit description: ' + self.task_description_field());
+        
         $.get('/tasks/update', {
             name: self.task_name_field(),
             description: self.task_description_field(),
@@ -443,17 +457,19 @@ function find_tags(text) {
 
 function get_formatted_date(date_str) {
     var chunks = date_str.split('/');
-    var formatted_date = chunks[1] + '-' + chunks[0] + '-' + chunks[2];
+    var formatted_date = chunks[1] + '/' + chunks[0] + '/' + chunks[2];
     return formatted_date
 }
 
 function get_date_object(date_str) {
     if (date_str == '') {
+        console.log('given date was empty');
         return null
     }
     var formatted_date = get_formatted_date(date_str)
+    console.log('formatted date = ' + formatted_date);
     var date_object = new Date(formatted_date);
-    //alert(date_object);
+    console.log('computed date object = ' + date_object);
     return date_object
 }
 
@@ -623,17 +639,12 @@ function start_codemirror(name_id, description_id) {
 		electricChars: false,
 		extraKeys: {
 			Enter: function(cm) { return; },
-			Tab: function(cm) { return; },
+			Tab: false,
 		},
 		lineWrapping: true,
-        tabindex: 1,
+        //tabindex: 1,
 	});
-		
-	task_name_editor.on("change", function(cm, change) {
-		//console.log("something changed! (" + change.origin + ")");
-        a.task_name_field(task_name_editor.getValue());
-	});
-    
+
     task_name_editor.setSize(466, 28);
     task_name_editor.setValue(a.task_name_field());
     task_name_editor.getWrapperElement().style["min-height"] = "28px";
@@ -641,9 +652,18 @@ function start_codemirror(name_id, description_id) {
     task_name_editor.getWrapperElement().style["font-weight"] = "bold";
     task_name_editor.getWrapperElement().style["font-size"] = "20px";
     task_name_editor.getWrapperElement().style["display"] = "block";
+    task_name_editor.getWrapperElement().className += " pretty-borders";
+    console.log('style fontsize = ' + task_name_editor.getWrapperElement().style["font-size"]);
+    console.log('class = ' + task_name_editor.getWrapperElement().className);
     //task_name_editor.getWrapperElement().style["tabindex"] = 1;
     task_name_editor.refresh();
     //task_name_editor.getInputField().tabIndex = 1;
+    
+    task_name_editor.on("change", function(cm, change) {
+		//console.log("something changed! (" + cm.getDoc().getValue() + ")");
+        a.task_name_field(cm.getDoc().getValue());
+        cm.refresh();
+	});
     
     task_description_editor = new CodeMirror.fromTextArea(document.getElementById(description_id), {
 		mode: 'diff2',
@@ -652,22 +672,27 @@ function start_codemirror(name_id, description_id) {
 		electricChars: false,
 		extraKeys: {
 			Enter: function(cm) { cm.replaceSelection("\n", "end"); },
-			Tab: function(cm) { return; },
+			Tab: false,
 		},
 		lineWrapping: true,
-        tabindex: 2,
-	});
-		
-	task_description_editor.on("change", function(cm, change) {
-		//console.log("something changed! (" + change.origin + ")");
-        a.task_description_field(task_description_editor.getValue());
+        //tabindex: 2,
 	});
     
     task_description_editor.setSize(466, 200);
     task_description_editor.setValue(a.task_description_field());
     task_description_editor.getWrapperElement().style["font-weight"] = "normal";
     task_description_editor.getWrapperElement().style["display"] = "block";
+    task_description_editor.getWrapperElement().style["font-weight"] = "normal";
+    task_description_editor.getWrapperElement().style["font-size"] = "14px";
+    task_description_editor.getWrapperElement().className += " pretty-borders";
+    console.log('class = ' + task_description_editor.getWrapperElement().className);
     //task_description_editor.getWrapperElement().style["tabindex"] = 2;
     task_description_editor.refresh();
     //task_description_editor.getInputField().tabIndex = 2;
+    
+    task_description_editor.on("change", function(cm, change) {
+		//console.log("something changed! (" + cm.getDoc().getValue() + ")");
+        a.task_description_field(cm.getDoc().getValue());
+        cm.refresh();
+	});
 }
