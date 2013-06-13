@@ -2,12 +2,42 @@
 var NAME_MAX_LENGTH = 30;
 var DESCRIPTION_MAX_LENGTH = 40;
 var TAGS_MAX_LENGTH = 3;
-var TAG_REGEX = /(?:^|[\s])(@[\w\/\.\-\:]*\w)/g;
+//var TAG_REGEX = /(?:^|[\s])(@[\w\/\.\-\:]*\w)/g;
+var TAG_REGEX = /(?:^|[\s])(@\s*[\w\/\.\-\:]*\w)/g;
+var a;
 
 // GLOBAL VARIABLES
 var parentId = -1
 
 // Task Folders
+
+ko.bindingHandlers.htmlValue = {
+    init: function(element, valueAccessor, allBindingsAccessor) {
+        ko.utils.registerEventHandler(element, "blur", function() {
+            //alert('registered');
+            var modelValue = valueAccessor();
+            var elementValue = element.innerHTML;
+            //console.log('text = ' + element.textContent||element.innerText);
+            elementValue = convert_texttags_to_htmltags(elementValue);
+            if (ko.isWriteableObservable(modelValue)) {
+                modelValue(elementValue);
+                
+            }
+            else { //handle non-observable one-way binding
+                var allBindings = allBindingsAccessor();
+                if (allBindings['_ko_property_writers'] && allBindings['_ko_property_writers'].htmlValue) allBindings['_ko_property_writers'].htmlValue(elementValue);
+            }
+        })
+    },
+    update: function(element, valueAccessor) {
+        var value = ko.utils.unwrapObservable(valueAccessor()) || "";
+        //console.log('value = ' + value + ' innerHTML = ' + element.innerHTML);
+        if (element.innerHTML !== value) {
+            element.innerHTML = value;
+        }
+    }
+};
+
 
 function TaskFoldersViewModel() {
     // Data
@@ -23,7 +53,11 @@ function TaskFoldersViewModel() {
     self.modify_selected = ko.observableArray();
     
     self.task_name_field = ko.observable('');
+    self.task_name_htmlfield = ko.observable('');
+    
     self.task_description_field = ko.observable('');
+    self.task_description_htmlfield = ko.observable('');
+    
     self.task_start_date_field = ko.observable('');
     self.task_due_date_field = ko.observable('');
     
@@ -55,6 +89,19 @@ function TaskFoldersViewModel() {
             $("#header").show();
         }
     });
+    
+    self.task_start_date_field.subscribe(function (newValue) {
+        //console.log('newvalue = "' + get_date_object(newValue) + '" due_date = "' + $('.task_due_datepicker').datetimepicker('getDate') + '"')
+        var newvalue = get_date_object(newValue);
+        var due_date_val = self.task_due_date_field();
+        var due_date = get_date_object(due_date_val);
+        if ((newValue != '' && due_date_val != '') && (newvalue > due_date)) {
+            $('.task_due_datepicker').datetimepicker('setDate', newvalue);
+        }
+        
+        $('.task_due_datepicker').datetimepicker('setStartDate', newvalue);
+        //$('.task_due_datepicker').datetimepicker('show');
+    }, self);
     
     // Behaviours
     self.goToFolder = function(folder) {
@@ -121,7 +168,14 @@ function TaskFoldersViewModel() {
             alert(match.name);
         }*/
         
+        //alert(self.task_description_field());
         $('#new_task_modal').modal('show');
+        console.log(self.task_name_field());
+        console.log(self.task_description_field());
+        task_name_editor.setValue(self.task_name_field());
+        task_description_editor.setValue(self.task_description_field());
+        task_name_editor.refresh();
+        task_description_editor.refresh();
         setParentId(-1);
     }
     
@@ -132,6 +186,12 @@ function TaskFoldersViewModel() {
         self.task_due_date_field('');
         setParentId(parent_id);
         $('#new_task_modal').modal('show');
+        console.log(self.task_name_field());
+        console.log(self.task_description_field());
+        task_name_editor.setValue(self.task_name_field());
+        task_description_editor.setValue(self.task_description_field());
+        task_name_editor.refresh();
+        task_description_editor.refresh();
     }
     
     self.new_task = function() {
@@ -231,6 +291,12 @@ function TaskFoldersViewModel() {
         self.task_due_date_field(due_date);
         setParentId(id);
         $('#edit_task_modal').modal('show');
+        console.log(self.task_name_field());
+        console.log(self.task_description_field());
+        task_name_editor.setValue(self.task_name_field());
+        task_description_editor.setValue(self.task_description_field());
+        task_name_editor.refresh();
+        task_description_editor.refresh();
     }
     
     self.hide_edit_task_modal = function() {
@@ -239,6 +305,8 @@ function TaskFoldersViewModel() {
         self.task_description_field('');
         self.task_start_date_field('');
         self.task_due_date_field('');
+        task_name_editor.setValue('');
+        task_description_editor.setValue('');
     }
     
     self.reset_start_date_field = function() {
@@ -299,10 +367,17 @@ function TaskFoldersViewModel() {
             show_popover();
         });
     }
+    
+    update_description_field = function(text) {
+        self.task_description_field(text);
+    }
+    
+    get_description_field = function() {
+        return self.task_description_field()
+    }
 };
 
-//ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("task_folders"));
-//ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("task_rows_container"));
+ko.applyBindings(a = new TaskFoldersViewModel(), document.getElementById("html_page"));
 
 function get_todays_date() {
     var today = new Date();
@@ -507,4 +582,92 @@ function cookie_says_yes() {
 		return true
 	}
 	return false
+}
+
+function convert_texttags_to_htmltags(text) {
+    text = text.replace('&nbsp;', ' ');
+    
+    var tags = text.match(TAG_REGEX);
+    if (tags == null) {
+        var length = 0;
+        return text;
+    }
+    else {
+        var length = tags.length;
+    }
+    console.log('tags = "' + tags + '"');
+    for (var i=0; i < length; i++) {
+        if (text.indexOf(tags[i] + '</span>') == -1) {
+            console.log('not found ' + tags[i] + ' replacing ...');
+        text = text.replace(tags[i], " " + '<span class="label label-input">' + tags[i].toLowerCase().replace(/^ /, '') + '</span>');
+        }
+    }
+    text = text.replace('<span class="label label-input"></span>', '>@<');
+    //text = text.replace('<span class="label label-input"></span>', '@');
+    
+    console.log('at the end, text = "' + text + '"');
+    return text;
+}
+
+function update_description(text) {
+    a.task_description_field(text);
+    console.log(a.task_description_field());
+}
+
+function start_codemirror(name_id, description_id) {
+    
+    task_name_editor = new CodeMirror.fromTextArea(document.getElementById(name_id), {
+		mode: 'diff2',
+		parserfile: "../static/js/data/parsediff.js",
+		//stylesheet: "../static/css/task_editor.css",
+		electricChars: false,
+		extraKeys: {
+			Enter: function(cm) { return; },
+			Tab: function(cm) { return; },
+		},
+		lineWrapping: true,
+        tabindex: 1,
+	});
+		
+	task_name_editor.on("change", function(cm, change) {
+		//console.log("something changed! (" + change.origin + ")");
+        a.task_name_field(task_name_editor.getValue());
+	});
+    
+    task_name_editor.setSize(466, 28);
+    task_name_editor.setValue(a.task_name_field());
+    task_name_editor.getWrapperElement().style["min-height"] = "28px";
+    //task_name_editor.getWrapperElement().style["max-height"] = "64px";
+    task_name_editor.getWrapperElement().style["font-weight"] = "bold";
+    task_name_editor.getWrapperElement().style["font-size"] = "20px";
+    task_name_editor.getWrapperElement().style["display"] = "block";
+    //task_name_editor.getWrapperElement().style["tabindex"] = 1;
+    task_name_editor.refresh();
+    //task_name_editor.getInputField().tabIndex = 1;
+    
+    task_description_editor = new CodeMirror.fromTextArea(document.getElementById(description_id), {
+		mode: 'diff2',
+		parserfile: "../static/js/data/parsediff.js",
+		//stylesheet: "../static/css/task_editor.css",
+		electricChars: false,
+		extraKeys: {
+			Enter: function(cm) { cm.replaceSelection("\n", "end"); },
+			Tab: function(cm) { return; },
+		},
+		lineWrapping: true,
+        tabindex: 2,
+	});
+		
+	task_description_editor.on("change", function(cm, change) {
+		//console.log("something changed! (" + change.origin + ")");
+        a.task_description_field(task_description_editor.getValue());
+	});
+    
+    task_description_editor.setSize(466, 200);
+    task_description_editor.setValue(a.task_description_field());
+    task_description_editor.getWrapperElement().style["font-weight"] = "normal";
+    task_description_editor.getWrapperElement().style["display"] = "block";
+    //task_description_editor.getWrapperElement().style["tabindex"] = 2;
+    task_description_editor.refresh();
+    //task_description_editor.getInputField().tabIndex = 2;
 }

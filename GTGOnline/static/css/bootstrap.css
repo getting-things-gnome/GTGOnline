@@ -5578,6 +5578,15 @@ a.thumbnail:hover {
   background-color: #999999;
 }
 
+.label-input {
+  padding: 2px 1px;
+  font-size: 14px;
+  font-weight: normal;
+  color: #3f3f3f;
+  text-shadow: none;
+  background-color: rgba(252, 258, 0, 0.6);
+}
+
 .label {
   -webkit-border-radius: 2px;
      -moz-border-radius: 2px;
