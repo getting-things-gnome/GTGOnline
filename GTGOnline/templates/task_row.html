@@ -92,14 +92,14 @@
 <div id="edit_task_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 500px; margin-left: -250px;">
 	<div class="modal-header" style="padding: 10px">
 		<!--<input type="text" id="task_name_input" placeholder="Task Name" style="margin: 0px;" class="input-task-name" data-bind="value: task_name_field, valueUpdate: 'afterkeydown'" />-->
-		<input id="edit_name_field" class="for_codemirror_name" data-bind="text: task_name_field" style="display: block">
+		<input id="edit_name_field" placeholder="Task Name">
 		<!--<div data-bind="foreach: all_tags" style="margin-top: 10px">
 			<span class="label" style="margin-right: 1px;" data-bind="text: $data"></span>
 		</div>-->
 	</div>
 	<div class="modal-body" style="padding: 10px;">
 		<!--<textarea rows="10" placeholder="Task Description" class="input-task-name" style="margin: 0px; margin-bottom: 10px;" data-bind="value: task_description_field, valueUpdate: 'afterkeydown'"></textarea>-->
-		<textarea id="edit_description_textarea" class="for_codemirror_description" data-bind="text: task_description_field" style="display: block"></textarea>
+		<textarea id="edit_description_textarea" placeholder="Task Description"></textarea>
 		
 		<div class="input-append date form_datetime pull-left">
 			<input size="10" type="text" readonly class="task_start_datepicker input-medium" id="start_date_field" data-bind="value: task_start_date_field">

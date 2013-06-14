@@ -13,32 +13,32 @@ var parentId = -1
 
 // Task Folders
 
-ko.bindingHandlers.htmlValue = {
-    init: function(element, valueAccessor, allBindingsAccessor) {
-        ko.utils.registerEventHandler(element, "blur", function() {
-            //alert('registered');
-            var modelValue = valueAccessor();
-            var elementValue = element.innerHTML;
-            //console.log('text = ' + element.textContent||element.innerText);
-            elementValue = convert_texttags_to_htmltags(elementValue);
-            if (ko.isWriteableObservable(modelValue)) {
-                modelValue(elementValue);
-                
-            }
-            else { //handle non-observable one-way binding
-                var allBindings = allBindingsAccessor();
-                if (allBindings['_ko_property_writers'] && allBindings['_ko_property_writers'].htmlValue) allBindings['_ko_property_writers'].htmlValue(elementValue);
-            }
-        })
-    },
-    update: function(element, valueAccessor) {
-        var value = ko.utils.unwrapObservable(valueAccessor()) || "";
-        //console.log('value = ' + value + ' innerHTML = ' + element.innerHTML);
-        if (element.innerHTML !== value) {
-            element.innerHTML = value;
-        }
-    }
-};
+//ko.bindingHandlers.htmlValue = {
+//    init: function(element, valueAccessor, allBindingsAccessor) {
+//        ko.utils.registerEventHandler(element, "blur", function() {
+//            //alert('registered');
+//            var modelValue = valueAccessor();
+//            var elementValue = element.innerHTML;
+//            //console.log('text = ' + element.textContent||element.innerText);
+//            elementValue = convert_texttags_to_htmltags(elementValue);
+//            if (ko.isWriteableObservable(modelValue)) {
+//                modelValue(elementValue);
+//                
+//            }
+//            else { //handle non-observable one-way binding
+//                var allBindings = allBindingsAccessor();
+//                if (allBindings['_ko_property_writers'] && allBindings['_ko_property_writers'].htmlValue) allBindings['_ko_property_writers'].htmlValue(elementValue);
+//            }
+//        })
+//    },
+//    update: function(element, valueAccessor) {
+//        var value = ko.utils.unwrapObservable(valueAccessor()) || "";
+//        //console.log('value = ' + value + ' innerHTML = ' + element.innerHTML);
+//        if (element.innerHTML !== value) {
+//            element.innerHTML = value;
+//        }
+//    }
+//};
 
 
 function TaskFoldersViewModel() {
@@ -227,7 +227,7 @@ function TaskFoldersViewModel() {
         
         $.get('/tasks/new', {
             name: self.task_name_field(),
-            description: self.task_description_field(),
+            description: self.task_description_field() == '' ? 'none': self.task_description_field(),
             start_date: self.task_start_date_field(),
             due_date: self.task_due_date_field(),
             folder: self.chosenFolderId(),
@@ -273,7 +273,7 @@ function TaskFoldersViewModel() {
         
         $.get('/tasks/update', {
             name: self.task_name_field(),
-            description: self.task_description_field(),
+            description: self.task_description_field() == '' ? 'none': self.task_description_field(),
             start_date: self.task_start_date_field(),
             due_date: self.task_due_date_field(),
             folder: self.chosenFolderId(),
