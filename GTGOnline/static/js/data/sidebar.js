@@ -3,7 +3,7 @@ var NAME_MAX_LENGTH = 30;
 var DESCRIPTION_MAX_LENGTH = 40;
 var TAGS_MAX_LENGTH = 3;
 //var TAG_REGEX = /(?:^|[\s])(@[\w\/\.\-\:]*\w)/g;
-var TAG_REGEX = /(?:^|[\s])(@\s*[\w\/\.\-\:]*\w)/g;
+var TAG_REGEX = /(@[\w\/\.\-\:]*\w)/g;
 var a;
 var task_name_editor;
 var task_description_editor;
@@ -176,14 +176,14 @@ function TaskFoldersViewModel() {
         }*/
         
         //alert(self.task_description_field());
-        $('#new_task_modal').modal('show');
-        console.log(self.task_name_field());
-        console.log(self.task_description_field());
+        setParentId(-1);
         task_name_editor.setValue(self.task_name_field());
         task_description_editor.setValue(self.task_description_field());
-        task_name_editor.refresh();
-        task_description_editor.refresh();
-        setParentId(-1);
+        $('#new_task_modal').modal('show');
+        $('#new_task_modal').on('shown', function() {
+            task_name_editor.refresh();
+            task_description_editor.refresh();
+        });
     }
     
     self.show_new_subtask_modal = function(parent_id) {
@@ -192,13 +192,14 @@ function TaskFoldersViewModel() {
         self.task_start_date_field('');
         self.task_due_date_field('');
         setParentId(parent_id);
-        $('#new_task_modal').modal('show');
-        console.log(self.task_name_field());
-        console.log(self.task_description_field());
         task_name_editor.setValue(self.task_name_field());
         task_description_editor.setValue(self.task_description_field());
-        task_name_editor.refresh();
-        task_description_editor.refresh();
+        $('#new_task_modal').modal('show');
+        
+        $('#new_task_modal').on('shown', function() {
+            task_name_editor.refresh();
+            task_description_editor.refresh();
+        });
     }
     
     self.new_task = function() {
@@ -221,8 +222,8 @@ function TaskFoldersViewModel() {
             });
         }
         
-        console.log('name: ' + self.task_name_field());
-        console.log('description: ' + self.task_description_field());
+        self.task_name_field(convert_tags_to_lower(self.task_name_field()));
+        self.task_description_field(convert_tags_to_lower(self.task_description_field()));
         
         $.get('/tasks/new', {
             name: self.task_name_field(),
@@ -267,8 +268,8 @@ function TaskFoldersViewModel() {
         }
         $('#edit_task_modal').modal('hide');
         
-        console.log('edit name: ' + self.task_name_field());
-        console.log('edit description: ' + self.task_description_field());
+        self.task_name_field(convert_tags_to_lower(self.task_name_field()));
+        self.task_description_field(convert_tags_to_lower(self.task_description_field()));
         
         $.get('/tasks/update', {
             name: self.task_name_field(),
@@ -304,13 +305,14 @@ function TaskFoldersViewModel() {
         self.task_start_date_field(start_date);
         self.task_due_date_field(due_date);
         setParentId(id);
-        $('#edit_task_modal').modal('show');
-        console.log(self.task_name_field());
-        console.log(self.task_description_field());
         task_name_editor.setValue(self.task_name_field());
         task_description_editor.setValue(self.task_description_field());
-        task_name_editor.refresh();
-        task_description_editor.refresh();
+        $('#edit_task_modal').modal('show');
+        
+        $('#edit_task_modal').on('shown', function() {
+            task_name_editor.refresh();
+            task_description_editor.refresh();
+        });
     }
     
     self.hide_edit_task_modal = function() {
@@ -625,12 +627,20 @@ function convert_texttags_to_htmltags(text) {
     return text;
 }
 
-function update_description(text) {
-    a.task_description_field(text);
-    console.log(a.task_description_field());
+function convert_tags_to_lower(text) {
+    var tags_list = text.match(TAG_REGEX);
+    if (tags_list == null) {
+        return text;
+    }
+    
+    for (var i=0; i < tags_list.length; i++) {
+        text = text.replace(tags_list[i], tags_list[i].toLowerCase());
+    }
+    return text;
 }
 
 function start_codemirror(name_id, description_id) {
+    var converted_tag = [], text = '', text2 = '';
     
     task_name_editor = new CodeMirror.fromTextArea(document.getElementById(name_id), {
 		mode: 'diff2',
@@ -649,20 +659,14 @@ function start_codemirror(name_id, description_id) {
     task_name_editor.setValue(a.task_name_field());
     task_name_editor.getWrapperElement().style["min-height"] = "28px";
     //task_name_editor.getWrapperElement().style["max-height"] = "64px";
-    task_name_editor.getWrapperElement().style["font-weight"] = "bold";
-    task_name_editor.getWrapperElement().style["font-size"] = "20px";
+    task_name_editor.getWrapperElement().style.fontWeight = "bold";
+    task_name_editor.getWrapperElement().style.fontSize = "20px";
     task_name_editor.getWrapperElement().style["display"] = "block";
-    task_name_editor.getWrapperElement().className += " pretty-borders";
-    console.log('style fontsize = ' + task_name_editor.getWrapperElement().style["font-size"]);
-    console.log('class = ' + task_name_editor.getWrapperElement().className);
-    //task_name_editor.getWrapperElement().style["tabindex"] = 1;
     task_name_editor.refresh();
-    //task_name_editor.getInputField().tabIndex = 1;
     
     task_name_editor.on("change", function(cm, change) {
 		//console.log("something changed! (" + cm.getDoc().getValue() + ")");
         a.task_name_field(cm.getDoc().getValue());
-        cm.refresh();
 	});
     
     task_description_editor = new CodeMirror.fromTextArea(document.getElementById(description_id), {
@@ -682,17 +686,13 @@ function start_codemirror(name_id, description_id) {
     task_description_editor.setValue(a.task_description_field());
     task_description_editor.getWrapperElement().style["font-weight"] = "normal";
     task_description_editor.getWrapperElement().style["display"] = "block";
-    task_description_editor.getWrapperElement().style["font-weight"] = "normal";
-    task_description_editor.getWrapperElement().style["font-size"] = "14px";
-    task_description_editor.getWrapperElement().className += " pretty-borders";
-    console.log('class = ' + task_description_editor.getWrapperElement().className);
+    task_description_editor.getWrapperElement().style.fontWeight = "normal";
+    task_description_editor.getWrapperElement().style.fontSize = "14px";
     //task_description_editor.getWrapperElement().style["tabindex"] = 2;
     task_description_editor.refresh();
     //task_description_editor.getInputField().tabIndex = 2;
     
     task_description_editor.on("change", function(cm, change) {
-		//console.log("something changed! (" + cm.getDoc().getValue() + ")");
         a.task_description_field(cm.getDoc().getValue());
-        cm.refresh();
 	});
 }
