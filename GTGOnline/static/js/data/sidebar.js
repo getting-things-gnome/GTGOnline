@@ -457,9 +457,15 @@ function find_tags(text) {
     alert(text);
 }
 
-function get_formatted_date(date_str) {
+/*function get_formatted_date(date_str) {
     var chunks = date_str.split('/');
     var formatted_date = chunks[1] + '/' + chunks[0] + '/' + chunks[2];
+    return formatted_date
+}*/
+
+function get_formatted_date(date_str) {
+    var chunks = date_str.split('/');
+    var formatted_date = '20' + chunks[2] + '-' + chunks[1] + '-' + chunks[0];
     return formatted_date
 }
 
