@@ -696,3 +696,10 @@ function start_codemirror(name_id, description_id) {
         a.task_description_field(cm.getDoc().getValue());
 	});
 }
+
+function get_gravatar_url(email) {
+    var gravatar_api = "http://www.gravatar.com/avatar/";
+    var hashed_email = md5(email);
+    var options = "?s=40&d=identicon";
+    return gravatar_api + hashed_email + options;
+}

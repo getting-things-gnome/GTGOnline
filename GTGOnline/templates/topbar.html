@@ -5,14 +5,14 @@
 {% endblock pagetitle %}
 
 {% block topbar %}
-    <div class="navbar navbar-inverse navbar-fixed-top topbar-properties" id="topbar">
-        <div class="navbar-inner">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    <div class="navbar navbar-inverse navbar-fixed-top topbar-properties" id="topbar" style="max-height: 50px; height: 40px">
+        <div class="navbar-inner" style="margin: 0px; padding: 0px; max-height: 50px;">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" style="padding: 0px; margin: 0px">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <div id="branding" style="width: 18%; text-align: center" class="pull-left">
+            <div id="branding" style="width: 18%; text-align: center;" class="pull-left">
                 <a href="#">
                     <!-- <i class="icon-tasks"></i>
                     <h1>BoardSkin</h1> -->
@@ -28,17 +28,17 @@
                     </button>
                 </div>
             </form>
-            <div class="pull-right user">
-            	<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
-            		<img src="{{ STATIC_URL }}img/styler/user-thumb.jpg">
+            <div class="pull-right user" style="padding: 0px; margin: 0px;">
+            	<a role="button" class="dropdown-toggle" data-toggle="dropdown">
+            		<img data-bind="attr: { 'src': get_gravatar_url('{{ email }}') }">
             		<p><span id="topbar_first_name"></span></p> 
-            		<b class="caret"></b>
-            		<ul class="dropdown-menu" role="menu">
+            		<!--<b class="caret"></b>-->
+            		<ul class="dropdown-menu" role="menu" style="margin-top: 12px; margin-right: 2px; padding: 0px">
                         <li><a tabindex="-1" href="#">View Profile</a></li>
                         <li><a tabindex="-1" href="#">Manage Account</a></li>
                         <li><a tabindex="-1" href="#">Feedback</a></li>
 						<li class="divider"></li>
-                        <li><a tabindex="-1" href='#' onclick="window.location = '{% url "user:logout" %}'">Logout</a></li>
+                        <li style="margin-bottom: 5px"><a tabindex="-1" href='#' onclick="window.location = '{% url "user:logout" %}'">Logout</a></li>
                     </ul>
             	</a>
             </div>

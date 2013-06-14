@@ -3,12 +3,12 @@ div#topbar {
   top:0px;
   left:0px;
   right:0px;
-  height:57px
+  height:50px;
 }
 
 div#wrapper {
   position: absolute;
-  top:57px;
+  top:50px;
   left:0px;
   right:0px;
   bottom:0px;
@@ -16,7 +16,7 @@ div#wrapper {
 
 div#sidebar {
   position: absolute;
-  top:57px;
+  top:50px;
   bottom:0px;
   left:0px;
   width:18%;
@@ -106,7 +106,7 @@ body .navbar .searchform {
   background: #fff;
   border-radius: 3px;
   padding: 3px 8px;
-  margin: 10px;
+  margin: 7px;
   width: 44%;
 }
 body .navbar .searchform button[type=submit] {
@@ -141,9 +141,10 @@ body .navbar .user {
   padding: 7px 15px 0;
 }
 body .navbar .user > a {
-  padding: 10px 0 20px;
+  /*padding: 10px 0 20px;*/
   line-height: 0;
   display: block;
+  cursor: pointer;
 }
 body .navbar .user > a:focus {
   outline: 0;
@@ -152,21 +153,26 @@ body .navbar .user > a:hover {
   text-decoration: none;
 }
 body .navbar .user > a img {
-  width: 20px;
-  height: auto;
-  border-radius: 3px;
+  height: 40px;
+  width: 40px;
+  border-radius: 2px;
   display: inline-block;
   vertical-align: middle;
+  margin: 5px;
 }
 body .navbar .user > a p {
   color: #fff;
   display: inline-block;
-  margin: 0 5px;
+  padding-right: 10px;
   line-height: 1;
 }
 body .navbar .user > a p span {
-  color: #15aaff;
+  font-size: 20px;
+  font: 500 20px/1 'Open Sans', Helvetica, sans-serif;
+  vertical-align: middle;
+  color: white;
 }
+
 body .navbar .user > a b.caret {
   display: inline-block;
   border-top: 4px solid #fff;
