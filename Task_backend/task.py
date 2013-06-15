@@ -59,17 +59,19 @@ def add_task(user, name, description, start_date, due_date, folder, \
     return new_task, parent
 
 def modify_parents_dates(task, parent, new_due_date):
-    if new_due_date == None and parent.due_date != None:
+    if parent.due_date == None:
+        return None
+    elif new_due_date == None:
         task.due_date = parent.due_date
         task.save()
         return None
-    if new_due_date != None and parent.due_date == None:
-        oldest_parent = get_oldest_parent(parent)[0]
-        oldest_parent.due_date = new_due_date
-        oldest_parent.save()
-        set_task_tree_dates(oldest_parent, new_due_date)
-        return oldest_parent
-    if parent.due_date < new_due_date:
+    #if new_due_date == None and parent.due_date == None:
+        #oldest_parent = get_oldest_parent(parent)[0]
+        #oldest_parent.due_date = new_due_date
+        #oldest_parent.save()
+        #set_task_tree_dates(oldest_parent, new_due_date)
+        #return oldest_parent
+    elif parent.due_date < new_due_date:
         parent.due_date = new_due_date
         parent.save()
         change_parents_due_dates(parent)

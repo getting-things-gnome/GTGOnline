@@ -210,7 +210,6 @@ function TaskFoldersViewModel() {
         else {
             self.update_task();
         }
-        show_popover();
     };
     
     self.new_task_or_subtask = function() {
@@ -250,6 +249,7 @@ function TaskFoldersViewModel() {
             else {
                 self.tasks_list(data);
             }
+            show_popover();
             $.get('/tags/all', self.tags_list);
             self.task_name_field('');
             self.task_description_field('');
@@ -290,6 +290,7 @@ function TaskFoldersViewModel() {
             task_description_editor.setValue('');
             task_name_editor.refresh();
             task_description_editor.refresh();
+            show_popover();
         });
     };
     
