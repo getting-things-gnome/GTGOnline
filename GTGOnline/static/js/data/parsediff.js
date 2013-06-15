@@ -1,6 +1,6 @@
 CodeMirror.defineMode("diff2", function() {
 	var TAG_REGEX = /(@[\w\/\.\-\:]*\w)/;
-	var match;
+	var match, workaround, decision;
 
 	return {
 		token: function(stream, state) {
@@ -13,17 +13,24 @@ CodeMirror.defineMode("diff2", function() {
 					if (ch == " ") {
 						stream.backUp(1); break;
 				}*/
-				
-				stream.string = stream.string.replace(match[0], match[0].toLowerCase());
-				while ((ch = stream.next()) != null) {
+				//workaround = stream.string.indexOf(match[0]);
+				//console.log('workaround = ' + workaround + ' char = "' + stream.string.charAt(workaround-1) + '"');
+				//if ( workaround != -1 && stream.string.charAt(workaround-1) == ' ' )
+				//{
+					stream.string = stream.string.replace(match[0], match[0].toLowerCase());
+					return "positive";
+				//}
+				/*while ((ch = stream.next()) != null) {
 					//if (!stream.match(TAG_REGEX)) {
 						//console.log('match finished');
 						stream.backUp(1);
 						break;
 					//}
 					//console.log('matching ..."' + ch + '"');
-				}
-			    return "positive";
+				}*/
+				//workaround = stream.string.slice(-3);
+				//console.log('match = "' + match + '" last char = "' + workaround + '"');
+				//decision = workaround[1] == '@' && workaround[0] != ' ';
 			}
 			while (stream.next() != null && !stream.match(TAG_REGEX, false)) {}
 			return null;

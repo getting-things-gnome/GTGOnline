@@ -22,7 +22,7 @@
 							<strong id="name" data-bind="text: name"></strong>
 						</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-							<li><a href="#" data-bind="click: $root.show_new_subtask_modal.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
+							<li><a href="#" data-bind="click: $root.show_task_modal.bind($data, id, '', '', '', '', 0)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
 							<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
 							<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
 							<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
@@ -34,7 +34,7 @@
 							<strong class="task_name" id="name" data-bind="text: shortify_name(name), attr: { 'data-content': name }" rel="popover" data-trigger="hover"></strong>
 						</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-							<li><a href="#" data-bind="click: $root.show_new_subtask_modal.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
+							<li><a href="#" data-bind="click: $root.show_task_modal.bind($data, id, '', '', '', '', 0)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
 							<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
 							<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
 							<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
@@ -56,7 +56,7 @@
 					</div>
 				</span>
 				<div class="div-inline task-description max-width350" style="width: 32%;">
-					<a href="#" style="text-decoration:none; color: #4D4D4D; font-size: 12px;" data-bind="click: $root.show_edit_task_modal.bind($data, id, name, description, start_date, due_date)">
+					<a href="#" style="text-decoration:none; color: #4D4D4D; font-size: 12px;" data-bind="click: $root.show_task_modal.bind($data, id, name, description, start_date, due_date, 1)">
 						<span data-bind="if: description_is_short(description)">
 							<span class="muted" data-bind="text: description"></span>
 						</span>
@@ -87,36 +87,6 @@
 		</div>
 	</div>
 {% endblock task_row %}
-
-{% block edit_task_modal %}
-<div id="edit_task_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 500px; margin-left: -250px;">
-	<div class="modal-header" style="padding: 10px">
-		<!--<input type="text" id="task_name_input" placeholder="Task Name" style="margin: 0px;" class="input-task-name" data-bind="value: task_name_field, valueUpdate: 'afterkeydown'" />-->
-		<input id="edit_name_field" placeholder="Task Name">
-		<!--<div data-bind="foreach: all_tags" style="margin-top: 10px">
-			<span class="label" style="margin-right: 1px;" data-bind="text: $data"></span>
-		</div>-->
-	</div>
-	<div class="modal-body" style="padding: 10px;">
-		<!--<textarea rows="10" placeholder="Task Description" class="input-task-name" style="margin: 0px; margin-bottom: 10px;" data-bind="value: task_description_field, valueUpdate: 'afterkeydown'"></textarea>-->
-		<textarea id="edit_description_textarea" placeholder="Task Description"></textarea>
-		
-		<div class="input-append date form_datetime pull-left">
-			<input size="10" type="text" readonly class="task_start_datepicker input-medium" id="start_date_field" data-bind="value: task_start_date_field">
-			<span class="add-on"><i class="icon-remove" data-bind="click: $root.reset_start_date_field"></i></span>
-		</div>
-		
-		<div class="input-append date form_datetime pull-right">
-			<input size="10" type="text" readonly class="task_due_datepicker input-medium" id="due_date_field" data-bind="value: task_due_date_field">
-			<span class="add-on"><i class="icon-remove" data-bind="click: $root.reset_due_date_field"></i></span>
-		</div>
-	</div>
-	<div class="modal-footer">
-		<button class="btn" data-bind="click: $root.hide_edit_task_modal">Close</button>
-		<button class="btn btn-primary" data-bind="click: $root.update_task">Update</button>
-	</div>
-</div>
-{% endblock edit_task_modal %}
 
 {% block external_js %}
 {{ block.super }}

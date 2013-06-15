@@ -10,6 +10,7 @@ var task_description_editor;
 
 // GLOBAL VARIABLES
 var parentId = -1
+var is_edit_task = 1;
 
 // Task Folders
 
@@ -99,10 +100,10 @@ function TaskFoldersViewModel() {
         var due_date = get_date_object(due_date_val);
         
         $('.task_due_datepicker').datetimepicker('setStartDate', newvalue);
-        console.log('newvalue = ' + newValue + ' due_date = ' + due_date_val);
+        //console.log('newvalue = ' + newValue + ' due_date = ' + due_date_val);
         
         if ((newValue != '' && due_date_val != '') && (newvalue > due_date)) {
-            console.log('changed');
+            //console.log('changed');
             $('.task_due_datepicker').datetimepicker('setDate', newvalue);
         }
         
@@ -152,79 +153,78 @@ function TaskFoldersViewModel() {
         });
     }).run();
     
-    self.show_new_task_modal = function() {
-        /*var match = ko.utils.arrayFirst(self.tasks_list(), function(item) {
-           return 28 === item.id;
-        });
+    self.show_task_modal = function(id, name, description, start_date, due_date, mode) {
+        task_name_editor.setValue(name);
+        task_description_editor.setValue(description);
+        self.task_name_field(name);
+        self.task_description_field(description);
+        self.task_start_date_field(start_date);
+        self.task_due_date_field(due_date);
+        setParentId(id);
+        setMode(mode);
+        $('#task_modal').modal('show');
         
-        if (!match) {
-            alert('no match found');
-        }
-        else {
-            var old_id =  match.id
-            self.tasks_list.replace(match, {
-                id: old_id,
-                name: 'hey',
-                description: 'none',
-                indent: 0,
-                subtasks: [],
-                tags: [],
-                start_date: '23/05/13',
-                due_date: '6/06/13',
-            });
-            alert(match.name);
-        }*/
-        
-        //alert(self.task_description_field());
-        setParentId(-1);
-        task_name_editor.setValue(self.task_name_field());
-        task_description_editor.setValue(self.task_description_field());
-        $('#new_task_modal').modal('show');
-        $('#new_task_modal').on('shown', function() {
+        $('#task_modal').on('shown', function() {
+            console.log('edit task modal shown');
             task_name_editor.refresh();
             task_description_editor.refresh();
         });
-    }
+        
+        $('#task_modal').on('hidden', function() {
+            self.task_name_field('');
+            self.task_description_field('');
+            self.task_start_date_field('');
+            self.task_due_date_field('');
+            task_name_editor.setValue('');
+            task_description_editor.setValue('');
+            task_name_editor.refresh();
+            task_description_editor.refresh();
+        });
+    };
     
-    self.show_new_subtask_modal = function(parent_id) {
+    self.close_task_modal = function() {
+        $('#task_modal').modal('hide');
         self.task_name_field('');
         self.task_description_field('');
         self.task_start_date_field('');
         self.task_due_date_field('');
-        setParentId(parent_id);
-        task_name_editor.setValue(self.task_name_field());
-        task_description_editor.setValue(self.task_description_field());
-        $('#new_task_modal').modal('show');
-        
-        $('#new_task_modal').on('shown', function() {
-            task_name_editor.refresh();
-            task_description_editor.refresh();
-        });
-    }
+        task_name_editor.setValue('');
+        task_description_editor.setValue('');
+        task_name_editor.refresh();
+        task_description_editor.refresh();
+    };
     
-    self.new_task = function() {
+    self.create_task = function() {
         if (self.task_name_field() == '') {
             alert("Task name cannot be empty");
             return
         }
-        $('#new_task_modal').modal('hide');
-        
-        if (getParentID() == -1) {
-            self.tasks_list.splice(0, 0, {
-                id: -9,
-                name: self.task_name_field(),
-                description: self.task_description_field(),
-                start_date: self.task_start_date_field(),
-                due_date: self.task_due_date_field(),
-                subtasks: [],
-                indent: 0,
-                tags: [],
-            });
-        }
+        $('#task_modal').modal('hide');
         
         self.task_name_field(convert_tags_to_lower(self.task_name_field()));
         self.task_description_field(convert_tags_to_lower(self.task_description_field()));
         
+        if (getParentID() == -1 || !getMode()) {
+            self.new_task_or_subtask();
+        }
+        else {
+            self.update_task();
+        }
+        show_popover();
+    };
+    
+    self.new_task_or_subtask = function() {
+        /*self.tasks_list.splice(0, 0, {
+            id: -9,
+            name: self.task_name_field(),
+            description: self.task_description_field(),
+            start_date: self.task_start_date_field(),
+            due_date: self.task_due_date_field(),
+            subtasks: [],
+            indent: 0,
+            tags: [],
+        });*/
+            
         $.get('/tasks/new', {
             name: self.task_name_field(),
             description: self.task_description_field() == '' ? 'none': self.task_description_field(),
@@ -233,7 +233,6 @@ function TaskFoldersViewModel() {
             folder: self.chosenFolderId(),
             parent_id: getParentID(),
         }, function(data) {
-            
             if (getParentID() != -1) {
                 var match = ko.utils.arrayFirst(self.tasks_list(), function(item) {
                     //alert(data[0].id);
@@ -252,25 +251,18 @@ function TaskFoldersViewModel() {
                 self.tasks_list(data);
             }
             $.get('/tags/all', self.tags_list);
-            setParentId(-1);
             self.task_name_field('');
             self.task_description_field('');
             self.task_start_date_field('');
             self.task_due_date_field('');
-            show_popover();
+            task_name_editor.setValue('');
+            task_description_editor.setValue('');
+            task_name_editor.refresh();
+            task_description_editor.refresh();
         });
     };
     
     self.update_task = function() {
-        if (self.task_name_field() == '') {
-            alert("Task name cannot be empty");
-            return
-        }
-        $('#edit_task_modal').modal('hide');
-        
-        self.task_name_field(convert_tags_to_lower(self.task_name_field()));
-        self.task_description_field(convert_tags_to_lower(self.task_description_field()));
-        
         $.get('/tasks/update', {
             name: self.task_name_field(),
             description: self.task_description_field() == '' ? 'none': self.task_description_field(),
@@ -294,36 +286,12 @@ function TaskFoldersViewModel() {
             }
             $.get('/tasks/get', { folder: self.chosenFolderId }, self.tasks_list)
             $.get('/tags/all', self.tags_list);
-            setParentId(-1);
-            show_popover();
-        });
-    };
-    
-    self.show_edit_task_modal = function(id, name, description, start_date, due_date) {
-        self.task_name_field(name);
-        self.task_description_field(description);
-        self.task_start_date_field(start_date);
-        self.task_due_date_field(due_date);
-        setParentId(id);
-        task_name_editor.setValue(self.task_name_field());
-        task_description_editor.setValue(self.task_description_field());
-        $('#edit_task_modal').modal('show');
-        
-        $('#edit_task_modal').on('shown', function() {
+            task_name_editor.setValue('');
+            task_description_editor.setValue('');
             task_name_editor.refresh();
             task_description_editor.refresh();
         });
-    }
-    
-    self.hide_edit_task_modal = function() {
-        $('#edit_task_modal').modal('hide');
-        self.task_name_field('');
-        self.task_description_field('');
-        self.task_start_date_field('');
-        self.task_due_date_field('');
-        task_name_editor.setValue('');
-        task_description_editor.setValue('');
-    }
+    };
     
     self.reset_start_date_field = function() {
         self.task_start_date_field('')
@@ -471,13 +439,13 @@ function get_formatted_date(date_str) {
 
 function get_date_object(date_str) {
     if (date_str == '') {
-        console.log('given date was empty');
+        //console.log('given date was empty');
         return null
     }
     var formatted_date = get_formatted_date(date_str)
-    console.log('formatted date = ' + formatted_date);
+    //console.log('formatted date = ' + formatted_date);
     var date_object = new Date(formatted_date);
-    console.log('computed date object = ' + date_object);
+    //console.log('computed date object = ' + date_object);
     return date_object
 }
 
@@ -544,6 +512,14 @@ function setParentId(new_parent_id) {
 
 function getParentID() {
     return parentId
+}
+
+function setMode(mode) {
+    is_edit_task = mode;
+}
+
+function getMode() {
+    return is_edit_task;
 }
 
 function eliminateDuplicates(arr) {
@@ -673,6 +649,7 @@ function start_codemirror(name_id, description_id) {
     task_name_editor.on("change", function(cm, change) {
 		//console.log("something changed! (" + cm.getDoc().getValue() + ")");
         a.task_name_field(cm.getDoc().getValue());
+        console.log('new name value = "' + cm.getDoc().getValue() + '"');
 	});
     
     task_description_editor = new CodeMirror.fromTextArea(document.getElementById(description_id), {
@@ -700,6 +677,7 @@ function start_codemirror(name_id, description_id) {
     
     task_description_editor.on("change", function(cm, change) {
         a.task_description_field(cm.getDoc().getValue());
+        console.log('new des value = "' + cm.getDoc().getValue() + '"');
 	});
 }
 

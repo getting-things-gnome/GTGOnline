@@ -41,10 +41,9 @@
 		{% block topbar %}{% endblock topbar %}
 	<div class="content clearfix" id="wrapper">
 	    {% block sidebar %}{% endblock sidebar %}
-		{% block new_task_modal %}{% endblock new_task_modal %}
+		{% block task_modal %}{% endblock task_modal %}
 	    <div class="section main" id="main_div">
 				{% block main %}{% endblock main %}
-				{% block edit_task_modal %}{% endblock edit_task_modal %}
 				{% block startup_modal %}
 				<div id="startup_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-header pull-center">

@@ -3,7 +3,7 @@
 {% block sidebar %}
     <div style="position: fixed; min-width: 100px;" id="sidebar">
         <div class="section sidebar" style="position: relative">
-			<button class="modern" id="showhide" style="width: 85%" data-bind="click: $root.show_new_task_modal">
+			<button class="modern" id="showhide" style="width: 85%" data-bind="click: $root.show_task_modal.bind($data, -1, '', '', '', '', 0)">
 				<span>New Task</span>
 			</button>
             <div class="widget">
@@ -65,21 +65,18 @@
     </div>
 {% endblock sidebar %}
 
-{% block new_task_modal %}
-<div id="new_task_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 500px; margin-left: -250px">
-	<div class="modal-header" style="padding: 10px;">
+{% block task_modal %}
+<div id="task_modal" class="modal hide fade task_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 500px; margin-left: -250px;">
+	<div class="modal-header" style="padding: 10px">
 		<!--<input type="text" id="task_name_input" placeholder="Task Name" style="margin: 0px;" class="input-task-name" data-bind="value: task_name_field, valueUpdate: 'afterkeydown'" />-->
-		<!--<div type="text" id="task_name_input" data-placeholder="Task Name" class="task_name_input" data-bind="htmlValue: task_name_htmlfield" contenteditable="true"></div>-->
-		<input id="task_name_field" placeholder="Task Name">
+		<input id="edit_name_field" placeholder="Task Name">
 		<!--<div data-bind="foreach: all_tags" style="margin-top: 10px">
 			<span class="label" style="margin-right: 1px;" data-bind="text: $data"></span>
 		</div>-->
 	</div>
 	<div class="modal-body" style="padding: 10px;">
 		<!--<textarea rows="10" placeholder="Task Description" class="input-task-name" style="margin: 0px; margin-bottom: 10px;" data-bind="value: task_description_field, valueUpdate: 'afterkeydown'"></textarea>-->
-		<!--<div data-placeholder="Task Description" class="task_description_textarea" data-bind="htmlValue: task_description_htmlfield" contenteditable="true"></div>-->
-		<textarea id="task_description_textarea" placeholder="Task Description"></textarea>
-		<!--<div data-bind="html: task_description_field"></div>-->
+		<textarea id="edit_description_textarea" placeholder="Task Description"></textarea>
 		
 		<div class="input-append date form_datetime pull-left">
 			<input size="10" type="text" readonly class="task_start_datepicker input-medium" id="start_date_field" data-bind="value: task_start_date_field">
@@ -92,11 +89,11 @@
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Hide</button>
-		<button class="btn btn-primary" data-bind="click: $root.new_task">Create</button>
+		<button class="btn" data-bind="click: $root.close_task_modal">Close</button>
+		<button class="btn btn-primary" data-bind="click: $root.create_task">Create</button>
 	</div>
 </div>
-{% endblock new_task_modal %}
+{% endblock task_modal %}
 
 {% block external_js %}
 {{ block.super }}
@@ -131,11 +128,8 @@
 	$(document).ready(function(){
 		//var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('task_description_textarea'));
 		
-		start_codemirror('task_name_field', 'task_description_textarea');
+		//start_codemirror('task_name_field', 'task_description_textarea');
 		start_codemirror('edit_name_field', 'edit_description_textarea');
-		
-		task_name_editor.refresh();
-        task_description_editor.refresh();
 		
 		//editor.setValue(a.task_description_field());
 		//editor.refresh();
