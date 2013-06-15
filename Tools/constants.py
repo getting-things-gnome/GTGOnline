@@ -2,6 +2,9 @@
 # The regex used to extract tags from a text
 TAG_REGEX = ur'(?:^|[\s])(@[\w\/\.\-\:]*\w)'
 
+# The regex used to validate email
+EMAIL_REGEX = ur'[\.\w]{1,}[@]\w+[.]\w+'
+
 # Task status
 IS_ACTIVE = 0
 IS_DONE = 1

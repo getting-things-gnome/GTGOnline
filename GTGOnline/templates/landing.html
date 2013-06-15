@@ -48,7 +48,17 @@
                                 <fieldset>
                                     <div id="legend">
                                         <legend class="">Login</legend>
-                                    </div>    
+                                    </div>
+									{% if error %}
+										<div class="control-group">
+	                                        <label class="validation-error controls">{{ error }}</label>
+	                                    </div>
+									{% endif %}
+									{% if success %}
+										<div class="control-group">
+	                                        <label class="validation-success controls">{{ success }}</label>
+	                                    </div>
+									{% endif %}
                                     <div class="control-group">
                                         <!-- Email -->
                                         <label class="control-label"  for="email">Email</label>
@@ -73,18 +83,19 @@
                             </form>
                         </div>
                         <div class="tab-pane fade" id="create">
-                            <form class="form-horizontal" action="{% url 'user:register' %}" method="POST" id="tab">
+                            <form name="RegistrationForm" class="form-horizontal" action="{% url 'user:register' %}" method="POST" id="tab" onsubmit="return ValidateRegistration()">
+							<!--<form name="RegistrationForm" class="form-horizontal" id="tab" onsubmit="return ValidateRegistration()">-->
                                 {% csrf_token %}
                                 <fieldset>
                                     <div id="legend">
                                         <legend class="">Register</legend>
                                     </div>
-                                    <div class="control-group">
+                                    <div class="control-group" id="register-control-group">
                                         <!-- Email -->
                                         <label class="control-label"  for="email">Email</label>
                                         <div class="controls">
-                                            <input type="text" id="email" name="email" placeholder="" class="input-xlarge">
-                                            <p class="muted">This email will be used to notify you of urgent tasks, and to fetch your gravatar</p>
+                                            <input type="text" id="email" name="email" placeholder="" class="input-xlarge" onblur="validate_email()">
+                                            <p class="muted" id="email-warning">This email will be used to notify you of urgent tasks, and to fetch your gravatar</p>
                                         </div>
                                     </div>
 									<div class="control-group">
@@ -108,7 +119,7 @@
                                         <label class="control-label" for="password">Password</label>
                                         <div class="controls">
                                             <input type="password" id="password" name="password" placeholder="" class="input-xlarge">
-                                            <p class="muted">Password should be at least 4 characters</p>
+                                            <p class="muted" id="password-warning">Password should be at least 6 characters</p>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -116,13 +127,14 @@
                                         <label class="control-label"  for="password_confirm">Password (Confirm)</label>
                                         <div class="controls">
                                             <input type="password" id="password_confirm" name="password_confirm" placeholder="" class="input-xlarge">
-                                            <p class="muted">Please confirm password</p>
+                                            <p class="muted" id="password-match-warning">Please confirm password</p>
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <!-- Button -->
                                         <div class="controls">
-                                            <button class="btn btn-success" type="submit">Register</button>
+                                            <button class="btn btn-success" type="submit" id="register_button">Register</button>
+											<p class="muted" id="register-warning"></p>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -141,6 +153,92 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
 	<script src="{{ STATIC_URL }}js/bootstrap.js"></script>
-
+	<script type="text/javascript">
+		var email_exists = false;
+		var problem_flag = 0;
+		var email_warning = document.getElementById('email-warning');
+		
+		function ValidateRegistration() {
+			var form = document.forms["RegistrationForm"];
+			
+			validate_email();
+			
+			var password = form["password"].value;
+			var password_warning = document.getElementById('password-warning');
+			//alert('password = ' + password);
+			if (password.length < 6) {
+				password_warning.innerHTML = 'Password should be minimum 6 characters';
+				password_warning.setAttribute('class', 'validation-error');
+				problem_flag = 1;
+			}
+			else {
+				password_warning.innerHTML = 'Password is valid';
+				password_warning.setAttribute('class', 'validation-success');
+			}
+			
+			var password_confirm = form["password_confirm"].value;
+			var password_match_warning = document.getElementById('password-match-warning');
+			if (password != password_confirm) {
+				password_match_warning.innerHTML = 'Passwords do not match';
+				password_match_warning.setAttribute('class', 'validation-error');
+				problem_flag = 1;
+			}
+			else {
+				password_match_warning.innerHTML = 'Passwords match';
+				password_match_warning.setAttribute('class', 'validation-success');
+			}
+			
+			var register_button = document.getElementById('register-warning');
+			if (problem_flag) {
+				register_button.innerHTML = 'You have some errors';
+				register_button.setAttribute('class', 'validation-error');
+				return false;
+			}
+			register_button.innerHTML = 'Good to go!';
+			register_button.setAttribute('class', 'validation-success');
+			return true;
+		};
+		
+		function check_email_syntax(email) {
+			var atpos = email.indexOf("@");
+			var dotpos = email.lastIndexOf(".");
+			var space = email.indexOf(' ');
+			if (atpos<1 || dotpos<atpos+2 || dotpos+1 >= email.length || space != -1) {
+				email_warning.innerHTML = 'Not a valid Email';
+				email_warning.setAttribute('class', 'validation-error');
+				problem_flag = 1;
+				return false;
+			}
+			else {
+				email_warning.innerHTML = 'Email is valid';
+				email_warning.setAttribute('class', 'validation-success');
+				problem_flag = 0;
+				return true;
+			}
+		}
+		
+		function validate_email() {
+			var email = document.forms["RegistrationForm"]["email"].value;
+			
+			if (!check_email_syntax(email)) {
+				return
+			}
+			
+			$.get('/user/check_email/', { email: email }, function(data) {
+				if (data == '1') {
+					email_warning.innerHTML = 'Email already registered';
+					email_warning.setAttribute('class', 'validation-error');
+					email_exists = true;
+					problem_flag = 1;
+				}
+				else {
+					email_warning.innerHTML = 'Email available';
+					email_warning.setAttribute('class', 'validation-success');
+					email_exists = false;
+					problem_flag = 0;
+				}
+			});
+		}
+	</script>
     </body>
 </html>

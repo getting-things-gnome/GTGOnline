@@ -773,6 +773,10 @@ form fieldset .control-group .controls span.info {
   font-style: italic;
   font-size: 12px;
 }
+
+.controls {
+  cursor: default;
+}
 /*-------------------------------------------------------------------------*/
 /* XX. Carousel */
 /*-------------------------------------------------------------------------*/
@@ -1223,17 +1227,10 @@ div.task-row {
   color: #b3b3b3;
 }*/
 
-.pretty-borders {
-  font-weight: bold;
-  font-size: 20px;
-  -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-      border-radius: 2px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  -webkit-transition: border linear 0.5s, box-shadow linear 0.5s;
-    -moz-transition: border linear 0.5s, box-shadow linear 0.5s;
-      -o-transition: border linear 0.5s, box-shadow linear 0.2s;
-        transition: border linear 0.5s, box-shadow linear 0.5s;
+.validation-error {
+  color: #ed4444;
+}
+
+.validation-success {
+  color: #23AA2A;
 }

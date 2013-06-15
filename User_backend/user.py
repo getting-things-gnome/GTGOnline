@@ -1,6 +1,8 @@
 import sys
 import logging
 
+from re import match
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
@@ -59,3 +61,17 @@ def get_first_name(user):
 
 def get_time_format(user):
     return 0
+
+def validate_form(email, password):
+    if len(password) < 6:
+        return False
+    elif not email_is_valid(email):
+        return False
+    return True
+
+def email_is_valid(email):
+    if ' ' in email:
+        return False
+    elif not match(EMAIL_REGEX, email):
+        return False
+    return True

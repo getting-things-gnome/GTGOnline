@@ -64,7 +64,7 @@
 										<span data-bind="ifnot: name_is_short(name)">
 											<span data-bind="text: shortify_name(name)"></span>
 										</span>
-										<span class="pull-right" data-bind="text: 'started - ' + prettify(start_date)"></span>
+										<span class="pull-right" data-bind="html: 'started - ' + prettify(start_date)"></span>
 									</a>
 								</div>
 								<div class="collapse" data-bind="attr: {'id': 'startup' + id}">
