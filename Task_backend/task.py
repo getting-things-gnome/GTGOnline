@@ -64,7 +64,7 @@ def modify_parents_dates(task, parent, new_due_date):
         task.save()
         return None
     if new_due_date != None and parent.due_date == None:
-        oldest_parent = get_oldest_parent(parent)
+        oldest_parent = get_oldest_parent(parent)[0]
         oldest_parent.due_date = new_due_date
         oldest_parent.save()
         set_task_tree_dates(oldest_parent, new_due_date)
