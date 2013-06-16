@@ -24,6 +24,7 @@ def landing(request):
     }
     
     error = request.session.get('error', '0');
+    request.session.flush()
     error_dict = {'error': errors_list.get(error, 'Unknown Error')}
     if error == '4':
         error_dict['success'] = errors_list.get(error);

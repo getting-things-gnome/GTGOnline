@@ -189,6 +189,7 @@
 			}
 			
 			var register_button = document.getElementById('register-warning');
+			console.log('before check, problem flag = ' + problem_flag);
 			if (problem_flag) {
 				register_button.innerHTML = 'You have some errors';
 				register_button.setAttribute('class', 'validation-error');
@@ -218,24 +219,30 @@
 		
 		function validate_email() {
 			var email = document.forms["RegistrationForm"]["email"].value;
+			console.log('email = ' + email);
 			
 			if (!check_email_syntax(email)) {
-				return
+				return;
 			}
 			
-			$.get('/user/check_email/', { email: email }, function(data) {
-				if (data == '1') {
-					email_warning.innerHTML = 'Email already registered';
-					email_warning.setAttribute('class', 'validation-error');
-					email_exists = true;
-					problem_flag = 1;
-				}
-				else {
-					email_warning.innerHTML = 'Email available';
-					email_warning.setAttribute('class', 'validation-success');
-					email_exists = false;
-					problem_flag = 0;
-				}
+			$.ajax({ url:"/user/check_email/", async:false,
+				   data: { email: email },
+				   success:function(data){
+						if (data == '1') {
+							console.log('email exists');
+							email_warning.innerHTML = 'Email already registered';
+							email_warning.setAttribute('class', 'validation-error');
+							email_exists = true;
+							problem_flag = 1;
+						}
+						else {
+							console.log('email does not exist');
+							email_warning.innerHTML = 'Email available';
+							email_warning.setAttribute('class', 'validation-success');
+							email_exists = false;
+							problem_flag = 0;
+						}
+				   }
 			});
 		}
 	</script>

@@ -74,4 +74,6 @@ def email_is_valid(email):
         return False
     elif not match(EMAIL_REGEX, email):
         return False
+    elif does_email_exist(email):
+        return False
     return True
