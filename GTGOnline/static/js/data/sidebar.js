@@ -14,32 +14,55 @@ var is_edit_task = 1;
 
 // Task Folders
 
-//ko.bindingHandlers.htmlValue = {
-//    init: function(element, valueAccessor, allBindingsAccessor) {
-//        ko.utils.registerEventHandler(element, "blur", function() {
-//            //alert('registered');
-//            var modelValue = valueAccessor();
-//            var elementValue = element.innerHTML;
-//            //console.log('text = ' + element.textContent||element.innerText);
-//            elementValue = convert_texttags_to_htmltags(elementValue);
-//            if (ko.isWriteableObservable(modelValue)) {
-//                modelValue(elementValue);
-//                
-//            }
-//            else { //handle non-observable one-way binding
-//                var allBindings = allBindingsAccessor();
-//                if (allBindings['_ko_property_writers'] && allBindings['_ko_property_writers'].htmlValue) allBindings['_ko_property_writers'].htmlValue(elementValue);
-//            }
-//        })
-//    },
-//    update: function(element, valueAccessor) {
-//        var value = ko.utils.unwrapObservable(valueAccessor()) || "";
-//        //console.log('value = ' + value + ' innerHTML = ' + element.innerHTML);
-//        if (element.innerHTML !== value) {
-//            element.innerHTML = value;
-//        }
-//    }
-//};
+ko.bindingHandlers.minicolors = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        var options = {
+			animationSpeed: 100,
+			animationEasing: 'swing',
+			change: null,
+			changeDelay: 0,
+			control: 'saturation',
+			defaultValue: '',
+			hide: null,
+			hideSpeed: 100,
+			inline: false,
+			letterCase: 'uppercase',
+			opacity: false,
+			position: 'default',
+			show: null,
+			showSpeed: 100,
+			swatchPosition: 'left',
+			textfield: true,
+			theme: 'bootstrap'
+		};
+
+        var funcOnSelectColor = function () {
+            var observable = valueAccessor();
+            observable($(element).minicolors("value"));
+        };
+
+        //-- also change event to hide
+        options.hide = funcOnSelectColor;
+
+        $(element).minicolors(options);
+
+        //handle the field changing
+        ko.utils.registerEventHandler(element, "change", funcOnSelectColor);
+
+        //handle disposal (if KO removes by the template binding)
+        ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+            $(element).minicolors("destroy");
+        });
+    },
+ 
+    update: function (element, valueAccessor) {
+        var value = ko.utils.unwrapObservable(valueAccessor());
+        var current = $(element).minicolors("value");
+        if (value - current !== 0) {
+            $(element).minicolors("value", value);
+        }
+    }
+};
 
 
 function TaskFoldersViewModel() {
@@ -63,6 +86,10 @@ function TaskFoldersViewModel() {
     
     self.task_start_date_field = ko.observable('');
     self.task_due_date_field = ko.observable('');
+    self.search_query = ko.observable('');
+    self.header_name = ko.observable('');
+    self.selected_tag = ko.observable('');
+    self.tag_color = ko.observable('#999999');
     
     self.all_tags = ko.observableArray();
     
@@ -85,11 +112,11 @@ function TaskFoldersViewModel() {
     self.modify_selected.subscribe(function (newValue) {
         if (self.modify_selected().length > 0) {
             $("#dropdown").show();
-            $("#header").hide();
+            //$("#header").hide();
         }
         else {
             $("#dropdown").hide();
-            $("#header").show();
+            //$("#header").show();
         }
     });
     
@@ -111,9 +138,20 @@ function TaskFoldersViewModel() {
         //$('.task_due_datepicker').datetimepicker('show');
     }, self);
     
+    self.tag_color.subscribe(function (newValue) {
+        //alert('newvalue = ' + newValue);
+        $.get('/tags/modify/color/',{ tag_name: self.selected_tag(), new_color: newValue, folder: self.chosenFolderId() }, function(data){
+            self.tasks_list(data);
+            $.get('/tags/all/', self.tags_list);
+            show_popover();
+        });
+    }, self);
+    
     // Behaviours
     self.goToFolder = function(folder) {
         location.hash = folder;
+        self.header_name(this.params.folder + ' Tasks');
+        $("#tag_dropdown_options").hide();
     };
     
     $.get('/tasks/get/due_by', { days_left: 0, folder: self.chosenFolderId() }, function(data) {
@@ -132,6 +170,8 @@ function TaskFoldersViewModel() {
     Sammy(function() {
         this.get('#:folder', function() {
             self.chosenFolderId(this.params.folder);
+            self.header_name(this.params.folder + ' Tasks');
+            $("#tag_dropdown_options").hide();
             $.get('/tasks/get', { folder: this.params.folder }, function(data) {
                 self.tasks_list(data);
                 show_popover();
@@ -346,19 +386,34 @@ function TaskFoldersViewModel() {
         });
     };
     
-    self.get_tasks_by_tag = function(id) {
-        $.get('/tags/get_tasks', { tag_id:id, folder: self.chosenFolderId() }, function(data) {
+    self.get_tasks_by_tag = function(name) {
+        $.get('/tags/get_tasks', { tag_name: name, folder: self.chosenFolderId() }, function(data) {
             self.tasks_list(data);
+            self.header_name(self.chosenFolderId() + ' Tasks having tag - ');
+            show_popover();
+            //$('#tag_dropdown_name').html(name);
+            self.selected_tag(name);
+            $("#tag_dropdown_options").show();
+        });
+    };
+    
+    self.call_search = function() {
+        //alert(self.search_query());
+        $.get('/tasks/search/', { query: self.search_query(), folder: self.chosenFolderId() }, function(data) {
+            self.tasks_list(data);
+            self.header_name('Filtered tasks having - "' + self.search_query() + '" in name');
+            self.search_query('');
             show_popover();
         });
+    };
+    
+    self.delete_tag = function() {
+        //alert('to be deleted - ' + self.selected_tag());
+        $.get('/tags/delete', { tag_name: self.selected_tag() }, self.tags_list);
     }
     
-    update_description_field = function(text) {
-        self.task_description_field(text);
-    }
-    
-    get_description_field = function() {
-        return self.task_description_field()
+    self.change_tag_color = function() {
+        $.get('/tags/modify/color/',{ tag_name: self.selected_tag(), new_color: self.tag_color() }, self.tags_list);
     }
 };
 
@@ -687,4 +742,11 @@ function get_gravatar_url(email) {
     var hashed_email = md5(email);
     var options = "?s=40&d=identicon";
     return gravatar_api + hashed_email + options;
+}
+
+function mark_selected2(id) {
+    alert('id = ' + id);
+    if (a.modify_selected().indexOf(id) > -1) {
+        document.getElementById('for_marking' + id).style.backgroundColor = '#23AA2A';
+    }
 }

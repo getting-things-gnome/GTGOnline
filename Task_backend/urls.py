@@ -13,5 +13,6 @@ urlpatterns = patterns('',
     url(r'^delete/$', views.delete_task, name='delete_task'),
     url(r'^main/$', views.show_title, name='show_title'),
     url(r'^new/$', views.new_task, name='new_task'),
+    url(r'^search/$', views.search, name='search'),
     url(r'^$', views.show_title, name='show_title'),
 )

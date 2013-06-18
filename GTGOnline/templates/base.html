@@ -20,6 +20,7 @@
 		<link href="{{ STATIC_URL }}css/font-awesome.min.css" rel="stylesheet">
 		<link href="{{ STATIC_URL }}css/datetimepicker.css" rel="stylesheet">
 		<link href="{{ STATIC_URL }}css/codemirror.css" rel="stylesheet">
+		<link href="{{ STATIC_URL }}css/minicolors.css" rel="stylesheet">
 		<link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500' rel='stylesheet' type='text/css'>
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
 
@@ -42,7 +43,7 @@
 	<div class="content clearfix" id="wrapper">
 	    {% block sidebar %}{% endblock sidebar %}
 		{% block task_modal %}{% endblock task_modal %}
-	    <div class="section main" id="main_div">
+	    <div class="section main" id="main_div" style="width: 82%">
 				{% block main %}{% endblock main %}
 				{% block startup_modal %}
 				<div id="startup_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -111,6 +112,7 @@
 	<script src="{{ STATIC_URL }}js/data/javascript.js"></script>
 	<script src="{{ STATIC_URL }}js/data/parsediff.js"></script>
 	<script src="{{ STATIC_URL }}js/data/placeholder.js"></script>
+	<script src="{{ STATIC_URL }}js/data/minicolors.js"></script>
 	<script type="text/javascript">
 	</script>
 	{% endblock external_js %}

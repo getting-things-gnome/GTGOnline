@@ -3,7 +3,7 @@
 {% block task_row %}
 	<div data-bind="foreach: tasks_list" id="task_rows_container" class="min-width950">
 		<div class="accordion-heading">
-			<div class="task-row min-width950" style="display: block;" data-bind="style: { marginLeft: (30*indent) + 'px', borderLeft: indent > 0 ? '1px solid #dedede' : '0px'}, css: { taskDone: status == 1, taskDismissed: status == 2 }">
+			<div class="task-row min-width950" style="display: block;" data-bind="style: { marginLeft: (30*indent) + 'px', borderLeft: indent > 0 ? '1px solid #dedede' : '0px'}, css: { taskDone: status == 1, taskDismissed: status == 2 }, attr: { 'id': 'for_marking' + id }">
 				<div class="div-inline pull-left min-width25" style="margin-left: 5px">
 					<input type="checkbox" class="checkbox show_dropdown" data-bind="attr: { 'value': id }, checked: $root.modify_selected" />
 				</div>

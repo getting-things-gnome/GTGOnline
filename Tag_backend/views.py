@@ -1,6 +1,6 @@
 # Create your views here.
 
-import json
+import json,sys
 
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -16,7 +16,7 @@ def get_all_tags(request):
                         mimetype="application/json")
 
 def get_tasks(request):
-    tag_id = request.GET.get('tag_id', -1)
+    tag_name = request.GET.get('tag_name', '')
     folder = request.GET.get('folder', 'Active')
     
     folder_dict = {
@@ -25,9 +25,9 @@ def get_tasks(request):
         'Done': IS_DONE,
         'Dismissed': IS_DISMISSED
     }
-    task_status = folder_dict[folder]
+    task_status = folder_dict.get(folder, IS_ACTIVE)
     
-    tasks_by_tag = get_tasks_by_tag(request.user, tag_id, task_status)
+    tasks_by_tag = get_tasks_by_tag(request.user, tag_name, task_status)
     return HttpResponse(json.dumps(tasks_by_tag, indent=4), \
                         mimetype="application/json")
 
@@ -36,15 +36,17 @@ def add_tag(request):
     task_id = request.GET.get('task_id', -1)
 
 def delete_tag(request):
-    tag_id = request.GET.get('tag_id', -1)
-    delete_tag_modify_tasks(request.user, tag_id)
+    tag_name = request.GET.get('tag_name', '')
+    delete_tag_modify_tasks(request.user, tag_name)
     return HttpResponseRedirect('/tags/all/')
 
 def modify_color(request):
-    tag_id = request.GET.get('tag_id', -1)
-    new_color = request.GET.get('color', '')
-    update_tag_color(request.user, tag_id, new_color)
-    return HttpResponseRedirect('/tags/all/')
+    tag_name = request.GET.get('tag_name', '')
+    new_color = request.GET.get('new_color', '')
+    folder = request.GET.get('folder', 'Active')
+    update_tag_color(request.user, tag_name, new_color)
+    return HttpResponseRedirect('/tags/get_tasks/?tag_name=' +
+                                tag_name + '&folder=' + folder)
 
 def modify_icon(request):
     tag_id = request.GET.get('tag_id', -1)

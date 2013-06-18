@@ -906,6 +906,10 @@ form fieldset .control-group .controls span.info {
   /*margin-right: -1px;*/
 }
 
+.dropdown-options table.navigation #active:hover {
+  background: #15AAFF;
+}
+
 .dropdown-options table.navigation #done:hover {
   background: #36D143;
 }
@@ -1233,4 +1237,16 @@ div.task-row {
 
 .validation-success {
   color: #23AA2A;
+}
+
+.mark_selected {
+  background-color: #23AA2A;
+}
+
+.tag-name {
+ font: 300 30px/1 'Open Sans', Helvetica, sans-serif;
+}
+
+.width100 {
+  width: 70px;
 }

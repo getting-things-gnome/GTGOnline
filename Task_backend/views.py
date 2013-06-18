@@ -13,7 +13,7 @@ from Task_backend.task import get_task_object, get_task_tree, \
                               change_task_status, change_task_tree_status, \
                               get_oldest_parent, delete_task_tree, add_task, \
                               get_tasks_by_due_date, update_task_details, \
-                              delete_single_task
+                              delete_single_task, search_tasks
 from Tag_backend.tag import find_tags
 from Tools.constants import *
 from Tools.dates import get_datetime_object
@@ -171,5 +171,15 @@ def get_tasks_due_by(request):
     
     due_by = request.GET.get('due_by', '0/0/0')
     tasks_list = get_tasks_by_due_date(request.user, days_left, task_status)
-    return HttpResponse(json.dumps(tasks_list, indent=4), \
+    return HttpResponse(json.dumps(tasks_list, indent = 4), \
+                        mimetype="application/json")
+
+def search(request):
+    folder = request.GET.get('folder', 'Active')
+    query = request.GET.get('query', '')
+    if query == '':
+        return HttpResponseRedirect('/tasks/get/?folder=' + folder)
+    
+    tasks_list = search_tasks(request.user, query)
+    return HttpResponse(json.dumps(tasks_list, indent = 4), \
                         mimetype="application/json")

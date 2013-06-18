@@ -22,8 +22,8 @@
             </div>
             <form class="searchform pull-left">
                 <div class="input-icon-append">
-                	<input placeholder="Search" type="text">
-                    <button type="submit" rel="tooltip-bottom" class="icon" data-original-title="search">
+                	<input placeholder="Search" type="text" data-bind="value: search_query, valueUpdate: 'afterkeydown'">
+                    <button type="submit" rel="tooltip-bottom" class="icon" data-original-title="search" data-bind="click: $root.call_search">
                     	<i class="icon-search"></i>
                     </button>
                 </div>

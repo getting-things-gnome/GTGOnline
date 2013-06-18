@@ -85,8 +85,8 @@ def update_tag_name(user, tag_id, new_name):
     tag.name = new_name
     tag.save()
     
-def update_tag_color(user, tag_id, new_color):
-    tag = get_tag_object(user, tag_id = tag_id)
+def update_tag_color(user, tag_name, new_color):
+    tag = get_tag_object(user, tag_name = tag_name)
     if tag == None:
         return
     tag.color = new_color
@@ -107,15 +107,14 @@ def get_task_count(user, tag_name = None, tag_id = None):
     tag = get_tag_object(user, tag_name, tag_id)
     return tag.task_set.count()
 
-def delete_tag_modify_tasks(user, tag_id):
-    tag = get_tag_object(user, tag_id = tag_id)
+def delete_tag_modify_tasks(user, tag_name):
+    tag = get_tag_object(user, tag_name = tag_name)
     if tag == None:
         return
     tag_name = tag.name
-    tasks_of_tag = tag.task_set.all()
-    for task in tasks_of_tag:
-        task.name = task.name.replace('@', '')
-        task.description = task.description.replace('@', '')
+    for index, task in enumerate(tag.task_set.all()):
+        task.name = task.name.replace('@' + tag_name, tag_name)
+        task.description = task.description.replace('@' + tag_name, tag_name)
         task.tags.remove(tag)
         task.save()
     tag.delete()
@@ -125,5 +124,6 @@ def delete_orphan_tags(task, tags_list):
     for index, tag in enumerate(tags_list):
         #print >>sys.stderr, "for tag = " + tag.name + " task_set = " + str(tag.task_set.all())
         all_tasks = tag.task_set.all()
-        if all_tasks.count() == 0 or ( all_tasks.count() == 1 and task in all_tasks ):
+        if all_tasks.count() == 0 or \
+            ( all_tasks.count() == 1 and task in all_tasks ):
             tag.delete()

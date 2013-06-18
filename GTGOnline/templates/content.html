@@ -3,12 +3,28 @@
 {% block main %}
 {% block header+dropdown_options %}
 	<div class="section-header" id="header">
-		<h1 data-bind="text: $root.chosenFolderId() + ' Tasks'"></h1>
+		<h1 data-bind="text: header_name()"></h1>
+		<div class="dropdown div-inline" style="display: none" id="tag_dropdown_options">
+			<a data-toggle="dropdown" href="#" class="tag-name" data-bind="text: selected_tag" style="text-decoration: none">
+				<span class="label tag-name" id="tag_dropdown_name" ></span>
+			</a>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+				<li>
+					<!--<a tabindex="-1" href="#">Color</a>-->
+					<!--<ul class="dropdown-menu">-->
+					<form style="margin-bottom: 5px;">
+						<input type="text" id="colorpicker_input" name="color" class="minicolors dropdown width100" data-bind="minicolors: tag_color"/>
+					</form>
+					<!--</ul>-->
+				</li>
+				<li><a href="#" data-bind="click: $root.delete_tag">Delete Tag</a></li>
+			</ul>
+		</div>
 	</div>
-	<div class="dropdown-options" style="display: none; height: 61px;" id="dropdown">
-		<table class="navigation nav-collapse" style="height: 61px">
+	<div class="dropdown-options" style="display: none; height: 61px; position: fixed; left: 18%; width: 500px; top: 50px; background-color: #f7f7f7; z-index: 2; width: 100%;" id="dropdown">
+		<table class="navigation nav-collapse" style="height: 61px;">
 			<tr>
-				<td id="done">
+				<td id="active">
 					<a href="#" data-bind="click: $root.change_status.bind($data, -1, 0, 0)">
 						<i class="icon-play"></i>
 						<span>Active</span>
@@ -49,22 +65,26 @@
 {{ block.super }}
 
 <script type="text/javascript">
-	var $featartban = $("#featartban");
-	var $featartinside = $("#featartinside");
-	$featartban.toggle(function show() {
-		$featartinside.animate({
-			width: 730,
-			marginLeft: 1,
-			marginRight: -730,
-			display: 'toggle'
-		}, 'slow');
-	}, function hide() {
-		$featartinside.animate({
-			width: 0,
-			marginLeft: 730,
-			marginRight: 0,
-			display: 'toggle'
-	}, 'slow');
+	$(document).ready(function() {
+		/*$('INPUT.minicolors').minicolors({
+			animationSpeed: 100,
+			animationEasing: 'swing',
+			change: null,
+			changeDelay: 0,
+			control: 'saturation',
+			defaultValue: '',
+			hide: null,
+			hideSpeed: 100,
+			inline: false,
+			letterCase: 'uppercase',
+			opacity: false,
+			position: 'default',
+			show: null,
+			showSpeed: 100,
+			swatchPosition: 'left',
+			textfield: true,
+			theme: 'bootstrap'
+		});*/
 	});
 </script>
 {% endblock external_js %}

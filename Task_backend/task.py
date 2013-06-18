@@ -157,6 +157,13 @@ def get_task_tree(user, task_list, indent, visited_list, folder):
                                               indent, visited_list, folder))
     return task_tree
 
+def get_task_tree2(user, task_list, indent, visited_list, folder):
+    task_tree = []
+    for index, task in enumerate(task_list):
+        if not visited(task, visited_list):
+            visited_list = set_visited(task, visited_list)
+            oldest_parent = get_oldest_parent(task)
+
 def update_task_details(user, task_id, new_name, new_description, \
                         new_start_date, new_due_date, folder):
     task = get_task_object(user, task_id)
@@ -374,8 +381,8 @@ def delete_task_tree(task):
         subtask.delete()
         #print >>sys.stderr, "after delete, tags_list = " + str(tags_list)
 
-def get_tasks_by_tag(user, tag_id, task_status):
-    tag = get_tag_object(user, tag_id = tag_id)
+def get_tasks_by_tag(user, tag_name, task_status):
+    tag = get_tag_object(user, tag_name = tag_name)
     if tag == None:
         return []
     task_list = []
@@ -392,6 +399,13 @@ def get_tasks_by_due_date(user, days_left, task_status):
     datetime_object = get_datetime_from_days_left(days_left)
     tasks = Task.objects.filter(user = user, due_date = datetime_object, \
                                 status = task_status)
+    for task in tasks:
+        task_list.append(get_task_details(user, task))
+    return task_list
+
+def search_tasks(user, query):
+    tasks = Task.objects.filter(user = user, name__icontains = query)
+    task_list = []
     for task in tasks:
         task_list.append(get_task_details(user, task))
     return task_list

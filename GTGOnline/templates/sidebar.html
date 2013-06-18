@@ -27,7 +27,7 @@
                 	<h3>Tags</h3>
                 </div>
                 <div class="widget-content" data-bind="foreach: tags_list" id="sidebar_tags_list" style="padding: 5px 15px; max-height: 200px; overflow: auto;">
-					<a href="#" style="text-decoration: none;" data-bind="click: $root.get_tasks_by_tag.bind($data, id)">
+					<a href="#" style="text-decoration: none;" data-bind="click: $root.get_tasks_by_tag.bind($data, name)">
 						<span class="label" data-bind="text: name + '|' + count, style: { backgroundColor: color }, attr: { 'id': id }"></span>
 					</a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
