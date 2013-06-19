@@ -14,6 +14,34 @@ var is_edit_task = 1;
 
 // Task Folders
 
+ko.bindingHandlers.htmlValue = {
+    init: function(element, valueAccessor, allBindingsAccessor) {
+        ko.utils.registerEventHandler(element, "blur", function() {
+            //alert('registered');
+            var modelValue = valueAccessor();
+            var elementValue = element.innerHTML;
+            console.log('text = ' + element.textContent||element.innerText);
+            //elementValue = convert_texttags_to_htmltags(elementValue);
+            //highlight(document.getElementById('task_description_field2'),'@tag','label-input label');
+            if (ko.isWriteableObservable(modelValue)) {
+                modelValue(elementValue);
+                
+            }
+            else { //handle non-observable one-way binding
+                var allBindings = allBindingsAccessor();
+                if (allBindings['_ko_property_writers'] && allBindings['_ko_property_writers'].htmlValue) allBindings['_ko_property_writers'].htmlValue(elementValue);
+            }
+        })
+    },
+    update: function(element, valueAccessor) {
+        var value = ko.utils.unwrapObservable(valueAccessor()) || "";
+        console.log('value = ' + value + ' innerHTML = ' + element.innerHTML);
+        if (element.innerHTML !== value) {
+            element.innerHTML = value;
+        }
+    }
+};
+
 ko.bindingHandlers.minicolors = {
     init: function (element, valueAccessor, allBindingsAccessor) {
         var options = {
@@ -208,6 +236,8 @@ function TaskFoldersViewModel() {
             console.log('edit task modal shown');
             task_name_editor.refresh();
             task_description_editor.refresh();
+            $("#task_description_field2").highlightTextarea('highlight');
+            $("#task_name_input").highlightTextarea('highlight');
         });
         
         $('#task_modal').on('hidden', function() {
@@ -219,6 +249,8 @@ function TaskFoldersViewModel() {
             task_description_editor.setValue('');
             task_name_editor.refresh();
             task_description_editor.refresh();
+            $("#task_description_field2").highlightTextarea('highlight');
+            $("#task_name_input").highlightTextarea('highlight');
         });
     };
     
@@ -653,12 +685,12 @@ function convert_texttags_to_htmltags(text) {
     }
     console.log('tags = "' + tags + '"');
     for (var i=0; i < length; i++) {
-        if (text.indexOf(tags[i] + '</span>') == -1) {
+        if (text.indexOf(tags[i] + '</em>') == -1) {
             console.log('not found ' + tags[i] + ' replacing ...');
-        text = text.replace(tags[i], " " + '<span class="label label-input">' + tags[i].toLowerCase().replace(/^ /, '') + '</span>');
+        text = text.replace(tags[i], " " + '<em class="label label-input">' + tags[i].toLowerCase().replace(/^ /, '') + '</em>');
         }
     }
-    text = text.replace('<span class="label label-input"></span>', '>@<');
+    text = text.replace('<em class="label label-input"></em>', '>@<');
     //text = text.replace('<span class="label label-input"></span>', '@');
     
     console.log('at the end, text = "' + text + '"');
@@ -699,7 +731,7 @@ function start_codemirror(name_id, description_id) {
     //task_name_editor.getWrapperElement().style["max-height"] = "64px";
     task_name_editor.getWrapperElement().style.fontWeight = "bold";
     task_name_editor.getWrapperElement().style.fontSize = "20px";
-    task_name_editor.getWrapperElement().style["display"] = "block";
+    task_name_editor.getWrapperElement().style["display"] = "none";
     task_name_editor.refresh();
     
     task_name_editor.on("change", function(cm, change) {
@@ -724,7 +756,7 @@ function start_codemirror(name_id, description_id) {
     task_description_editor.setSize(466, 200);
     task_description_editor.setValue(a.task_description_field());
     task_description_editor.getWrapperElement().style["font-weight"] = "normal";
-    task_description_editor.getWrapperElement().style["display"] = "block";
+    task_description_editor.getWrapperElement().style["display"] = "none";
     task_description_editor.getWrapperElement().style.fontWeight = "normal";
     task_description_editor.getWrapperElement().style.fontSize = "14px";
     //task_description_editor.getWrapperElement().style["tabindex"] = 2;

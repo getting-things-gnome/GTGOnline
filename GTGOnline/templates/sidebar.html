@@ -70,6 +70,8 @@
 	<div class="modal-header" style="padding: 10px">
 		<!--<input type="text" id="task_name_input" placeholder="Task Name" style="margin: 0px;" class="input-task-name" data-bind="value: task_name_field, valueUpdate: 'afterkeydown'" />-->
 		<input id="task_name_field" placeholder="Task Name">
+		<!--<div id="task_name_input" class="task_name_input" data-bind="htmlValue: task_name_htmlfield" contenteditable="true" data-placeholder="Task Name"></div>-->
+		<textarea id="task_name_input" class="task_name_input" data-bind="value: task_name_field, valueUpdate: 'afterkeydown'" placeholder="Task Name"></textarea>
 		<!--<div data-bind="foreach: all_tags" style="margin-top: 10px">
 			<span class="label" style="margin-right: 1px;" data-bind="text: $data"></span>
 		</div>-->
@@ -77,6 +79,8 @@
 	<div class="modal-body" style="padding: 10px;">
 		<!--<textarea rows="10" placeholder="Task Description" class="input-task-name" style="margin: 0px; margin-bottom: 10px;" data-bind="value: task_description_field, valueUpdate: 'afterkeydown'"></textarea>-->
 		<textarea id="task_description_textarea" placeholder="Task Description"></textarea>
+		<!--<div id="task_description_field2" class="task_description_textarea" data-bind="htmlValue: task_description_htmlfield" contenteditable="true" data-placeholder="Task Description"></div>-->
+		<textarea id="task_description_field2" class="task_description_textarea" data-bind="value: task_description_field, valueUpdate: 'afterkeydown'" placeholder="Task Description"></textarea>
 		
 		<div class="input-append date form_datetime pull-left">
 			<input size="10" type="text" readonly class="task_start_datepicker input-medium" id="start_date_field" data-bind="value: task_start_date_field">
@@ -136,7 +140,25 @@
 		//get_tags_by_user();
 		//get_todays_date();
 		//ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("task_rows_container"));
+		
+	$("#task_description_field2").highlightTextarea({
+		words: ["(@[\w\/\.\-\:]*\w)"]
 	});
+	
+	$("#task_name_input").highlightTextarea({
+		words: ["(@[\w\/\.\-\:]*\w)"]
+	});
+		
+	});
+	
+	function highlight(container,what,spanClass) {
+	    var content = container.innerHTML,
+        pattern = new RegExp('(>[^<.]*)(' + what + ')([^<.]*)','g'),
+        replaceWith = '$1<span ' + ( spanClass ? 'class="' + spanClass + '"' : '' ) + '">$2</span>$3',
+        highlighted = content.replace(pattern,replaceWith);
+	    return (container.innerHTML = highlighted) !== content;
+	}
+	
 </script>
 
 {% endblock external_js %}

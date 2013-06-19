@@ -1189,9 +1189,9 @@ div.task-row {
   }
 
 .task_name_input {
-  height: 20px;
+  height: 21px;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .task_description_textarea {
