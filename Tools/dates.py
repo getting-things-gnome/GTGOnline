@@ -3,13 +3,17 @@ from User_backend.user import get_time_format
 from constants import *
 
 def get_datetime_object(input_str):
-    if input_str == None or input_str == '':
-        return None
     #elif input_str.lower() in FUZZY_DATES:
     #    return fuzzy_str_to_datetime(input_str)
     #elif input_str[-2:].lower() == 'am' or input_str[-2:].lower() == 'pm':
         #return datetime.strptime(input_str, CONVERT_12_HR)
-    return datetime.strptime(input_str, CONVERT_24_HR)
+    try:
+        if len(input_str) == 8:
+            return datetime.strptime(input_str, CONVERT_24_HR)
+        else:
+            return datetime.strptime(input_str, CONVERT_24_HR_FULL_YEAR)
+    except Exception:
+        return None
 
 
 # Don't use the below 2 functions anywhere in the project right now.

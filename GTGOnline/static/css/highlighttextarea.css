@@ -41,6 +41,7 @@
 }
 .highlightTextarea  .highlight {
   line-height: inherit;
+  /*line-height: 30px;*/
 }
 .highlightTextarea .ui-resizable-se {
   bottom: 13px;
@@ -49,4 +50,7 @@
 .highlight {
   padding: 1px 0px;
   background-color: rgba(225, 255, 0, 0.8);
+  color: transparent;
+  /*font-weight: bold;*/
+  /*font-size: 20px;*/
 }

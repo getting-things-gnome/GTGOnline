@@ -5,6 +5,11 @@ TAG_REGEX = ur'(?:^|[\s])(@[\w\/\.\-\:]*\w)'
 # The regex used to validate email
 EMAIL_REGEX = ur'[\.\w]{1,}[@]\w+[.]\w+'
 
+# The regexes used for start date and due date
+START_STRING_REGEX = ur'(start\s*:\s*\d{1,2}\/\d{1,2}\/\d{2,4})'
+DUE_STRING_REGEX = ur'(due\s*:\s*\d{1,2}\/\d{1,2}\/\d{2,4})'
+DATE_REGEX = ur'\d{1,2}\/\d{1,2}\/\d{2,4}'
+
 # Task status
 IS_ACTIVE = 0
 IS_DONE = 1
@@ -22,6 +27,9 @@ TIME_FORMAT_12_HR = 1
 # Conversion strings for both the time formats
 CONVERT_24_HR = '%d/%m/%y'
 CONVERT_12_HR = '%d/%m/%y'
+
+CONVERT_24_HR_FULL_YEAR = '%d/%m/%Y'
+CONVERT_12_HR_FULL_YEAR = '%d/%m/%Y'
 
 CONVERT_24_HR_WITH_TIME = '%d/%m/%y %H:%M'
 CONVERT_12_HR_WITH_TIME = '%d/%m/%y %I:%M %p'

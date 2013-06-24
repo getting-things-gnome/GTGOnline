@@ -66,23 +66,23 @@
 {% endblock sidebar %}
 
 {% block task_modal %}
-<div id="task_modal" class="modal hide fade task_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 500px; margin-left: -250px;">
-	<div class="modal-header" style="padding: 10px">
+<div id="task_modal" class="modal hide fade task_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 700px; margin-left: -350px;">
+	<!--<div class="modal-header" style="padding: 10px">-->
 		<!--<input type="text" id="task_name_input" placeholder="Task Name" style="margin: 0px;" class="input-task-name" data-bind="value: task_name_field, valueUpdate: 'afterkeydown'" />-->
-		<input id="task_name_field" placeholder="Task Name" style="display: none">
 		<!--<div id="task_name_input" class="task_name_input" data-bind="htmlValue: task_name_htmlfield" contenteditable="true" data-placeholder="Task Name"></div>-->
-		<textarea id="task_name_input" class="task_name_input" data-bind="value: task_name_field, valueUpdate: 'afterkeydown'" placeholder="Task Name"></textarea>
+		<!--<textarea id="task_name_input" class="task_name_input" data-bind="value: task_name_field, valueUpdate: 'afterkeydown'" placeholder="Task Name"></textarea>-->
 		<!--<div data-bind="foreach: all_tags" style="margin-top: 10px">
 			<span class="label" style="margin-right: 1px;" data-bind="text: $data"></span>
 		</div>-->
-	</div>
-	<div class="modal-body" style="padding: 10px;">
+	<!--</div>-->
+	<div class="modal-body" style="padding: 10px; padding-bottom: 0px;">
+		<input id="task_name_field" placeholder="Task Name" style="display: none">
 		<!--<textarea rows="10" placeholder="Task Description" class="input-task-name" style="margin: 0px; margin-bottom: 10px;" data-bind="value: task_description_field, valueUpdate: 'afterkeydown'"></textarea>-->
 		<textarea id="task_description_textarea" placeholder="Task Description" style="display: none"></textarea>
 		<!--<div id="task_description_field2" class="task_description_textarea" data-bind="htmlValue: task_description_htmlfield" contenteditable="true" data-placeholder="Task Description"></div>-->
-		<textarea id="task_description_field2" class="task_description_textarea" data-bind="value: task_description_field, valueUpdate: 'afterkeydown'" placeholder="Task Description"></textarea>
+		<textarea id="task_description_field2" class="task_description_textarea" data-bind="value: task_description_field, valueUpdate: 'afterkeydown'" placeholder="Blaine County" style="color: #4d4d4d"></textarea>
 		
-		<div class="input-append date form_datetime pull-left">
+		<!--<div class="input-append date form_datetime pull-left">
 			<input size="10" type="text" readonly class="task_start_datepicker input-medium" id="start_date_field" data-bind="value: task_start_date_field">
 			<span class="add-on"><i class="icon-remove" data-bind="click: $root.reset_start_date_field"></i></span>
 		</div>
@@ -90,7 +90,7 @@
 		<div class="input-append date form_datetime pull-right">
 			<input size="10" type="text" readonly class="task_due_datepicker input-medium" id="due_date_field" data-bind="value: task_due_date_field">
 			<span class="add-on"><i class="icon-remove" data-bind="click: $root.reset_due_date_field"></i></span>
-		</div>
+		</div>-->
 	</div>
 	<div class="modal-footer">
 		<button class="btn" data-bind="click: $root.close_task_modal">Close</button>
@@ -105,6 +105,7 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/data/tags.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/data/sidebar.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/datetimepicker/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/data/textarea.js"></script>
 
 <script type="text/javascript">
 	$(".task_start_datepicker").datetimepicker({
@@ -141,14 +142,13 @@
 		//get_todays_date();
 		//ko.applyBindings(new TaskFoldersViewModel(), document.getElementById("task_rows_container"));
 		
-	$("#task_description_field2").highlightTextarea({
-		words: ["(@[\w\/\.\-\:]*\w)"]
-	});
+		$("#task_description_field2").highlightTextarea({
+			words: ["(@[\w\/\.\-\:]*\w)"]
+		});
 	
-	$("#task_name_input").highlightTextarea({
-		words: ["(@[\w\/\.\-\:]*\w)"]
-	});
-		
+		$("#task_name_input").highlightTextarea({
+			words: ["(@[\w\/\.\-\:]*\w)"]
+		});	
 	});
 	
 	function highlight(container,what,spanClass) {
@@ -158,7 +158,6 @@
         highlighted = content.replace(pattern,replaceWith);
 	    return (container.innerHTML = highlighted) !== content;
 	}
-	
 </script>
 
 {% endblock external_js %}

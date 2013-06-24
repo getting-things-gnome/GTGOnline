@@ -117,7 +117,7 @@ function TaskFoldersViewModel() {
     self.search_query = ko.observable('');
     self.header_name = ko.observable('');
     self.selected_tag = ko.observable('');
-    self.tag_color = ko.observable('#999999');
+    self.tag_color = ko.observable('#F89406');
     
     self.all_tags = ko.observableArray();
     
@@ -230,6 +230,7 @@ function TaskFoldersViewModel() {
         self.task_due_date_field(due_date);
         setParentId(id);
         setMode(mode);
+        clear_all_globals();
         $('#task_modal').modal('show');
         
         $('#task_modal').on('shown', function() {
@@ -238,6 +239,7 @@ function TaskFoldersViewModel() {
             task_description_editor.refresh();
             $("#task_description_field2").highlightTextarea('highlight');
             $("#task_name_input").highlightTextarea('highlight');
+            $("#task_description_field2").focus();
         });
         
         $('#task_modal').on('hidden', function() {
@@ -267,10 +269,10 @@ function TaskFoldersViewModel() {
     };
     
     self.create_task = function() {
-        if (self.task_name_field() == '') {
+        /*if (self.task_name_field() == '') {
             alert("Task name cannot be empty");
             return
-        }
+        }*/
         $('#task_modal').modal('hide');
         
         self.task_name_field(convert_tags_to_lower(self.task_name_field()));
@@ -296,9 +298,9 @@ function TaskFoldersViewModel() {
             tags: [],
         });*/
             
-        $.get('/tasks/new', {
+        $.get('/tasks/new_list', {
             name: self.task_name_field(),
-            description: self.task_description_field() == '' ? 'none': self.task_description_field(),
+            new_list: self.task_description_field() == '' ? 'none': self.task_description_field(),
             start_date: self.task_start_date_field(),
             due_date: self.task_due_date_field(),
             folder: self.chosenFolderId(),
@@ -415,6 +417,7 @@ function TaskFoldersViewModel() {
             self.tasks_list(data);
             show_popover();
             $.get('/tags/all', self.tags_list);
+            $("#dropdown").hide();
         });
     };
     

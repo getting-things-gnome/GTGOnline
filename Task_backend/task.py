@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
+
 import json
 import sys
+import re
 
 from Task_backend.models import Task
 from User_backend.user import get_user_object
@@ -48,6 +51,7 @@ def add_task(user, name, description, start_date, due_date, folder, \
     new_task.save()
     new_task.tags.add(*(new_tags+existing_tags))
     
+    parent = None
     if parent_id != -1:
         parent = get_task_object(user, parent_id)
         if parent != None:
@@ -409,3 +413,22 @@ def search_tasks(user, query):
     for task in tasks:
         task_list.append(get_task_details(user, task))
     return task_list
+
+def add_new_list(user, new_list, folder):
+    print >>sys.stderr, new_list
+    task_list = [line.strip() for line in new_list.split(u'\n•')]
+    print >>sys.stderr, task_list
+    for line in task_list:
+        start_date, due_date = '', ''
+        match = re.findall(START_STRING_REGEX, line)
+        if match != []:
+            start_date = re.search(DATE_REGEX, match[0]).group(0)
+            print >>sys.stderr, 'start_date middle = ' + str(start_date)
+            line = line.replace(match[0], '')
+        match = re.findall(DUE_STRING_REGEX, line)
+        if match != []:
+            due_date = re.search(DATE_REGEX, match[0]).group(0)
+            print >>sys.stderr, 'start_date middle = ' + str(start_date)
+            line = line.replace(match[0], '')
+        print >>sys.stderr, 'line = ' + line + ' start date = ' + start_date + ' due_date = ' + due_date
+        add_task(user, line, 'none', start_date, due_date, folder)

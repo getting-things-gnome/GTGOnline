@@ -1168,8 +1168,8 @@ div.task-row {
 .task_name_input,
 .task_description_textarea {
   padding: 4px 6px;
-  width: 466px;
-  max-width: 466px;
+  width: 666px;
+  max-width: 666px;
   font-size: 14px;
   font-weight: normal;
   line-height: 20px;
@@ -1195,7 +1195,7 @@ div.task-row {
 }
 
 .task_description_textarea {
-  height: 200px;
+  height: 400px;
   min-height: 150px;
   /*overflow: auto;*/
   resize: vertical;
@@ -1210,6 +1210,10 @@ div.task-row {
     -moz-transition: border linear 0.5s, box-shadow linear 0.5s;
       -o-transition: border linear 0.5s, box-shadow linear 0.2s;
         transition: border linear 0.5s, box-shadow linear 0.5s;
+  /*-moz-user-select: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;*/
 }
 
 .task_name_input:focus,
@@ -1249,4 +1253,26 @@ div.task-row {
 
 .width100 {
   width: 70px;
+}
+
+.small-icon {
+  width: 2px;
+  height: 2px;
+}
+
+.mark_start_date {
+  padding: 1px 0px;
+  background-color: rgba(85, 255, 38, 0.6);
+}
+
+.mark_due_date {
+  padding: 1px 0px;
+  background-color: rgba(255, 7, 7, 0.4);
+}
+
+.mark_tokens {
+  background-color: #DEDEDE;
+  -webkit-border-radius: 0px 50% 50% 0px;
+    -moz-border-radius: 0px 50% 50% 0px;
+      border-radius: 0px 50% 50% 0px;
 }

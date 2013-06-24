@@ -13,7 +13,7 @@ from Task_backend.task import get_task_object, get_task_tree, \
                               change_task_status, change_task_tree_status, \
                               get_oldest_parent, delete_task_tree, add_task, \
                               get_tasks_by_due_date, update_task_details, \
-                              delete_single_task, search_tasks
+                              delete_single_task, search_tasks, add_new_list
 from Tag_backend.tag import find_tags
 from Tools.constants import *
 from Tools.dates import get_datetime_object
@@ -34,7 +34,7 @@ def get_tasks(request):
     }
     
     folder_get = request.GET.get('folder', 'Active')
-    folder_state = folder_dict[folder_get]
+    folder_state = folder_dict.get(folder_get, IS_ACTIVE)
     
     if folder_state == -1:
         task_tree = get_task_tree(request.user, \
@@ -183,3 +183,9 @@ def search(request):
     tasks_list = search_tasks(request.user, query)
     return HttpResponse(json.dumps(tasks_list, indent = 4), \
                         mimetype="application/json")
+
+def create_new_list(request):
+    folder = request.GET.get('folder', 'Active')
+    new_list = request.GET.get('new_list', '')
+    add_new_list(request.user, new_list, folder)
+    return HttpResponseRedirect('/tasks/get/?folder=' + folder)

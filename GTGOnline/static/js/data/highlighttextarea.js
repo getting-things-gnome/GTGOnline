@@ -29,6 +29,7 @@
         var callable = ['highlight','enable','disable','setOptions','setWords'];
         
         var plugin = $(this).data('highlightTextarea');
+        //console.log('plugin = ' + plugin[options]);
         
         // already instantiated and trying to execute a method
         if (plugin && typeof options === 'string') {
@@ -110,7 +111,7 @@
             this.$highlighterContainer = this.$main.children('.highlighterContainer');
             
             if (this.$highlighterContainer.find('.highlighter').length <= 0) {
-                this.$highlighterContainer.html('<div class="highlighter"></div>');
+                this.$highlighterContainer.html('<div class="highlighter" id="textarea_guardian"></div>');
             }
             this.$highlighter = this.$highlighterContainer.children('.highlighter');
 
@@ -338,8 +339,21 @@
                 //for (var i=0; i < replace.length; i++) {
                     //text = text.replace(replace[i], "<span class=\"highlight\" style=\"background-color:"+this.options.color+";\">" + replace[i] + "</span>");
                 //}
+                
+                //console.log('for text = ' + text);
+                //console.log('matches = ' + text.match(/(start:\s*\d{1,2}\/\d{1,2}\/\d{2,4})/gi));
+                //text = text.replace(/\n /g, "<br><span style='color: #4d4d4d'>&#8226;</span>"); //&#8226; for dot
+                //text = text.replace(/(\d*• )/g, "<span class=\"mark_tokens\">$1</span>");
+                text = text.replace(/(start\s*:\s*\d{1,2}\/\d{1,2}\/\d{2,4})/gi, "<span class=\"mark_start_date\">$1</span>");
+                text = text.replace(/(due\s*:\s*\d{1,2}\/\d{1,2}\/\d{2,4})/gi, "<span class=\"mark_due_date\">$1</span>");
                 text = text.replace(/(@[\w\/\.\-\:]*\w)/g, "<span class=\"highlight\">$1</span>");
             }
+            /*last_char = text.slice(-1)
+            console.log('last = ' + last_char);
+            if (last_char == '\n') {
+                console.log('enter detected!');
+                text += '<span class="label">$</span>';
+            }*/
             
             this.$highlighter.html(text);
             this.updateSizePosition();
