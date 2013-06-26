@@ -7,13 +7,14 @@ from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader, RequestContext
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 from Task_backend.models import Task
 from Task_backend.task import get_task_object, get_task_tree, \
                               change_task_status, change_task_tree_status, \
                               get_oldest_parent, delete_task_tree, add_task, \
                               get_tasks_by_due_date, update_task_details, \
-                              delete_single_task, search_tasks, add_new_list
+                              delete_single_task, search_tasks, add_new_list2
 from Tag_backend.tag import find_tags
 from Tools.constants import *
 from Tools.dates import get_datetime_object
@@ -59,6 +60,7 @@ def show_title(request):
     return HttpResponse(template.render(context))
 
 def modify_status(request):
+    print >>sys.stderr, request.GET
     new_status = int(request.GET.get('status', 0))
     
     if new_status < 0:
@@ -184,8 +186,15 @@ def search(request):
     return HttpResponse(json.dumps(tasks_list, indent = 4), \
                         mimetype="application/json")
 
+@csrf_exempt
 def create_new_list(request):
-    folder = request.GET.get('folder', 'Active')
-    new_list = request.GET.get('new_list', '')
-    add_new_list(request.user, new_list, folder)
+    folder = request.POST.get('folder', 'Active')
+    parent_id = request.POST.get('parent_id', -1)
+    received_list = json.loads(request.POST.get('new_list', '[]'))
+    #print >>sys.stderr, received_list
+    if received_list != []:
+        task = add_new_list2(request.user, received_list, folder, parent_id)
+        if task != None:
+            return HttpResponse(json.dumps(task, indent=4), \
+                                mimetype='application/json')
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)

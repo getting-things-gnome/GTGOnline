@@ -1,5 +1,15 @@
 var typing_mode = 0, subtask_level = 0, blank_entry = 0, last_level = 0;
 
+$("#task_description_field2").click(function(e) {
+    /*var o = {
+        left: e.pageX,
+        top: e.pageY
+    };
+	$('#start_date_div').show().offset(o);
+	$('#start_date_field').focus();
+	$(".task_start_datepicker").datetimepicker('show');*/
+});
+
 $('textarea').keyup(function (event) {
     if (event.keyCode == 13) {
 		if (event.shiftKey) {
@@ -69,6 +79,20 @@ $('textarea').keydown(function (event){
 		}
 		console.log('last level set to ' + last_level);
 	}
+	/*else {
+		var value = $('#task_description_field2').val();
+		console.log('only tab pressed' + value);
+		console.log('last 2 chars = "' + value.slice(-2) + '"');
+		if (value.slice(-6) == 'start:') {
+			var o = {
+			    left: event.pageX,
+			    top: event.pageY
+			};
+			$('#start_date_div').show().offset(o);
+			$('#start_date_field').focus();
+			$(".task_start_datepicker").datetimepicker('show');
+		}
+	}*/
 });
 
 /*$(document).delegate('#main', 'keydown', function(e) {

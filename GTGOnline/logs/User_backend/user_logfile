@@ -93,3 +93,15 @@
 [24/Jun/2013 11:26:47] INFO [User_backend.user:34] LogIN -- email = nikobellic914@aol.com | id = 2
 [24/Jun/2013 18:23:02] INFO [User_backend.user:43] LogOUT - email = nikobellic914@aol.com | id = 2
 [24/Jun/2013 18:23:07] INFO [User_backend.user:34] LogIN -- email = nikobellic914@aol.com | id = 2
+[24/Jun/2013 23:18:58] INFO [User_backend.user:43] LogOUT - email = nikobellic914@aol.com | id = 2
+[25/Jun/2013 10:59:16] INFO [User_backend.user:34] LogIN -- email = nikobellic914@aol.com | id = 2
+[25/Jun/2013 13:12:37] INFO [User_backend.user:43] LogOUT - email = nikobellic914@aol.com | id = 2
+[25/Jun/2013 15:25:56] INFO [User_backend.user:34] LogIN -- email = nikobellic914@aol.com | id = 2
+[25/Jun/2013 16:10:05] INFO [User_backend.user:43] LogOUT - email = nikobellic914@aol.com | id = 2
+[25/Jun/2013 16:11:01] INFO [User_backend.user:34] LogIN -- email = nikobellic914@aol.com | id = 2
+[25/Jun/2013 16:53:50] INFO [User_backend.user:43] LogOUT - email = nikobellic914@aol.com | id = 2
+[25/Jun/2013 18:44:39] INFO [User_backend.user:34] LogIN -- email = nikobellic914@aol.com | id = 2
+[25/Jun/2013 22:27:06] INFO [User_backend.user:34] LogIN -- email = nikobellic914@aol.com | id = 2
+[25/Jun/2013 23:34:23] INFO [User_backend.user:43] LogOUT - email = nikobellic914@aol.com | id = 2
+[26/Jun/2013 11:08:12] INFO [User_backend.user:34] LogIN -- email = nikobellic914@aol.com | id = 2
+[26/Jun/2013 15:25:50] INFO [User_backend.user:34] LogIN -- email = nikobellic914@aol.com | id = 2

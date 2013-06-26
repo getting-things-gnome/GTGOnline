@@ -120,6 +120,7 @@ function TaskFoldersViewModel() {
     self.tag_color = ko.observable('#F89406');
     
     self.all_tags = ko.observableArray();
+    self.task_dict = ko.observableArray();
     
     self.tasks_list.subscribe(function (newValue) {
         self.tasks_list_length(newValue.length);
@@ -279,12 +280,53 @@ function TaskFoldersViewModel() {
         self.task_description_field(convert_tags_to_lower(self.task_description_field()));
         
         if (getParentID() == -1 || !getMode()) {
-            self.new_task_or_subtask();
+            //self.new_task_or_subtask();
+            self.parse_list();
+            self.send_list_to_server();
         }
         else {
             self.update_task();
         }
     };
+    
+    self.send_list_to_server = function() {
+        var json_data = ko.toJSON(self.task_dict());
+        console.log(json_data);
+        $.post('/tasks/new_list/', {
+            new_list: json_data,
+            folder: self.chosenFolderId(),
+            parent_id: getParentID(),
+        }, function(data) {
+            if (getParentID() != -1) {
+                var match = ko.utils.arrayFirst(self.tasks_list(), function(item) {
+                    //alert(data[0].id);
+                    return data[0].id === item.id;
+                });
+                if (match) {
+                    //alert(match.name);
+                    self.tasks_list.replace(match, data[0]);
+                    //alert(match.name);
+                }
+                else {
+                    alert("no match found");
+                }
+            }
+            else {
+                self.tasks_list(data);
+            }
+            show_popover();
+            $.get('/tags/all', self.tags_list);
+            self.task_name_field('');
+            self.task_description_field('');
+            self.task_start_date_field('');
+            self.task_due_date_field('');
+            task_name_editor.setValue('');
+            task_description_editor.setValue('');
+            task_name_editor.refresh();
+            task_description_editor.refresh();
+            self.task_dict([]);
+        });
+    }
     
     self.new_task_or_subtask = function() {
         /*self.tasks_list.splice(0, 0, {
@@ -368,13 +410,43 @@ function TaskFoldersViewModel() {
         });
     };
     
+    self.parse_list = function() {
+        var lines = self.task_description_field().split(/\n\t*/);
+        console.log(lines);
+        var parsed_list = [];
+        for (var i=0; i < lines.length; i++) {
+            var returned_list = parse_dates_update_line(lines[i]);
+            var start_date = returned_list[0];
+            var due_date = returned_list[1];
+            var new_line = returned_list[2];
+            var level = new_line.match(/(\d*)•\s*/);
+            console.log('start date = "' + start_date + '" due_date = "' + due_date + '"');
+            if (level != null) {
+                console.log('level = "' + level[1] + '"');
+                new_line = new_line.replace(level[0], '');
+                if (level[1] == "") {
+                    level[1] = '0';
+                }
+                self.task_dict.push({
+                    'name': new_line,
+                    'description': 'none',
+                    'start_date': start_date,
+                    'due_date': due_date,
+                    'level': level[1],
+                });
+            }
+        }
+        
+        //return task_dict;
+    };
+    
     self.reset_start_date_field = function() {
         self.task_start_date_field('')
-    }
+    };
     
     self.reset_due_date_field = function() {
         self.task_due_date_field('')
-    }
+    };
     
     self.mark_done = function (new_status) {
         //alert(self.modify_selected());
@@ -383,7 +455,7 @@ function TaskFoldersViewModel() {
             show_popover();
         });
         //alert(self.modify_selected());
-    }
+    };
     
     self.change_status = function (id, new_status, index) {
         $.get('/tasks/modify/status', { task_id:id, task_id_list: self.modify_selected(), status: new_status, folder: self.chosenFolderId() }, function(data) {
@@ -784,4 +856,23 @@ function mark_selected2(id) {
     if (a.modify_selected().indexOf(id) > -1) {
         document.getElementById('for_marking' + id).style.backgroundColor = '#23AA2A';
     }
+}
+
+function parse_dates_update_line(line) {
+    var start_date = '', due_date = '';
+    var match = line.match(/start\s*:\s*(\d{1,2}\/\d{1,2}\/\d{2,4})\s*/);
+    //console.log('match = ' + match + ' date = ' + RegExp.$1);
+    if (match != null){
+        start_date = match[1];
+        //console.log('start date = ' + start_date);
+        line = line.replace(match[0], '');
+    }
+    match = line.match(/due\s*:\s*(\d{1,2}\/\d{1,2}\/\d{2,4})\s*/);
+    if (match != null){
+        due_date = match[1];
+        //console.log('due date = ' + due_date);
+        line = line.replace(match[0], '');
+    }
+    //console.log('start date = "' + start_date + '" due_date = "' + due_date + '" line = "' + line + '"');
+    return [start_date, due_date, line];
 }
