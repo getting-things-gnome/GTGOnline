@@ -14,7 +14,7 @@ from Task_backend.task import get_task_object, get_task_tree, \
                               change_task_status, change_task_tree_status, \
                               get_oldest_parent, delete_task_tree, add_task, \
                               get_tasks_by_due_date, update_task_details, \
-                              delete_single_task, search_tasks, add_new_list2
+                              delete_single_task, search_tasks, add_new_list
 from Tag_backend.tag import find_tags
 from Tools.constants import *
 from Tools.dates import get_datetime_object
@@ -193,7 +193,7 @@ def create_new_list(request):
     received_list = json.loads(request.POST.get('new_list', '[]'))
     #print >>sys.stderr, received_list
     if received_list != []:
-        task = add_new_list2(request.user, received_list, folder, parent_id)
+        task = add_new_list(request.user, received_list, folder, parent_id)
         if task != None:
             return HttpResponse(json.dumps(task, indent=4), \
                                 mimetype='application/json')

@@ -50,7 +50,7 @@ def add_task(user, name, description, start_date, due_date, folder, \
     
     new_tags, existing_tags = create_tag_objects(user, tag_list)
     new_task.save()
-    print >>sys.stderr, 'after saving in add task, new_task = ' + str(new_task)
+    #print >>sys.stderr, 'after saving in add task, new_task = ' + str(new_task)
     new_task.tags.add(*(new_tags+existing_tags))
     
     parent = None
@@ -65,7 +65,7 @@ def add_task(user, name, description, start_date, due_date, folder, \
             new_task = get_task_tree(user, get_oldest_parent(parent), \
                                      0, [], folder)
     
-    print >>sys.stderr, 'before return in add task, new_task = ' + str(new_task)        
+    #print >>sys.stderr, 'before return in add task, new_task = ' + str(new_task)        
     return new_task, parent
 
 def modify_parents_dates(task, parent, new_due_date):
@@ -420,39 +420,20 @@ def search_tasks(user, query):
         task_list.append(get_task_details(user, task))
     return task_list
 
-def add_new_list(user, new_list, folder):
-    print >>sys.stderr, new_list
-    task_list = [line.strip() for line in new_list.split(u'\n•')]
-    print >>sys.stderr, task_list
-    for line in task_list:
-        start_date, due_date = '', ''
-        match = re.findall(START_STRING_REGEX, line)
-        if match != []:
-            start_date = re.search(DATE_REGEX, match[0]).group(0)
-            print >>sys.stderr, 'start_date middle = ' + str(start_date)
-            line = line.replace(match[0], '')
-        match = re.findall(DUE_STRING_REGEX, line)
-        if match != []:
-            due_date = re.search(DATE_REGEX, match[0]).group(0)
-            print >>sys.stderr, 'start_date middle = ' + str(start_date)
-            line = line.replace(match[0], '')
-        print >>sys.stderr, 'line = ' + line + ' start date = ' + start_date + ' due_date = ' + due_date
-        #add_task(user, line, 'none', start_date, due_date, folder)
-
-def add_new_list2(user, new_list, folder, parent_id):
+def add_new_list(user, new_list, folder, parent_id):
     #print >>sys.stderr, new_list
     created_tasks = {}
     for task in new_list:
         level = int(task.get('level', '0'))
         if level == 0:
-            print >>sys.stderr, 'main task creation started, ' + str(created_tasks)
+            #print >>sys.stderr, 'main task creation started, ' + str(created_tasks)
             new_task, parent = add_task(user, \
                         task.get('name', 'No name provided'), \
                         task.get('description', 'none'), \
                         task.get('start_date', ''), task.get('due_date', ''), \
                         folder, parent_id = parent_id, needs_task_dict = False)
         else:
-            print >>sys.stderr, 'subtask creation started, ' + str(created_tasks) + ' level = ' + str(level)
+            #print >>sys.stderr, 'subtask creation started, ' + str(created_tasks) + ' level = ' + str(level)
             new_task, parent = add_task(user, \
                         task.get('name', 'No name provided'), \
                         task.get('description', 'none'), \
@@ -461,24 +442,9 @@ def add_new_list2(user, new_list, folder, parent_id):
                         parent_object = created_tasks.get(level-1, None), \
                         needs_task_dict = False)
         
-        print >>sys.stderr, 'new task = ' + str(new_task)
+        #print >>sys.stderr, 'new task = ' + str(new_task)
         created_tasks[level] = new_task
     if parent_id == -1:
         return None
     return get_task_tree(user, [get_task_object(user, parent_id)], \
                                      0, [], folder)
-
-def get_dates_update_line(line):
-    start_date, due_date = '', ''
-    match = re.findall(START_STRING_REGEX, line)
-    if match != []:
-        start_date = re.search(DATE_REGEX, match[0]).group(0)
-        print >>sys.stderr, 'start_date middle = ' + str(start_date)
-        line = line.replace(match[0], '')
-    match = re.findall(DUE_STRING_REGEX, line)
-    if match != []:
-        due_date = re.search(DATE_REGEX, match[0]).group(0)
-        print >>sys.stderr, 'start_date middle = ' + str(start_date)
-        line = line.replace(match[0], '')
-    print >>sys.stderr, 'line = ' + line + ' start date = ' + start_date + ' due_date = ' + due_date
-    return start_date, due_date, line
