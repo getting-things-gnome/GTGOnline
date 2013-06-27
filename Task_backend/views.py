@@ -190,6 +190,7 @@ def search(request):
 def create_new_list(request):
     folder = request.POST.get('folder', 'Active')
     parent_id = request.POST.get('parent_id', -1)
+    print >>sys.stderr, 'parent id = ' + str(parent_id)
     received_list = json.loads(request.POST.get('new_list', '[]'))
     #print >>sys.stderr, received_list
     if received_list != []:

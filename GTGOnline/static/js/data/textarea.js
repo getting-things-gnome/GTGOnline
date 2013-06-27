@@ -1,6 +1,6 @@
-var typing_mode = 0, subtask_level = 0, blank_entry = 0, last_level = 0;
+var description_mode = 0, description_prompt_displayed = 0, subtask_level = 0, blank_entry = 0, last_level = 0;
 
-$("#task_description_field2").click(function(e) {
+$("#task_list_field").click(function(e) {
     /*var o = {
         left: e.pageX,
         top: e.pageY
@@ -8,6 +8,7 @@ $("#task_description_field2").click(function(e) {
 	$('#start_date_div').show().offset(o);
 	$('#start_date_field').focus();
 	$(".task_start_datepicker").datetimepicker('show');*/
+	console.log(getCaret(this));
 });
 
 $('textarea').keyup(function (event) {
@@ -17,14 +18,19 @@ $('textarea').keyup(function (event) {
 			var caret = getCaret(this);
 			//this.value = content.substring(0,caret)+"\n"+content.substring(caret,content.length-1);
 			event.stopPropagation();
-			toggle_mode();
 		}
 		if (blank_entry == 1) {
 			return;
 		}
-		var value = $('#task_description_field2').val();
+		if (description_mode == 1) {
+			var value = $('#task_list_field').val();
+			console.log('shift enter pressed' + value);
+			$('#task_list_field').val(value + get_description_prompt());
+			return;
+		}
+		var value = $('#task_list_field').val();
         console.log('only enter pressed' + value);
-		$('#task_description_field2').val(value + get_prompt());
+		$('#task_list_field').val(value + get_prompt());
 	}
 });
 
@@ -39,7 +45,7 @@ $('textarea').keypress(function (event) {
 $('textarea').keydown(function (event){
 	if(event.keyCode === 9 && !event.shiftKey) { // tab was pressed
         event.preventDefault();
-		var value = $('#task_description_field2').val();
+		var value = $('#task_list_field').val();
 		console.log('only tab pressed' + value);
 		console.log('last 2 chars = "' + value.slice(-2) + '"');
 		if (value.slice(-2) == '• ') {
@@ -47,13 +53,13 @@ $('textarea').keydown(function (event){
 			increase_prompt(value);
 		}
 		else {
-			$('#task_description_field2').val(value + '\t');
+			$('#task_list_field').val(value + '\t');
 		}
     }
 	else if (event.keyCode == 9 && event.shiftKey) {
 		//alert('tab with shift');
 		event.preventDefault();
-		var value = $('#task_description_field2').val();
+		var value = $('#task_list_field').val();
 		console.log('only tab pressed' + value);
 		console.log('last 2 chars = "' + value.slice(-2) + '"');
 		if (value.slice(-2) == '• ') {
@@ -61,15 +67,15 @@ $('textarea').keydown(function (event){
 			decrease_prompt(value);
 		}
 		else {
-			$('#task_description_field2').val(value + '\t');
+			$('#task_list_field').val(value + '\t');
 		}
 	}
 	else if (event.keyCode == 13) {
 		console.log(getCaret(this));
-		var value = $('#task_description_field2').val();
-		console.log('only tab pressed' + value);
-		console.log('last 2 chars = "' + value.slice(-2) + '"');
-		if (value.slice(-2) == '• ') {
+		var value = $('#task_list_field').val();
+		//console.log('last 2 chars = "' + value.slice(-2) + '"');
+		console.log('last match = "' + value.match(/\s*[»•]\s*$/) + '"');
+		if (value.match(/\s*[»•]\s*$/)) {
 			event.preventDefault();
 			set_blank_entry();
 		}
@@ -78,6 +84,12 @@ $('textarea').keydown(function (event){
 			set_last_level();
 		}
 		console.log('last level set to ' + last_level);
+		clear_description_mode();
+		if (event.shiftKey) {
+			set_description_mode();
+			return;
+		}
+		clear_description_prompt_displayed();
 	}
 	/*else {
 		var value = $('#task_description_field2').val();
@@ -121,7 +133,7 @@ function getCaret(el) {
 }
 
 function setSelectionRange(selectionStart, selectionEnd) {
-	var input = document.getElementById('task_description_field2');
+	var input = document.getElementById('task_list_field');
 	if (input.setSelectionRange) {
 		input.focus();
 		input.setSelectionRange(selectionStart, selectionEnd);
@@ -137,18 +149,6 @@ function setSelectionRange(selectionStart, selectionEnd) {
 
 function set_caret(pos) {
   setSelectionRange(pos, pos);
-}
-
-function toggle_mode() {
-    if (typing_mode == 0) {
-        // means change from name to description
-        typing_mode = 1;
-        console.log('value = ' + $('#textarea_guardian').html());
-    }
-    else {
-        typing_mode = 0;
-    }
-    console.log('new typing mode = ' + typing_mode);
 }
 
 function insert_marker() {
@@ -184,8 +184,29 @@ function set_last_level() {
 	last_level = subtask_level;
 }
 
+function set_description_mode() {
+	description_mode = 1;
+}
+
+function toggle_description_mode() {
+	description_mode = description_mode == 1 ? 0 : 1;
+}
+
+function clear_description_mode() {
+	description_mode = 0;
+}
+
+function set_description_prompt_displayed() {
+	description_prompt_displayed = 1;
+}
+
+function clear_description_prompt_displayed() {
+	description_prompt_displayed = 0;
+}
+
 function clear_all_globals() {
-	typing_mode = 0;
+	description_prompt = 0;
+	description_mode_displayed = 0;
 	subtask_level = 0;
 	blank_entry = 0;
 	last_level = 0;
@@ -200,6 +221,23 @@ function get_prompt() {
 	}
 }
 
+function get_description_prompt() {
+	if (subtask_level == 0) {
+		if (description_prompt_displayed == 0) {
+			set_description_prompt_displayed();
+			return new Array(subtask_level + 1).join('\t') + '» ';
+		}
+		return new Array(subtask_level + 1).join('\t') + '   ';
+	}
+	else {
+		if (description_prompt_displayed == 0) {
+			set_description_prompt_displayed();
+			return new Array(subtask_level + 1).join('\t') + ' »  ';
+		}
+		return new Array(subtask_level + 1).join('\t') + '     ';
+	}
+}
+
 function increase_prompt(value) {
 	//var value = $('#task_description_field2').val();
 	if (last_level < subtask_level) {
@@ -208,10 +246,10 @@ function increase_prompt(value) {
 	increase_subtask_level();
 	len = subtask_level.toString().length;
 	if (subtask_level == 1) {
-		$('#task_description_field2').val(value.slice(0, -len-1) + '\t' + subtask_level + '• ');
+		$('#task_list_field').val(value.slice(0, -len-1) + '\t' + subtask_level + '• ');
 	}
 	else {
-		$('#task_description_field2').val(value.slice(0, -len-2) + '\t' + subtask_level + '• ');
+		$('#task_list_field').val(value.slice(0, -len-2) + '\t' + subtask_level + '• ');
 	}
 }
 
@@ -219,10 +257,10 @@ function decrease_prompt(value) {
 	//var value = $('#task_description_field2').val();
 	len = subtask_level.toString().length;
 	if (subtask_level > 1) {
-		$('#task_description_field2').val(value.slice(0, -len-3) + (subtask_level-1) + '• ');
+		$('#task_list_field').val(value.slice(0, -len-3) + (subtask_level-1) + '• ');
 	}
 	else if (subtask_level == 1) {
-		$('#task_description_field2').val(value.slice(0, -len-3) + '• ');
+		$('#task_list_field').val(value.slice(0, -len-3) + '• ');
 	}
 	decrease_subtask_level();
 }

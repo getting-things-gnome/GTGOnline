@@ -343,7 +343,9 @@
                 //console.log('for text = ' + text);
                 //console.log('matches = ' + text.match(/(start:\s*\d{1,2}\/\d{1,2}\/\d{2,4})/gi));
                 //text = text.replace(/\n /g, "<br><span style='color: #4d4d4d'>&#8226;</span>"); //&#8226; for dot
-                //text = text.replace(/(\d*• )/g, "<span class=\"mark_tokens\">$1</span>");
+                //text = text.replace(/(\d*• ).*/g, "<span class=\"mark_tokens\">$1</span>");
+                text = text.replace(/(\d*•.*)/g, "<span class=\"mark_name\">$1</span>");
+                //text = text.replace(/\t*»(.+)/g, "<span class=\"mark_description\">$1</span>");
                 text = text.replace(/(start\s*:\s*\d{1,2}\/\d{1,2}\/\d{2,4})/gi, "<span class=\"mark_start_date\">$1</span>");
                 text = text.replace(/(due\s*:\s*\d{1,2}\/\d{1,2}\/\d{2,4})/gi, "<span class=\"mark_due_date\">$1</span>");
                 text = text.replace(/(@[\w\/\.\-\:]*\w)/g, "<span class=\"highlight\">$1</span>");

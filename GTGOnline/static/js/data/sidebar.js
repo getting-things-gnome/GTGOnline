@@ -106,6 +106,8 @@ function TaskFoldersViewModel() {
     self.modified_tasks = ko.observableArray();
     self.modify_selected = ko.observableArray();
     
+    self.task_list_field = ko.observable('');
+    
     self.task_name_field = ko.observable('');
     self.task_name_htmlfield = ko.observable('');
     
@@ -222,51 +224,94 @@ function TaskFoldersViewModel() {
         });
     }).run();
     
-    self.show_task_modal = function(id, name, description, start_date, due_date, mode) {
-        task_name_editor.setValue(name);
-        task_description_editor.setValue(description);
+    self.show_new_task_modal = function(id) {
+        //task_name_editor.setValue('afd');
+        //task_description_editor.setValue('fs');
+        //self.task_name_field(name);
+        self.task_list_field('• ');
+        //self.task_start_date_field(start_date);
+        //self.task_due_date_field(due_date);
+        setParentId(id);
+        //setMode(mode);
+        clear_all_globals();
+        $('#new_task_modal').modal('show');
+        
+        $('#new_task_modal').on('shown', function() {
+            console.log('new task modal shown');
+            //task_name_editor.refresh();
+            //task_description_editor.refresh();
+            $("#task_list_field").highlightTextarea('highlight');
+            //$("#task_name_input").highlightTextarea('highlight');
+            $("#task_list_field").focus();
+            set_caret(2);
+        });
+        
+        $('#new_task_modal').on('hidden', function() {
+            //self.task_name_field('');
+            //self.task_description_field('');
+            //self.task_start_date_field('');
+            //self.task_due_date_field('');
+            //task_name_editor.setValue('');
+            //task_description_editor.setValue('');
+            //task_name_editor.refresh();
+            //task_description_editor.refresh();
+            //$("#task_description_field2").highlightTextarea('highlight');
+            //$("#task_name_input").highlightTextarea('highlight');
+            self.task_list_field('• ');
+            $("#task_list_field").highlightTextarea('highlight');
+        });
+    };
+    
+    self.show_edit_task_modal = function(id, name, description, start_date, due_date) {
+        //task_name_editor.setValue(name);
+        //task_description_editor.setValue(description);
         self.task_name_field(name);
         self.task_description_field(description);
         self.task_start_date_field(start_date);
         self.task_due_date_field(due_date);
         setParentId(id);
-        setMode(mode);
+        //setMode(mode);
         clear_all_globals();
-        $('#task_modal').modal('show');
+        $('#edit_task_modal').modal('show');
         
-        $('#task_modal').on('shown', function() {
+        $('#edit_task_modal').on('shown', function() {
             console.log('edit task modal shown');
-            task_name_editor.refresh();
-            task_description_editor.refresh();
-            $("#task_description_field2").highlightTextarea('highlight');
-            $("#task_name_input").highlightTextarea('highlight');
-            $("#task_description_field2").focus();
+            //task_name_editor.refresh();
+            //task_description_editor.refresh();
+            $("#task_description_field").highlightTextarea('highlight');
+            $("#task_name_field").highlightTextarea('highlight');
+            $("#task_name_field").focus();
+            //set_caret(2);
         });
         
-        $('#task_modal').on('hidden', function() {
+        $('#edit_task_modal').on('hidden', function() {
             self.task_name_field('');
-            self.task_description_field('');
+            self.task_description_field('• ');
             self.task_start_date_field('');
             self.task_due_date_field('');
-            task_name_editor.setValue('');
-            task_description_editor.setValue('');
-            task_name_editor.refresh();
-            task_description_editor.refresh();
-            $("#task_description_field2").highlightTextarea('highlight');
-            $("#task_name_input").highlightTextarea('highlight');
+            $("#task_description_field").highlightTextarea('highlight');
+            $("#task_name_field").highlightTextarea('highlight');
+            //task_name_editor.setValue('');
+            //task_description_editor.setValue('');
+            //task_name_editor.refresh();
+            //task_description_editor.refresh();
+            //$("#task_description_field").highlightTextarea('highlight');
+            //$("#task_name_field").highlightTextarea('highlight');
         });
     };
     
     self.close_task_modal = function() {
-        $('#task_modal').modal('hide');
+        $('#new_task_modal').modal('hide');
+        $('#edit_task_modal').modal('hide');
         self.task_name_field('');
+        self.task_list_field('• ');
         self.task_description_field('');
         self.task_start_date_field('');
         self.task_due_date_field('');
-        task_name_editor.setValue('');
-        task_description_editor.setValue('');
-        task_name_editor.refresh();
-        task_description_editor.refresh();
+        //task_name_editor.setValue('');
+        //task_description_editor.setValue('');
+        //task_name_editor.refresh();
+        //task_description_editor.refresh();
     };
     
     self.create_task = function() {
@@ -290,6 +335,12 @@ function TaskFoldersViewModel() {
     };
     
     self.send_list_to_server = function() {
+        if (self.task_list_field() == "• ") {
+            alert('Task List cannot be empty');
+            return;
+        }
+        $('#new_task_modal').modal('hide');
+        self.parse_list();
         var json_data = ko.toJSON(self.task_dict());
         console.log(json_data);
         $.post('/tasks/new_list/', {
@@ -314,17 +365,18 @@ function TaskFoldersViewModel() {
             else {
                 self.tasks_list(data);
             }
-            show_popover();
             $.get('/tags/all', self.tags_list);
-            self.task_name_field('');
-            self.task_description_field('');
-            self.task_start_date_field('');
-            self.task_due_date_field('');
-            task_name_editor.setValue('');
-            task_description_editor.setValue('');
-            task_name_editor.refresh();
-            task_description_editor.refresh();
+            //self.task_name_field('');
+            //self.task_description_field('');
+            //self.task_start_date_field('');
+            //self.task_due_date_field('');
+            //task_name_editor.setValue('');
+            //task_description_editor.setValue('');
+            //task_name_editor.refresh();
+            //task_description_editor.refresh();
+            self.task_list_field('');
             self.task_dict([]);
+            show_popover();
         });
     }
     
@@ -379,6 +431,7 @@ function TaskFoldersViewModel() {
     };
     
     self.update_task = function() {
+        $('#edit_task_modal').modal('hide');
         $.get('/tasks/update', {
             name: self.task_name_field(),
             description: self.task_description_field() == '' ? 'none': self.task_description_field(),
@@ -387,7 +440,6 @@ function TaskFoldersViewModel() {
             folder: self.chosenFolderId(),
             task_id: getParentID(),
         }, function(data) {
-            //self.tasks_list(data);
             var match = ko.utils.arrayFirst(self.tasks_list(), function(item) {
                 //alert(data[0].id);
                 return data[0].id === item.id;
@@ -402,41 +454,78 @@ function TaskFoldersViewModel() {
             }
             $.get('/tasks/get', { folder: self.chosenFolderId }, self.tasks_list)
             $.get('/tags/all', self.tags_list);
-            task_name_editor.setValue('');
-            task_description_editor.setValue('');
-            task_name_editor.refresh();
-            task_description_editor.refresh();
+            self.task_name_field('');
+            self.task_description_field('');
+            self.task_start_date_field('');
+            self.task_due_date_field('');
+            //task_name_editor.setValue('');
+            //task_description_editor.setValue('');
+            //task_name_editor.refresh();
+            //task_description_editor.refresh();
             show_popover();
         });
     };
     
     self.parse_list = function() {
-        var lines = self.task_description_field().split(/\n\t*/);
+        var lines = self.task_list_field().split(/\n\t*/);
         console.log(lines);
-        var parsed_list = [];
+        var parsed_list = [], description_string = "";
         for (var i=0; i < lines.length; i++) {
             var returned_list = parse_dates_update_line(lines[i]);
             var start_date = returned_list[0];
             var due_date = returned_list[1];
             var new_line = returned_list[2];
+            console.log('main line checking, ' + new_line);
             var level = new_line.match(/(\d*)•\s*/);
-            console.log('start date = "' + start_date + '" due_date = "' + due_date + '"');
+            //console.log('start date = "' + start_date + '" due_date = "' + due_date + '"');
+            //if (level == null) {
+                //new_line = new_line.replace(/^\t*»\s*/, '');
+                //new_line = new_line.replace(/^\t*\s*/, '');
+                //description_string += new_line + '\n';
+            //}
             if (level != null) {
+                var name = new_line;
+                description_string = "";
+                for (var j=i+1; j<lines.length; j++) {
+                    console.log('checking line, "' + lines[j] + '"');
+                    var inner_level = lines[j].match(/(\d*)•\s*/);
+                    //console.log('start date = "' + start_date + '" due_date = "' + due_date + '"');
+                    if (inner_level == null) {
+                        returned_list = parse_dates_update_line(lines[j]);
+                        start_date = returned_list[0] == "" ? start_date : returned_list[0];
+                        due_date = returned_list[1] == "" ? due_date : returned_list[1];
+                        new_line = returned_list[2];
+                        new_line = new_line.replace(/^\t*\s*»\s*/, '');
+                        console.log('after replacing », inner line = "' + new_line + '"');
+                        new_line = new_line.replace(/^\t*\s*/, '');
+                        description_string += new_line + '\n';
+                    }
+                    else{
+                        i=j-1;
+                        break;
+                    }
+                }
+                
                 console.log('level = "' + level[1] + '"');
-                new_line = new_line.replace(level[0], '');
+                name = name.replace(level[0], '');
+                console.log('name = "' + name + '"');
+                console.log('description = "' + description_string + '"');
                 if (level[1] == "") {
                     level[1] = '0';
                 }
                 self.task_dict.push({
-                    'name': new_line,
-                    'description': 'none',
+                    'name': name,
+                    'description': description_string == "" ? 'none' : description_string,
                     'start_date': start_date,
                     'due_date': due_date,
                     'level': level[1],
                 });
+                //description_string = "";
             }
+            drwef = '»(\s*[\S\s]*)\t*•';
         }
         
+        console.log(self.task_dict());
         //return task_dict;
     };
     

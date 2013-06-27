@@ -444,7 +444,7 @@ def add_new_list(user, new_list, folder, parent_id):
         
         #print >>sys.stderr, 'new task = ' + str(new_task)
         created_tasks[level] = new_task
-    if parent_id == -1:
+    if parent_id == '-1':
         return None
     return get_task_tree(user, [get_task_object(user, parent_id)], \
                                      0, [], folder)

@@ -1165,11 +1165,12 @@ div.task-row {
   border-bottom: 4px solid #cccccc;
 }*/
 
-.task_name_input,
-.task_description_textarea {
+.task_name_field,
+.task_description_field,
+.task_list_field {
   padding: 4px 6px;
-  width: 666px;
-  max-width: 666px;
+  width: 466px;
+  max-width: 466px;
   font-size: 14px;
   font-weight: normal;
   line-height: 20px;
@@ -1188,13 +1189,20 @@ div.task-row {
         transition: border linear 0.5s, box-shadow linear 0.5s;
   }
 
-.task_name_input {
-  height: 21px;
+.task_name_field {
+  height: 22px;
   font-weight: bold;
   font-size: 20px;
 }
 
-.task_description_textarea {
+.task_description_field {
+  height: 200px;
+  font-size: 14px;
+}
+
+.task_list_field {
+  width: 666px;
+  max-width: 666px;
   height: 400px;
   min-height: 150px;
   /*overflow: auto;*/
@@ -1216,8 +1224,9 @@ div.task-row {
   user-select: none;*/
 }
 
-.task_name_input:focus,
-.task_description_textarea:focus {
+.task_name_field:focus,
+.task_description_field:focus,
+.task_list_field:focus {
   border-color: rgba(82, 168, 236, 0.8);
   outline: 0;
   outline: thin dotted \9;
@@ -1271,8 +1280,19 @@ div.task-row {
 }
 
 .mark_tokens {
+  color: black;
   background-color: #DEDEDE;
   -webkit-border-radius: 0px 50% 50% 0px;
     -moz-border-radius: 0px 50% 50% 0px;
       border-radius: 0px 50% 50% 0px;
+}
+
+.mark_name {
+  color: black;
+  border-top: 1px solid #CECECE;
+}
+
+.mark_description {
+  color: white;
+  border-left: 1px solid #dedede;
 }
