@@ -22,7 +22,7 @@
 							<strong id="name" data-bind="text: name"></strong>
 						</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-							<li><a href="#" data-bind="click: $root.show_new_task_modal.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
+							<li><a href="#" data-bind="click: $root.show_new_task_modal.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtasks</a></li>
 							<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
 							<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
 							<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
@@ -34,7 +34,7 @@
 							<strong class="task_name" id="name" data-bind="text: shortify_name(name), attr: { 'data-content': name }" rel="popover" data-trigger="hover"></strong>
 						</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-							<li><a href="#" data-bind="click: $root.show_new_task_modal.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtask</a></li>
+							<li><a href="#" data-bind="click: $root.show_new_task_modal.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtasks</a></li>
 							<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
 							<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
 							<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
