@@ -1296,3 +1296,7 @@ div.task-row {
   color: white;
   border-left: 1px solid #dedede;
 }
+
+.mark_tag {
+  background-color: rgba(225, 255, 0, 0.8);
+}

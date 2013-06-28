@@ -350,7 +350,7 @@
                 text = text.replace(/(start\s*:\s*\w{5,9})/gi, "<span class=\"mark_start_date\">$1</span>");
                 text = text.replace(/(due\s*:\s*\d{1,2}\/\d{1,2}\/\d{2,4})/gi, "<span class=\"mark_due_date\">$1</span>");
                 text = text.replace(/(due\s*:\s*\w{5,9})/gi, "<span class=\"mark_due_date\">$1</span>");
-                text = text.replace(/(@[\w\/\.\-\:]*\w)/g, "<span class=\"highlight\">$1</span>");
+                text = text.replace(/(@[\w\/\.\-\:]*\w)/g, "<span class=\"mark_tag\">$1</span>");
             }
             /*last_char = text.slice(-1)
             console.log('last = ' + last_char);
