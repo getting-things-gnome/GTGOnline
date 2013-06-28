@@ -949,19 +949,50 @@ function mark_selected2(id) {
 
 function parse_dates_update_line(line) {
     var start_date = '', due_date = '';
-    var match = line.match(/start\s*:\s*(\d{1,2}\/\d{1,2}\/\d{2,4})\s*/);
+    var match = line.match(/start\s*:\s*(\d{1,2}\/\d{1,2}\/\d{2,4})|start\s*:\s*(\w{5,9})\s*/i);
     //console.log('match = ' + match + ' date = ' + RegExp.$1);
     if (match != null){
         start_date = match[1];
-        //console.log('start date = ' + start_date);
+        console.log('start date = ' + start_date);
+        if (start_date == undefined) {
+            start_date = get_date_from_text(match[2]);
+        }
+        console.log('new start date = ' + start_date);
         line = line.replace(match[0], '');
     }
-    match = line.match(/due\s*:\s*(\d{1,2}\/\d{1,2}\/\d{2,4})\s*/);
+    match = line.match(/due\s*:\s*(\d{1,2}\/\d{1,2}\/\d{2,4})|due\s*:\s*(\w{5,9})\s*/i);
     if (match != null){
         due_date = match[1];
+        if (due_date == undefined) {
+            due_date = get_date_from_text(match[2]);
+        }
         //console.log('due date = ' + due_date);
         line = line.replace(match[0], '');
     }
     //console.log('start date = "' + start_date + '" due_date = "' + due_date + '" line = "' + line + '"');
     return [start_date, due_date, line];
+}
+
+function get_date_from_text(text) {
+    if (text == undefined) {
+        return "";
+    }
+    else if (text.toLowerCase() == 'today') {
+        var currentdate = new Date();
+        var month = currentdate.getMonth() + 1;
+        return currentdate.getDate() + '/' + month + '/' + currentdate.getFullYear();
+    }
+    else if (text.toLowerCase() == 'tomorrow') {
+        var currentdate = new Date();
+        currentdate.setDate(currentdate.getDate() + 1);
+        var month = currentdate.getMonth() + 1;
+        return currentdate.getDate() + '/' + month + '/' + currentdate.getFullYear();
+    }
+    else if (text.toLowerCase() == 'yesterday') {
+        var currentdate = new Date();
+        currentdate.setDate(currentdate.getDate() - 1);
+        var month = currentdate.getMonth() + 1;
+        return currentdate.getDate() + '/' + month + '/' + currentdate.getFullYear();
+    }
+    return "";
 }
