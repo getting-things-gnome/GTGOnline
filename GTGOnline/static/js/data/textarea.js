@@ -74,7 +74,7 @@ $('textarea').keydown(function (event){
 		console.log(getCaret(this));
 		var value = $('#task_list_field').val();
 		//console.log('last 2 chars = "' + value.slice(-2) + '"');
-		console.log('last match = "' + value.match(/\s*[»•]\s*$/) + '"');
+		console.log('last match = "' + value.match(/\s*[»• ]\s*$/) + '"');
 		if (value.match(/\s*[»•]\s*$/)) {
 			event.preventDefault();
 			set_blank_entry();

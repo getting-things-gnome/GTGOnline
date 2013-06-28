@@ -335,7 +335,7 @@ function TaskFoldersViewModel() {
     };
     
     self.send_list_to_server = function() {
-        if (self.task_list_field() == "• ") {
+        if (self.task_list_field().match(/^\s*•{0,}\s*$/)) {
             alert('Task List cannot be empty');
             return;
         }

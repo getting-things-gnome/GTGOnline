@@ -16,7 +16,7 @@ from Tools.dates import get_datetime_object, get_datetime_str, \
 
 def get_task_object(user, task_id):
     try:
-        return Task.objects.get(user = user, id = task_id)
+        return Task.objects.get(user = user.pk, id = task_id)
     except Task.DoesNotExist:
         return None
     
@@ -96,11 +96,12 @@ def set_task_tree_dates(task, new_due_date):
 def change_parents_due_dates(task):
     if not task.task_set.exists():
         return
-    parent_set = task.task_set.all()
-    parent = parent_set[0]
-    if parent.due_date < task.due_date:
-        parent_set.update(due_date = task.due_date)
-        change_parents_due_dates(parent)
+    for index, parent in enumerate(task.task_set.all()):
+        result = compare_dates(parent.due_date, task.due_date)
+        if result[0] == 1 and result[1] == 0:
+            parent.due_date = task.due_date
+            parent.save()
+            change_parents_due_dates(parent)
 
 def get_task_details(user, task):
     '''
@@ -446,5 +447,5 @@ def add_new_list(user, new_list, folder, parent_id):
         created_tasks[level] = new_task
     if parent_id == '-1':
         return None
-    return get_task_tree(user, [get_task_object(user, parent_id)], \
-                                     0, [], folder)
+    oldest = get_oldest_parent(get_task_object(user, parent_id))
+    return get_task_tree(user, oldest, 0, [], folder)

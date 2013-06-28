@@ -110,6 +110,7 @@ def delete_task(request):
     folder = request.GET.get('folder', 'Active')
     
     task_id_list = request.GET.getlist('task_id_list[]')
+    print >>sys.stderr, task_id_list
     if task_id_list != []:
         for task_id in task_id_list:
             task = get_task_object(request.user, task_id)
@@ -118,6 +119,7 @@ def delete_task(request):
                 delete_single_task(task)
     else:
         task_id = request.GET.get('task_id', -1)
+        print >>sys.stderr, task_id
         if task_id != '-1':
             task = get_task_object(request.user, task_id)
             if task != None:
