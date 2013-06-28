@@ -8,7 +8,7 @@ def get_datetime_object(input_str):
     #elif input_str[-2:].lower() == 'am' or input_str[-2:].lower() == 'pm':
         #return datetime.strptime(input_str, CONVERT_12_HR)
     try:
-        if len(input_str) == 8:
+        if '/' in input_str[-4:]:
             return datetime.strptime(input_str, CONVERT_24_HR)
         else:
             return datetime.strptime(input_str, CONVERT_24_HR_FULL_YEAR)
