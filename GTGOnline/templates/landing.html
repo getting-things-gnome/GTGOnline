@@ -160,6 +160,9 @@
 		
 		function ValidateRegistration() {
 			var form = document.forms["RegistrationForm"];
+			var register_button = document.getElementById('register_button');
+			register_button.innerHTML = "Registering ...";
+			register_button.setAttribute('class', 'btn btn-success disabled');
 			
 			validate_email();
 			
@@ -188,15 +191,19 @@
 				password_match_warning.setAttribute('class', 'validation-success');
 			}
 			
-			var register_button = document.getElementById('register-warning');
+			var register_warning = document.getElementById('register-warning');
 			console.log('before check, problem flag = ' + problem_flag);
 			if (problem_flag) {
-				register_button.innerHTML = 'You have some errors';
-				register_button.setAttribute('class', 'validation-error');
+				register_button.innerHTML = "Register";
+				register_button.setAttribute('class', 'btn btn-success');
+				register_warning.innerHTML = 'You have some errors';
+				register_warning.setAttribute('class', 'validation-error');
 				return false;
 			}
-			register_button.innerHTML = 'Good to go!';
-			register_button.setAttribute('class', 'validation-success');
+			register_button.innerHTML = "Registering ...";
+			register_button.setAttribute('class', 'btn btn-success disabled');
+			register_warning.innerHTML = 'Good to go!';
+			register_warning.setAttribute('class', 'validation-success');
 			return true;
 		};
 		
