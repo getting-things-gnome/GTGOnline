@@ -117,6 +117,7 @@ function TaskFoldersViewModel() {
     self.task_start_date_field = ko.observable('');
     self.task_due_date_field = ko.observable('');
     self.search_query = ko.observable('');
+    self.search_option = ko.observable('');
     self.header_name = ko.observable('');
     self.selected_tag = ko.observable('');
     self.tag_color = ko.observable('#F89406');
@@ -593,14 +594,25 @@ function TaskFoldersViewModel() {
         });
     };
     
+    self.set_search_option = function(option) {
+        self.search_option(option);
+    }
+    
     self.call_search = function() {
         //alert(self.search_query());
-        $.get('/tasks/search/', { query: self.search_query(), folder: self.chosenFolderId() }, function(data) {
-            self.tasks_list(data);
-            self.header_name('Filtered tasks having - "' + self.search_query() + '" in name');
-            self.search_query('');
-            show_popover();
-        });
+        if (self.search_option() == 0) {
+            console.log('search in tasks');
+            $.get('/tasks/search/', { query: self.search_query(), folder: self.chosenFolderId() }, function(data) {
+                self.tasks_list(data);
+                self.header_name('Filtered tasks having - "' + self.search_query() + '" in name');
+                self.search_query('');
+                show_popover();
+            });
+        }
+        else if (self.search_option() == 1) {
+            console.log('search in users');
+            window.location = '/user/search/?query=' + self.search_query();
+        }
     };
     
     self.delete_tag = function() {
@@ -933,7 +945,7 @@ function start_codemirror(name_id, description_id) {
 	});
 }
 
-function get_gravatar_url(email) {
+function get_gravatar_image_url(email) {
     var gravatar_api = "http://www.gravatar.com/avatar/";
     var hashed_email = md5(email);
     var options = "?s=40&d=identicon";

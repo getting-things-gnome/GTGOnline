@@ -107,7 +107,7 @@ body .navbar .searchform {
   border-radius: 3px;
   padding: 3px 8px;
   margin: 7px;
-  width: 44%;
+  /*width: 44%;*/
 }
 body .navbar .searchform button[type=submit] {
   border: 0;
@@ -120,7 +120,7 @@ body .navbar .searchform input[type=text] {
   font-size: 13px;
   margin: 0;
   box-shadow: none;
-  width: 90%;
+  /*width: 90%;*/
 }
 
 body .navbar ul.nav li a {
@@ -1299,4 +1299,15 @@ div.task-row {
 
 .mark_tag {
   background-color: rgba(225, 255, 0, 0.8);
+}
+
+.search_option_buttons {
+  margin: 0px;
+  padding: 0px;
+  padding-right: 2px;
+  background-color: #DEDEDE;
+  height: 15px;
+  -webkit-border-radius: 0px;
+     -moz-border-radius: 0px;
+          border-radius: 0px;;
 }

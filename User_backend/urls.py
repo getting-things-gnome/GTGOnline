@@ -11,5 +11,6 @@ urlpatterns = patterns('',
     url(r'^after_login/$', views.after_login, name='after_login'),
     url(r'^check_email/$', views.check_email, name='check_email'),
     url(r'^register/$', views.register, name='register'),
+    url(r'^search/$', views.search_user, name='search_user'),
     url(r'^$', views.landing, name='default'),
 )

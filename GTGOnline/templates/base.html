@@ -40,7 +40,8 @@
 		
 	</head>
   <body cz-shortcut-listen="true">
-		{% block topbar %}{% endblock topbar %}
+	{% block topbar %}{% endblock topbar %}
+	{% block page_content %}
 	<div class="content clearfix" id="wrapper">
 	    {% block sidebar %}{% endblock sidebar %}
 		{% block new_task_modal %}{% endblock new_task_modal %}
@@ -94,6 +95,7 @@
 				{% endblock startup_modal %}
 		</div>
 	</div>
+	{% endblock page_content %}
 	
 	{% block external_js %}
 	<!-- Le javascript
@@ -115,6 +117,9 @@
 	<script src="{{ STATIC_URL }}js/data/placeholder.js"></script>
 	<script src="{{ STATIC_URL }}js/data/minicolors.js"></script>
 	<script src="{{ STATIC_URL }}js/data/highlighttextarea.js"></script>
+	
+	<script type="text/javascript" src="{{ STATIC_URL }}js/data/sidebar.js"></script>
+	
 	<script type="text/javascript">
 	</script>
 	{% endblock external_js %}

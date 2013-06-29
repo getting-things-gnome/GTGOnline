@@ -6,6 +6,7 @@ import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader, RequestContext
 from django.shortcuts import render_to_response
+from django.contrib.auth.decorators import login_required
 
 from User_backend.user import register_user, login_user, logout_user, \
                               validate_form, does_email_exist
@@ -75,3 +76,12 @@ def register(request):
         print >>sys.stderr, "request is not POST"
     request.session['error'] = '4'
     return HttpResponseRedirect('/user/landing/')
+
+@login_required
+def search_user(request):
+    query = request.GET.get('query', '')
+    print >>sys.stderr, query
+    template = loader.get_template('search_user.html')
+    context = RequestContext(request, {'email': request.user.email, \
+                                       'name': request.user.first_name})
+    return HttpResponse(template.render(context))
