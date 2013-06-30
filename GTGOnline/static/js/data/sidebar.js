@@ -224,7 +224,8 @@ function TaskFoldersViewModel() {
         
         
         this.get('', function() {
-            this.app.runRoute('get', '#Active')
+            this.app.runRoute('get', '#Active');
+            location.hash = '#Active';
         });
     }).run();
     
