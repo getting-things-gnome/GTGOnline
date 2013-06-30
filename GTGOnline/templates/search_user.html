@@ -6,4 +6,17 @@ Hey yo, I'm a gun club member
 I'm gonna take these rookies downtown
 <br>
 Are you with me ?
+These are the rookies -
+{{ users }}
 {% endblock page_content %}
+
+{% block external_js %}
+{{ block.super }}
+
+<script type="text/javascript" src="{{ STATIC_URL }}js/data/users.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        show_users("{{ users }}");
+    });
+</script>
+{% endblock external_js %}

@@ -119,3 +119,7 @@
 [29/Jun/2013 19:10:59] INFO [User_backend.user:34] LogIN -- email = nikobellic914@aol.com | id = 2
 [29/Jun/2013 22:45:25] INFO [User_backend.user:34] LogIN -- email = nikobellic914@aol.com | id = 2
 [29/Jun/2013 23:01:38] INFO [User_backend.user:43] LogOUT - email = nikobellic914@aol.com | id = 2
+[29/Jun/2013 23:06:37] INFO [User_backend.user:34] LogIN -- email = nikobellic914@aol.com | id = 2
+[29/Jun/2013 23:07:25] INFO [User_backend.user:43] LogOUT - email = nikobellic914@aol.com | id = 2
+[30/Jun/2013 11:15:18] INFO [User_backend.user:34] LogIN -- email = nikobellic914@aol.com | id = 2
+[30/Jun/2013 14:52:20] INFO [User_backend.user:34] LogIN -- email = nikobellic914@aol.com | id = 2

@@ -3,6 +3,7 @@ import logging
 
 from re import match
 
+from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
@@ -77,3 +78,15 @@ def email_is_valid(email):
     elif does_email_exist(email):
         return False
     return True
+
+def get_user_details(user):
+    return {"email": user.email, "full_name": user.get_full_name()}
+
+def find_users_from_query(user, query):
+    users = User.objects.filter(Q(email__icontains = query) | \
+                                Q(first_name__icontains = query) | \
+                                Q(last_name__icontains = query))
+    user_list = []
+    for user in users:
+        user_list.append(get_user_details(user))
+    return user_list
