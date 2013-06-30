@@ -86,5 +86,11 @@ def search_user(request):
     user_list = find_users_from_query(request.user, query)
     context = RequestContext(request, {'email': request.user.email, \
                                        'name': request.user.first_name, \
-                                       'users': json.dumps(user_list)})
+                                       'users': json.dumps(user_list), \
+                                       'query': query,})
     return HttpResponse(template.render(context))
+
+def get_user_list_json(request):
+    query = request.GET.get('query', '')
+    user_list = find_users_from_query(request.user, query)
+    return HttpResponse(json.dumps(user_list), mimetype='application/json')

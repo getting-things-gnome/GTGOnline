@@ -23,8 +23,8 @@
             <form class="searchform pull-left" style="padding: 0px;">
                 <div class="input-icon-append input-prepend" style="margin: 0px; padding: 0px;">
 					<div class="btn-group div-inline search_option_buttons" data-toggle="buttons-radio" style="padding: 0px; margin: 0px">
-						<button type="button" class="btn active" style="height: 34px; padding: 1px 10px; margin: 0px; border-radius: 3px 0px 0px 3px;" value="task" data-bind="click: $root.set_search_option.bind($data, 0)">Tasks</button>
-						<button type="button" class="btn" style="height: 34px; padding: 1px 10px; margin: 0px; border-radius: 0px;" value="user" data-bind="click: $root.set_search_option.bind($data, 1)">Users</button>
+						<button id="task_option_button" type="button" class="btn active" style="height: 34px; padding: 1px 10px; margin: 0px; border-radius: 3px 0px 0px 3px;" value="task" data-bind="click: $root.set_search_option.bind($data, 0)">Tasks</button>
+						<button id="user_option_button" type="button" class="btn" style="height: 34px; padding: 1px 10px; margin: 0px; border-radius: 0px;" value="user" data-bind="click: $root.set_search_option.bind($data, 1)">Users</button>
 					</div>
                 	<input placeholder="Search" type="text" data-bind="value: search_query, valueUpdate: 'afterkeydown'" style="padding: 2px; margin: 5px; width: 350px;">
 					<!--<div class="btn-group div-inline">
@@ -45,7 +45,7 @@
             </form>
             <div class="pull-right user" style="padding: 0px; margin: 0px;">
             	<a role="button" class="dropdown-toggle" data-toggle="dropdown">
-            		<img data-bind="attr: { 'src': get_gravatar_image_url('{{ email }}') }">
+            		<img data-bind="attr: { 'src': get_gravatar_image_url('{{ email }}', 40) }">
             		<p><span id="topbar_first_name"></span></p> 
             		<!--<b class="caret"></b>-->
             		<ul class="dropdown-menu" role="menu" style="margin-top: 12px; margin-right: 2px; padding: 0px">

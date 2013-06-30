@@ -2,6 +2,8 @@
 var NAME_MAX_LENGTH = 30;
 var DESCRIPTION_MAX_LENGTH = 40;
 var TAGS_MAX_LENGTH = 3;
+var EMAIL_MAX_LENGTH = 30;
+var USER_NAME_MAX_LENGTH = 13;
 //var TAG_REGEX = /(?:^|[\s])(@[\w\/\.\-\:]*\w)/g;
 var TAG_REGEX = /(@[\w\/\.\-\:]*\w)/g;
 var a;
@@ -124,6 +126,7 @@ function TaskFoldersViewModel() {
     
     self.all_tags = ko.observableArray();
     self.task_dict = ko.observableArray();
+    self.user_list = ko.observableArray();
     
     self.tasks_list.subscribe(function (newValue) {
         self.tasks_list_length(newValue.length);
@@ -618,11 +621,22 @@ function TaskFoldersViewModel() {
     self.delete_tag = function() {
         //alert('to be deleted - ' + self.selected_tag());
         $.get('/tags/delete', { tag_name: self.selected_tag() }, self.tags_list);
-    }
+    };
     
     self.change_tag_color = function() {
         $.get('/tags/modify/color/',{ tag_name: self.selected_tag(), new_color: self.tag_color() }, self.tags_list);
-    }
+    };
+    
+    self.show_users = function(query, user_list) {
+        //console.log(query);
+        self.search_query(query);
+        var obj = JSON.parse(user_list);
+        console.log(obj);
+        self.user_list(obj);
+        document.getElementById('task_option_button').setAttribute('class', 'btn');
+        document.getElementById('user_option_button').setAttribute('class', 'btn active');
+        self.search_option(1);
+    };
 };
 
 ko.applyBindings(a = new TaskFoldersViewModel(), document.getElementById("html_page"));
@@ -651,6 +665,29 @@ function name_is_short(task_name) {
 function shortify_name(task_name) {
     //return task_name.substring(0, NAME_MAX_LENGTH-3) + "<span style='color: #FF0000'>" + task_name.charAt(NAME_MAX_LENGTH-3) + "</span><span style='color: #EE0000'>" + task_name.charAt(NAME_MAX_LENGTH-2) + "</span><span style='color: #DD0000'>" + task_name.charAt(NAME_MAX_LENGTH-1) + "</span>"
     return task_name.substring(0, NAME_MAX_LENGTH-3) + '...'
+}
+
+function shortify_full_name(full_name) {
+    return full_name.substring(0, USER_NAME_MAX_LENGTH + 8);
+}
+
+function get_size_for_name(full_name) {
+    var length = full_name.length;
+    var max_length = USER_NAME_MAX_LENGTH;
+    if (length < max_length) {
+        return '18px';
+    }
+    else if (length < max_length + 2) { //max 15
+        return '16px';
+    }
+    else if (length < max_length + 5) { // max 17
+        return '14px';
+    }
+    return '12px';
+}
+
+function shortify_email(email) {
+    return email.substring(0, EMAIL_MAX_LENGTH);
 }
 
 function description_is_short(task_description) {
@@ -945,10 +982,10 @@ function start_codemirror(name_id, description_id) {
 	});
 }
 
-function get_gravatar_image_url(email) {
+function get_gravatar_image_url(email, size) {
     var gravatar_api = "http://www.gravatar.com/avatar/";
     var hashed_email = md5(email);
-    var options = "?s=40&d=identicon";
+    var options = "?s=" + size + "&d=identicon";
     return gravatar_api + hashed_email + options;
 }
 
