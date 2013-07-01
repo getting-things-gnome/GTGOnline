@@ -1,0 +1,15 @@
+{% extends 'topbar.html' %}
+
+{% block page_content %}
+Profile of {{ name }}<br>{{ profile_email }}
+{% endblock page_content %}
+
+{% block external_js %}
+{{ block.super }}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        a.get_user_profile("{{ profile_email }}", "{{ name }}");
+    });
+</script>
+{% endblock external_js %}

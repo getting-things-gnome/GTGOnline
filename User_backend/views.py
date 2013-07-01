@@ -96,8 +96,11 @@ def get_user_list_json(request):
     return HttpResponse(json.dumps(user_list), mimetype='application/json')
 
 def show_user_profile(request):
-    email = request.GET.get('email', request.user.email)
+    profile_email = request.GET.get('email', request.user.email)
+    if profile_email == '':
+        profile_email = request.user.email
     template = loader.get_template('user_profile.html')
     context = RequestContext(request, {'email': request.user.email, \
-                                       'name': request.user.first_name,})
+                                       'name': request.user.get_full_name(), \
+                                       'profile_email': profile_email})
     return HttpResponse(template.render(context))

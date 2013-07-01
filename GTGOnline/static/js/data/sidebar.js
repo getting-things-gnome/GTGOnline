@@ -639,8 +639,13 @@ function TaskFoldersViewModel() {
         self.search_option(1);
     };
     
-    self.show_profile = function(email) {
-        window.location = '/user/profile/?email=' + email;
+    self.get_user_profile = function(email) {
+        $.get('/tasks/search/', { query: self.search_query(), folder: self.chosenFolderId() }, function(data) {
+            self.tasks_list(data);
+            self.header_name('Filtered tasks having - "' + self.search_query() + '" in name');
+            self.search_query('');
+            show_popover();
+        });
     };
 };
 
@@ -1049,4 +1054,8 @@ function get_date_from_text(text) {
         return currentdate.getDate() + '/' + month + '/' + currentdate.getFullYear();
     }
     return "";
+}
+
+function get_profile_template(email) {
+    window.location = '/user/profile/?email=' + email;
 }

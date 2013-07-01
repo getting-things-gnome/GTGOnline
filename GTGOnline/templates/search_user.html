@@ -1,17 +1,12 @@
 {% extends 'topbar.html' %}
 
 {% block page_content %}
-Hey yo, I'm a gun club member
-<br>
-I'm gonna take these rookies downtown
-<br>
-Are you with me ?
-These are the rookies -
+<br><br>
 <div data-bind="foreach: user_list" id="user_list_container">
-    <div style="height: 80px; min-width: 200px; max-width: 400px; width: 250px; border: 1px solid #dedede; display: inline-block; padding: 0px; margin-left: 8px; margin-bottom: 8px; cursor: pointer; background-color: #F2F2F2;" data-bind="click: $root.show_profile($data, email)">
-        <img data-bind="attr: { 'src': get_gravatar_image_url(email, 80) }" style="height: 80px; width: 80px; float: left;">
-        <div style="padding: 8px 0px 10px 5px; overflow-y: auto;">
-            <span style="font: 300 'Open Sans', Helvetica, sans-serif;"><strong data-bind="text: shortify_full_name(full_name), style: { fontSize: get_size_for_name(full_name) }"></strong></span><br>
+    <div class="user_cell" data-bind="attr: { 'id': email }" onclick="get_profile_template(this.id)">
+        <img data-bind="attr: { 'src': get_gravatar_image_url(email, 80) }" class="user_cell_image">
+        <div class="user_cell_details">
+            <span class="user_cell_name"><strong data-bind="text: shortify_full_name(full_name), style: { fontSize: get_size_for_name(full_name) }"></strong></span><br>
             <span style="font-size: 10px;" data-bind="text: shortify_email(email)"></span><br>
             <span style="font-size: 14px" data-bind="text: full_name.length">Shared 4 tasks</span>
         </div>
