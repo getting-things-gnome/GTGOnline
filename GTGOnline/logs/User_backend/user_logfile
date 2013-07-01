@@ -128,3 +128,8 @@
 [01/Jul/2013 10:59:09] INFO [User_backend.user:35] LogIN -- email = nikobellic914@aol.com | id = 2
 [01/Jul/2013 11:02:46] INFO [User_backend.user:44] LogOUT - email = nikobellic914@aol.com | id = 2
 [01/Jul/2013 12:58:28] INFO [User_backend.user:35] LogIN -- email = nikobellic914@aol.com | id = 2
+[01/Jul/2013 14:40:09] INFO [User_backend.user:44] LogOUT - email = nikobellic914@aol.com | id = 2
+[01/Jul/2013 17:39:27] INFO [User_backend.user:35] LogIN -- email = nikobellic914@aol.com | id = 2
+[01/Jul/2013 20:36:20] INFO [User_backend.user:44] LogOUT - email = nikobellic914@aol.com | id = 2
+[01/Jul/2013 20:37:05] INFO [User_backend.user:35] LogIN -- email = chopu@chops.com | id = 33
+[01/Jul/2013 20:37:23] INFO [User_backend.user:44] LogOUT - email = chopu@chops.com | id = 33
