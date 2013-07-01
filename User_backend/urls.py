@@ -13,5 +13,6 @@ urlpatterns = patterns('',
     url(r'^register/$', views.register, name='register'),
     url(r'^search/$', views.search_user, name='search'),
     url(r'^list/$', views.get_user_list_json, name='user_list_json'),
+    url(r'^profile/$', views.show_user_profile, name='profile'),
     url(r'^$', views.landing, name='default'),
 )

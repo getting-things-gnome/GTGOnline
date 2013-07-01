@@ -159,6 +159,8 @@
 		var problem_flag = 0;
 		var email_warning = document.getElementById('email-warning');
 		var register_button = document.getElementById('register_button');
+		var gravatar_profile;
+		var data_received = 0;
 		
 		function ValidateRegistration() {
 			var form = document.forms["RegistrationForm"];
@@ -166,6 +168,7 @@
 			register_button.setAttribute('class', 'btn btn-success disabled');
 			
 			validate_email();
+			console.log('received = ' + data_received);
 			
 			var password = form["password"].value;
 			var password_warning = document.getElementById('password-warning');
@@ -252,52 +255,45 @@
 						}
 				   }
 			});
-			var profile_url = get_gravatar_url(email);
+			/*var profile_url = get_gravatar_url(email);
 			console.log('email sent = "' + email + '" profile url = "' + profile_url + '"');
-			$.ajax({ url: 'http://www.gravatar.com/' + get_gravatar_url(email) + '.json',
-				async: false,
+			gravatar_profile = [];
+			data_received = 0;
+			$.ajax({ url: "http://www.gravatar.com/" + get_gravatar_url(email) + ".json",
+				async: true,
 				dataType: 'jsonp',
+				contentType: "application/json; charset=utf-8",
 				success: function(data){
-					console.log(data);
+					gravatar_profile = data;
+					console.log('data = ' + gravatar_profile);
+					data_received = 1;
 				},
-				jsonp: false,
-				error: function(jqXHR, exception) {
-					if (jqXHR.status === 0) {
-						alert('Not connect.\n Verify Network.');
-					} else if (jqXHR.status == 404) {
-						alert('Requested page not found. [404]');
-					} else if (jqXHR.status == 500) {
-						alert('Internal Server Error [500].');
-					} else if (exception === 'parsererror') {
-						alert('Requested JSON parse failed.');
-					} else if (exception === 'timeout') {
-						alert('Time out error.');
-					} else if (exception === 'abort') {
-						alert('Ajax request aborted.');
-					} else {
-						alert('Uncaught Error.\n' + jqXHR.responseText);
-					}
+				//jsonp: false,
+				complete: function(xhr, data) {
+					/*if (xhr.status == 0)
+					    {alert('fail');}
+					else
+					    {alert('success');}
+					//console.log('complete, ' + data);
+					//console.log('profile = ' + gravatar_profile);
 				},
-				/*complete: function(xhr, data) {
-				if (xhr.status == 0)
-			        {alert('fail');}
-			    else
-			        {alert('success');}
-				console.log('complete, ' + data);
-				},*/
 				statusCode: {
 					404: function() {
 						console.log('404 error detected');
 					}
 				},
-			});
+			});*/
 		}
 		
 		function get_gravatar_url(email) {
-			var base_url = "http://en.gravatar.com/";
+			var base_url = "http://www.gravatar.com/";
 			var hash = md5(email);
 			return hash
-		}
+		};
+		
+		$(document).ajaxError(function() {
+			alert('error');
+		});
 	</script>
     </body>
 </html>

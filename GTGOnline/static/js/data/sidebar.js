@@ -225,7 +225,7 @@ function TaskFoldersViewModel() {
         
         this.get('', function() {
             this.app.runRoute('get', '#Active');
-            location.hash = '#Active';
+            //location.hash = '#Active';
         });
     }).run();
     
@@ -637,6 +637,10 @@ function TaskFoldersViewModel() {
         document.getElementById('task_option_button').setAttribute('class', 'btn');
         document.getElementById('user_option_button').setAttribute('class', 'btn active');
         self.search_option(1);
+    };
+    
+    self.show_profile = function(email) {
+        window.location = '/user/profile/?email=' + email;
     };
 };
 

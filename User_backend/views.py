@@ -94,3 +94,10 @@ def get_user_list_json(request):
     query = request.GET.get('query', '')
     user_list = find_users_from_query(request.user, query)
     return HttpResponse(json.dumps(user_list), mimetype='application/json')
+
+def show_user_profile(request):
+    email = request.GET.get('email', request.user.email)
+    template = loader.get_template('user_profile.html')
+    context = RequestContext(request, {'email': request.user.email, \
+                                       'name': request.user.first_name,})
+    return HttpResponse(template.render(context))

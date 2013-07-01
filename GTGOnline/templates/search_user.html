@@ -8,7 +8,7 @@ I'm gonna take these rookies downtown
 Are you with me ?
 These are the rookies -
 <div data-bind="foreach: user_list" id="user_list_container">
-    <div style="height: 80px; min-width: 200px; max-width: 400px; width: 250px; border: 1px solid #dedede; display: inline-block; padding: 0px; margin-left: 8px; margin-bottom: 8px; cursor: pointer; background-color: rgba(0, 255, 21, 0.2);" data-bind="attr: { 'id': email }">
+    <div style="height: 80px; min-width: 200px; max-width: 400px; width: 250px; border: 1px solid #dedede; display: inline-block; padding: 0px; margin-left: 8px; margin-bottom: 8px; cursor: pointer; background-color: #F2F2F2;" data-bind="click: $root.show_profile($data, email)">
         <img data-bind="attr: { 'src': get_gravatar_image_url(email, 80) }" style="height: 80px; width: 80px; float: left;">
         <div style="padding: 8px 0px 10px 5px; overflow-y: auto;">
             <span style="font: 300 'Open Sans', Helvetica, sans-serif;"><strong data-bind="text: shortify_full_name(full_name), style: { fontSize: get_size_for_name(full_name) }"></strong></span><br>
