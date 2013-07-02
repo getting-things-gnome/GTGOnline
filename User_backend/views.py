@@ -71,10 +71,8 @@ def register(request):
         if not validate_form(email, password):
             request.session['error'] = '3'
             return HttpResponseRedirect('/user/landing/')
-        register_user(email, password, \
-                      request.POST['first_name'], request.POST['last_name']) 
-    else:
-        print >>sys.stderr, "request is not POST"
+        user = register_user(email, password, \
+                      request.POST['first_name'], request.POST['last_name'])
     request.session['error'] = '4'
     return HttpResponseRedirect('/user/landing/')
 

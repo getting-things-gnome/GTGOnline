@@ -48,11 +48,11 @@ def register_user(email, password, first_name, last_name):
     try:    # Remove this try and validate via js on the clientside itself
         user = User.objects.create_user(email, password)
     except IntegrityError:
-        return False
+        return None
     user.first_name = first_name
     user.last_name = last_name
     user.save()
-    return True
+    return user
     
 def does_email_exist(email):
     return User.objects.filter(email = email).exists()

@@ -133,3 +133,5 @@
 [01/Jul/2013 20:36:20] INFO [User_backend.user:44] LogOUT - email = nikobellic914@aol.com | id = 2
 [01/Jul/2013 20:37:05] INFO [User_backend.user:35] LogIN -- email = chopu@chops.com | id = 33
 [01/Jul/2013 20:37:23] INFO [User_backend.user:44] LogOUT - email = chopu@chops.com | id = 33
+[02/Jul/2013 14:51:17] INFO [User_backend.user:35] LogIN -- email = nikobellic914@aol.com | id = 2
+[02/Jul/2013 14:51:40] INFO [User_backend.user:44] LogOUT - email = nikobellic914@aol.com | id = 2

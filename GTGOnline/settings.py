@@ -164,6 +164,7 @@ INSTALLED_APPS = (
     'Task_backend',
     'Tag_backend',
     'User_backend',
+    'Group_backend',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -209,6 +210,14 @@ LOGGING = {
             'backupCount': 2,
             'formatter': 'standard',
         },
+        'group_logfile': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': PROJECT_DIR + "/logs/Group_backend/group_logfile",
+            'maxBytes': 50000,
+            'backupCount': 2,
+            'formatter': 'standard',
+        },
         'console':{
             'level':'INFO',
             'class':'logging.StreamHandler',
@@ -236,6 +245,10 @@ LOGGING = {
         },
         'User_backend': {
             'handlers': ['console', 'user_logfile'],
+            'level': 'DEBUG',
+        },
+        'Group_backend': {
+            'handlers': ['console', 'group_logfile'],
             'level': 'DEBUG',
         },
     }

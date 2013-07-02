@@ -1,0 +1,1 @@
+[02/Jul/2013 17:00:47] ERROR [Group_backend.group:15] New Group with name = "friends" and user = "nikobellic914@aol.com" could not be created - "(1062, "Duplicate entry '2-friends' for key 'user_id'")"
