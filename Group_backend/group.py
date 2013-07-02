@@ -3,9 +3,17 @@ import logging
 from django.db import IntegrityError
 
 from Group_backend.models import Group
-from User_backend.user import get_user_details
+from User_backend.user import get_user_details, get_user_object
 
 log = logging.getLogger(__name__)
+
+def get_group_object(user, group_name):
+    try:
+        return user.group_set.get(name = group_name)
+    except Group.DoesNotExist, e:
+        log.error('New Group with name = "' + group_name + '" and user = "' + \
+                  user.email + '" could not be created - "' + str(e) + '"')
+        return None
 
 def create_group(user, group_name, color = ''):
     group = Group(user = user, name = group_name, color = color)
@@ -14,12 +22,11 @@ def create_group(user, group_name, color = ''):
     except IntegrityError, e:
         log.error('New Group with name = "' + group_name + '" and user = "' + \
                   user.email + '" could not be created - "' + str(e) + '"')
-    
-def get_group_object(user, group_name):
-    try:
-        return Group.objects.get(user = user.pk, name = group_name)
-    except Group.DoesNotExist:
-        return None
+
+def delete_group(user, group_name):
+    group = get_group_object(user, group_name)
+    if group != None:
+        group.delete()
     
 def get_members(user, group_name):
     members = []
@@ -35,3 +42,15 @@ def get_members(user, group_name):
 def get_group_details(group):
     return {"name": group.name, "color": group.color, \
             "members": [get_user_details(i) for i in group.members.all()]}
+
+def add_member_to_group(user, group_name, member_email):
+    group = get_group_object(user, group_name)
+    if group != None:
+        member = get_user_object(member_email)
+        group.members.add(member)
+
+def remove_member_from_group(user, group_name, member_email):
+    group = get_group_object(user, group_name)
+    if group != None:
+        member = get_user_object(member_email)
+        group.members.remove(member)

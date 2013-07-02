@@ -15,13 +15,13 @@ User = get_user_model()
 log = logging.getLogger(__name__)
 
 def get_user_object(user):
-    if isinstance(user, str) or isinstance(user, unicode):
+    if isinstance(user, User):
+        return user
+    elif isinstance(user, str) or isinstance(user, unicode):
         try:
             return User.objects.get(email = user)
         except User.DoesNotExist:
             return None
-    elif isinstance(user, User):
-        return user
     else:
         return None
     

@@ -1,1 +1,4 @@
 [02/Jul/2013 17:00:47] ERROR [Group_backend.group:15] New Group with name = "friends" and user = "nikobellic914@aol.com" could not be created - "(1062, "Duplicate entry '2-friends' for key 'user_id'")"
+[02/Jul/2013 19:40:04] ERROR [Group_backend.group:23] New Group with name = "friends3" and user = "nikobellic914@aol.com" could not be created - "Group matching query does not exist. Lookup parameters were {'name': 'friends3'}"
+[02/Jul/2013 19:47:27] ERROR [Group_backend.group:23] New Group with name = "friends5" and user = "nikobellic914@aol.com" could not be created - "Group matching query does not exist. Lookup parameters were {'name': 'friends5'}"
+[02/Jul/2013 19:47:31] ERROR [Group_backend.group:23] New Group with name = "" and user = "nikobellic914@aol.com" could not be created - "Group matching query does not exist. Lookup parameters were {'name': ''}"
