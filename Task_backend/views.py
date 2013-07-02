@@ -39,12 +39,12 @@ def get_tasks(request):
     
     if folder_state == -1:
         task_tree = get_task_tree(request.user, \
-                                  Task.objects.filter(user = request.user).order_by('due_date'), \
+                                  request.user.task_set.all(), \
                                   0, [], folder_state)
     else:
         task_tree = get_task_tree(request.user, \
-                                  Task.objects.filter(user = request.user, \
-                                                      status = folder_state).order_by('due_date'), \
+                                  request.user.task_set.filter(status = \
+                                                               folder_state), \
                                   0, [], folder_state)
     #template = loader.get_template('task_row.html')
     #context = RequestContext(request, {'task_tree':json.dumps(task_tree)})
