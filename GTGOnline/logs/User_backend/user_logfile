@@ -139,3 +139,6 @@
 [03/Jul/2013 11:08:50] INFO [User_backend.user:35] LogIN -- email = cole@phelps.com | id = 3
 [03/Jul/2013 13:27:00] INFO [User_backend.user:44] LogOUT - email = cole@phelps.com | id = 3
 [03/Jul/2013 14:45:47] INFO [User_backend.user:35] LogIN -- email = cole@phelps.com | id = 3
+[03/Jul/2013 15:01:53] INFO [User_backend.user:44] LogOUT - email = cole@phelps.com | id = 3
+[03/Jul/2013 15:12:44] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 6
+[03/Jul/2013 21:38:26] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 6

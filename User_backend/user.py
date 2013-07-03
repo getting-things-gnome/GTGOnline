@@ -82,11 +82,16 @@ def email_is_valid(email):
 def get_user_details(user):
     return {"email": user.email, "full_name": user.get_full_name()}
 
-def find_users_from_query(user, query):
-    users = User.objects.filter(Q(email__icontains = query) | \
-                                Q(first_name__icontains = query) | \
-                                Q(last_name__icontains = query))
-    user_list = []
-    for user in users:
-        user_list.append(get_user_details(user))
-    return user_list
+#def find_users_from_query(user, query):
+#    #groups = user.group_set.all()
+#    for group in user.group_set.all():
+#        users = group.members.filter(Q(email__icontains = query) | \
+#                                Q(first_name__icontains = query) | \
+#                                Q(last_name__icontains = query))
+#    #users = User.objects.filter(Q(email__icontains = query) | \
+#                                #Q(first_name__icontains = query) | \
+#                                #Q(last_name__icontains = query))
+#    user_list = []
+#    for user in users:
+#        user_list.append(get_user_details(user))
+#    return user_list

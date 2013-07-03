@@ -14,6 +14,14 @@ div#wrapper {
   bottom:0px;
 }
 
+div#wrapper2 {
+  position: absolute;
+  top:50px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+}
+
 div#sidebar {
   position: absolute;
   top:50px;
@@ -23,7 +31,25 @@ div#sidebar {
   overflow-y:auto
 }
 
+div#sidebar2 {
+  position: absolute;
+  top:50px;
+  bottom:0px;
+  left:0px;
+  width:18%;
+  overflow-y:auto
+}
+
 div#main_div {
+  position: absolute;
+  top:0px;
+  bottom:0px;
+  right:0px;
+  width: 82%;
+  overflow-y:auto
+}
+
+div#main_div2 {
   position: absolute;
   top:0px;
   bottom:0px;
@@ -1142,6 +1168,10 @@ div.task-row {
   width: 32%;
 }
 
+.width100p {
+  width: 100%;
+}
+
 .date-link {
   text-decoration:none;
   color:#4D4D4D;
@@ -1312,6 +1342,10 @@ div.task-row {
           border-radius: 0px;;
 }
 
+.user_list_container {
+  margin-top: 10px;
+}
+
 .user_cell {
   height: 80px;
   min-width: 200px;
@@ -1321,7 +1355,7 @@ div.task-row {
   display: inline-block;
   padding: 0px;
   margin-left: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 14px;
   cursor: pointer;
   background-color: #F2F2F2;
 }
@@ -1332,8 +1366,8 @@ div.task-row {
   float: left;
 }
 
-.user_cell_details span{
-  margin-left: 10px;
+.user_cell_span {
+  margin-left: 8px;
 }
 
 .user_cell_name {
@@ -1342,11 +1376,11 @@ div.task-row {
 }
 
 .user_options_div {
-   margin: 0px;
-   padding: 0px;
-   position: absolute;
-   bottom: -1px;
-   left: 196px;
+  margin: 0px;
+  padding: 0px;
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
 }
 
 .user_options_div .btn {
@@ -1356,4 +1390,17 @@ div.task-row {
   -webkit-border-radius: 0px;
      -moz-border-radius: 0px;
           border-radius: 0px;
+}
+
+.group_header {
+  margin-left: 8px;
+  font: 300 30px/1 'Open Sans', Helvetica, sans-serif;
+}
+
+.no_members {
+  font: 500 24px/1 'Open Sans', Helvetica, sans-serif;
+}
+
+.no_display {
+  display: none;
 }

@@ -9,8 +9,8 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 
 from User_backend.user import register_user, login_user, logout_user, \
-                              validate_form, does_email_exist, \
-                              find_users_from_query
+                              validate_form, does_email_exist
+from Group_backend.group import find_users_from_query
 from Group_backend.group import create_default_groups
 from Tools.constants import *
 
@@ -84,7 +84,7 @@ def search_user(request):
     query = request.GET.get('query', '')
     print >>sys.stderr, query
     template = loader.get_template('search_user.html')
-    user_list = find_users_from_query(request.user, query)
+    user_list = find_users_from_query(request.user, query, GROUPED)
     context = RequestContext(request, {'email': request.user.email, \
                                        'name': request.user.first_name, \
                                        'users': json.dumps(user_list), \
@@ -93,7 +93,7 @@ def search_user(request):
 
 def get_user_list_json(request):
     query = request.GET.get('query', '')
-    user_list = find_users_from_query(request.user, query)
+    user_list = find_users_from_query(request.user, query, NON_GROUPED)
     return HttpResponse(json.dumps(user_list), mimetype='application/json')
 
 def show_user_profile(request):

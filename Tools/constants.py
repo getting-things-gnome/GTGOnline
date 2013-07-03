@@ -54,3 +54,7 @@ FUZZY_DATES = ['now', 'soon', 'someday']
 USER_LOGGED_IN = 0
 USER_ACCOUNT_DISABLED = 1
 USER_INVALID = 2
+
+# Groups related
+NON_GROUPED = 0
+GROUPED = 1

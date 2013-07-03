@@ -121,7 +121,7 @@ if(jQuery) (function($) {
 	// Initialize input elements
 	function init(input, settings) {
 		
-		var minicolors = $('<span class="minicolors" />'),
+		var minicolors = $('<span class="minicolors"/>'),
 			defaultSettings = $.minicolors.defaultSettings;
 		
 		// Do nothing if already initialized
@@ -141,6 +141,7 @@ if(jQuery) (function($) {
 		if( settings.position !== undefined ) {
 			$.each(settings.position.split(' '), function() {
 				minicolors.addClass('minicolors-position-' + this);
+				minicolors.addClass('width100p');
 			});
 		}
 		

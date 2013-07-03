@@ -123,11 +123,13 @@ function TaskFoldersViewModel() {
     self.search_option = ko.observable('');
     self.header_name = ko.observable('');
     self.selected_tag = ko.observable('');
+    self.new_group_name = ko.observable('');
     self.tag_color = ko.observable('#F89406');
     
     self.all_tags = ko.observableArray();
     self.task_dict = ko.observableArray();
     self.user_list = ko.observableArray();
+    self.group_list = ko.observableArray();
     
     self.tasks_list.subscribe(function (newValue) {
         self.tasks_list_length(newValue.length);
@@ -647,6 +649,10 @@ function TaskFoldersViewModel() {
             self.titlebar_display('Users matching query "' + query + '"');
         }
         self.search_option(1);
+        for (var i=0; i < obj.length; i++) {
+            self.group_list.push(obj[i].name);
+        }
+        console.log(self.group_list());
     };
     
     self.get_user_profile = function(email) {
@@ -657,6 +663,77 @@ function TaskFoldersViewModel() {
             show_popover();
         });
     };
+    
+    self.show_more_users = function() {
+        $.get('/user/search/json/', { query: self.search_query() }, function(data) {
+            console.log(data[0]);
+            //console.log(self.user_list());
+            self.user_list.push(data[0]);
+            document.getElementById('more_users').setAttribute('class', 'no_display');
+        });
+    };
+    
+    self.add_user_to_group = function(email, group_old, group_new) {
+        $.get('/groups/add/', { name: group_new, email: email }, function(data) {
+            //console.log(data);
+            var match = ko.utils.arrayFirst(self.user_list(), function(item) {
+                //alert(data[0].id);
+                return data[0].name === item.name;
+            });
+            if (match) {
+                //alert(match.name);
+                self.user_list.replace(match, data[0]);
+                //alert(match.name);
+            }
+            else {
+                alert("no match found");
+            };
+            $.get('/groups/list/', { name: group_old }, function(data) {
+                var match = ko.utils.arrayFirst(self.user_list(), function(item) {
+                    //alert(data[0].id);
+                    return data[0].name === item.name;
+                });
+                if (match) {
+                    //alert(match.name);
+                    self.user_list.replace(match, data[0]);
+                    //alert(match.name);
+                }
+                else {
+                    alert("no match found");
+                }
+            });
+        });
+    };
+    
+    self.remove_user_from_group = function(group, email) {
+        $.get('/groups/remove/', { name: group, email: email }, function(data) {
+            //console.log(data);
+            var match = ko.utils.arrayFirst(self.user_list(), function(item) {
+                //alert(data[0].id);
+                return data[0].name === item.name;
+            });
+            if (match) {
+                //alert(match.name);
+                self.user_list.replace(match, data[0]);
+                //alert(match.name);
+            }
+            else {
+                alert("no match found");
+            }
+        });
+    };
+    
+    self.new_group = function() {
+        console.log('name = ' + self.new_group_name() + ' color = ' + self.tag_color());
+        if (self.new_group_name() == '') {
+            alert('Please enter a name');
+            return;
+        }
+        $.get('/groups/new/', { name: self.new_group_name(), color: self.tag_color() }, function(data) {
+            console.log(data);
+            self.user_list(data);
+        });
+    }
 };
 
 ko.applyBindings(a = new TaskFoldersViewModel(), document.getElementById("html_page"));
@@ -1068,4 +1145,22 @@ function get_date_from_text(text) {
 
 function get_profile_template(email) {
     window.location = '/user/profile/?email=' + email;
+}
+
+function hex2rgba(h) {
+    console.log('hex color = ' + h);
+
+    var r = parseInt((cutHex(h)).substring(0,2),16);
+    var g = parseInt((cutHex(h)).substring(2,4),16);
+    var b = parseInt((cutHex(h)).substring(4,6),16);
+    function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
+
+    return "rgba(" + r + "," + g + "," + b + ", 0.3)"
+}
+
+function prettify_group_name(name) {
+    if (name == 'Others') {
+        return '<i class="icon-check-empty">&nbsp;</i>Add'
+    }
+    return '<i class="icon-circle-blank">&nbsp;</i>' + name.substring(0, USER_NAME_MAX_LENGTH)
 }
