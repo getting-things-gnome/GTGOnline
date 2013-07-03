@@ -1,6 +1,7 @@
 import json
 
 from django.http import HttpResponse, HttpResponseRedirect
+from django.template import loader, RequestContext
 
 from Group_backend.models import Group
 from Group_backend.group import create_group, delete_group, get_members, \
@@ -23,9 +24,15 @@ def delete_existing_group(request):
 
 def list_members(request):
     name = request.GET.get('name', '')
+    template = loader.get_template('search_user.html')
     members = get_members(request.user, name)
-    return HttpResponse(json.dumps(members, indent = 4), \
-                        mimetype = "application/json")
+    context = RequestContext(request, {'email': request.user.email, \
+                                       'name': request.user.first_name, \
+                                       'users': json.dumps(members), \
+                                       'query': '', 'origin': 'group'})
+    return HttpResponse(template.render(context))
+    #return HttpResponse(json.dumps(members, indent = 4), \
+                        #mimetype = "application/json")
 
 def add_member(request):
     name = request.GET.get('name', '')

@@ -100,6 +100,7 @@ function TaskFoldersViewModel() {
     var self = this;
     self.folders = ['All', 'Active', 'Done', 'Dismissed'];
     self.chosenFolderId = ko.observable();
+    self.titlebar_display = ko.observable('');
     self.tasks_list = ko.observableArray();
     self.tasks_list_length = ko.observable('0');
     self.todays_tasks = ko.observableArray();
@@ -186,6 +187,7 @@ function TaskFoldersViewModel() {
     self.goToFolder = function(folder) {
         location.hash = folder;
         self.header_name(this.params.folder + ' Tasks');
+        self.titlebar_display(this.params.folder + ' Tasks');
         $("#tag_dropdown_options").hide();
     };
     
@@ -206,6 +208,7 @@ function TaskFoldersViewModel() {
         this.get('#:folder', function() {
             self.chosenFolderId(this.params.folder);
             self.header_name(this.params.folder + ' Tasks');
+            self.titlebar_display(this.params.folder + ' Tasks');
             $("#tag_dropdown_options").hide();
             $.get('/tasks/get', { folder: this.params.folder }, function(data) {
                 self.tasks_list(data);
@@ -628,14 +631,21 @@ function TaskFoldersViewModel() {
         $.get('/tags/modify/color/',{ tag_name: self.selected_tag(), new_color: self.tag_color() }, self.tags_list);
     };
     
-    self.show_users = function(query, user_list) {
+    self.show_users = function(origin, query, user_list) {
         //console.log(query);
+        console.log(origin);
         self.search_query(query);
         var obj = JSON.parse(user_list);
         console.log(obj);
         self.user_list(obj);
         document.getElementById('task_option_button').setAttribute('class', 'btn');
         document.getElementById('user_option_button').setAttribute('class', 'btn active');
+        if (origin == 'group') {
+            self.titlebar_display('Groups and members');
+        }
+        else {
+            self.titlebar_display('Users matching query "' + query + '"');
+        }
         self.search_option(1);
     };
     

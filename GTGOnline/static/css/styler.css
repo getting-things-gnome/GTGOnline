@@ -1332,11 +1332,28 @@ div.task-row {
   float: left;
 }
 
-.user_cell_details {
-  padding: 8px 0px 10px 5px;
-  overflow-y: auto;
+.user_cell_details span{
+  margin-left: 10px;
 }
 
 .user_cell_name {
  font: 300 'Open Sans', Helvetica, sans-serif;
+ font-size: 18px;
+}
+
+.user_options_div {
+   margin: 0px;
+   padding: 0px;
+   position: absolute;
+   bottom: -1px;
+   left: 196px;
+}
+
+.user_options_div .btn {
+  background-image: none;
+  background-color: #FAFAFA;
+  background-repeat: repeat-x;
+  -webkit-border-radius: 0px;
+     -moz-border-radius: 0px;
+          border-radius: 0px;
 }

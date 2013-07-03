@@ -3,12 +3,26 @@
 {% block page_content %}
 <br><br>
 <div data-bind="foreach: user_list" id="user_list_container">
-    <div class="user_cell" data-bind="attr: { 'id': email }" onclick="get_profile_template(this.id)">
-        <img data-bind="attr: { 'src': get_gravatar_image_url(email, 80) }" class="user_cell_image">
-        <div class="user_cell_details">
+    <div class="user_cell" data-bind="attr: { 'id': email }" style="position: relative">
+        <!--<div style="height: 80px; width: 80px;" class="div-inline">-->
+            <img data-bind="attr: { 'src': get_gravatar_image_url(email, 80) }" class="user_cell_image div-inline">
+        <!--</div>-->
+        <div style="height: 8px;">&nbsp;</div>
+        <div class="user_cell_details div-inline">
             <span class="user_cell_name"><strong data-bind="text: shortify_full_name(full_name), style: { fontSize: get_size_for_name(full_name) }"></strong></span><br>
-            <span style="font-size: 10px;" data-bind="text: shortify_email(email)"></span><br>
-            <span style="font-size: 14px" data-bind="text: full_name.length">Shared 4 tasks</span>
+            <span style="font-size: 10px; margin: 0px;" data-bind="text: shortify_email(email)"><span></span></span><br>
+            <span style="font-size: 14px;" data-bind="text: full_name.length">11</span>
+        </div>
+        <div class="btn-group div-inline pull-right user_options_div">
+            <a class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#" style="-webkit-border-radius: 0px;-moz-border-radius: 0px;border-radius: 0px;">
+                Add
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><form><input type="checkbox">&nbsp;Home</form></li>
+                <li><form><input type="checkbox">&nbsp;Friends</form></li>
+                <li><form><input type="checkbox">&nbsp;Work</form></li>
+            </ul>
         </div>
     </div>
 </div>
@@ -19,7 +33,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        a.show_users("{{ query }}", '{{ users|safe }}');
+        a.show_users("{{ origin }}", "{{ query }}", '{{ users|safe }}');
     });
 </script>
 {% endblock external_js %}

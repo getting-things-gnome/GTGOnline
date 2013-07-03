@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from User_backend.user import register_user, login_user, logout_user, \
                               validate_form, does_email_exist, \
                               find_users_from_query
+from Group_backend.group import create_default_groups
 from Tools.constants import *
 
 def landing(request):
@@ -73,6 +74,8 @@ def register(request):
             return HttpResponseRedirect('/user/landing/')
         user = register_user(email, password, \
                       request.POST['first_name'], request.POST['last_name'])
+        if user != None:
+            create_default_groups(user)
     request.session['error'] = '4'
     return HttpResponseRedirect('/user/landing/')
 
@@ -85,7 +88,7 @@ def search_user(request):
     context = RequestContext(request, {'email': request.user.email, \
                                        'name': request.user.first_name, \
                                        'users': json.dumps(user_list), \
-                                       'query': query,})
+                                       'query': query, 'origin': 'search'})
     return HttpResponse(template.render(context))
 
 def get_user_list_json(request):

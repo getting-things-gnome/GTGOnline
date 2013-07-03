@@ -23,6 +23,11 @@ def create_group(user, group_name, color = ''):
         log.error('New Group with name = "' + group_name + '" and user = "' + \
                   user.email + '" could not be created - "' + str(e) + '"')
 
+def create_default_groups(user):
+    create_group(user = user, name = 'Home', color = '#2EFF00')
+    create_group(user = user, name = 'Friends', color = '#E9FF00')
+    create_group(user = user, name = 'Work', color = '#2E00FF')
+
 def delete_group(user, group_name):
     group = get_group_object(user, group_name)
     if group != None:
