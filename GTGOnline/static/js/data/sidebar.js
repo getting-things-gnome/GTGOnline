@@ -678,11 +678,11 @@ function TaskFoldersViewModel() {
     };
     
     self.show_more_users = function() {
+        document.getElementById('more_users').style.display = 'none';
         $.post('/user/search/json/', { query: self.search_query(), visited: self.visited_users() }, function(data) {
             console.log(data[0]);
             //console.log(self.user_list());
             self.user_list.push(data[0]);
-            document.getElementById('more_users').style.display = 'none';
         });
     };
     
