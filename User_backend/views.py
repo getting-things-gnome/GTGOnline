@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader, RequestContext
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 from User_backend.user import register_user, login_user, logout_user, \
                               validate_form, does_email_exist
@@ -91,9 +92,14 @@ def search_user(request):
                                        'query': query, 'origin': 'search'})
     return HttpResponse(template.render(context))
 
+@csrf_exempt
 def get_user_list_json(request):
-    query = request.GET.get('query', '')
-    user_list = find_users_from_query(request.user, query, NON_GROUPED)
+    query = request.POST.get('query', '')
+    visited = request.POST.getlist('visited[]')
+    visited.append(request.user.email)
+    print >>sys.stderr, visited
+    user_list = find_users_from_query(request.user, query, NON_GROUPED, \
+                                      visited = visited)
     return HttpResponse(json.dumps(user_list), mimetype='application/json')
 
 def show_user_profile(request):

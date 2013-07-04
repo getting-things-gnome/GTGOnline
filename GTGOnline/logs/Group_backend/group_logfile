@@ -12,3 +12,7 @@
 [03/Jul/2013 22:34:39] ERROR [Group_backend.group:19] New Group with name = "Others" and user = "albert@desilva.com" could not be created - "Group matching query does not exist. Lookup parameters were {'name': u'Others'}"
 [03/Jul/2013 22:36:49] ERROR [Group_backend.group:19] New Group with name = "Others" and user = "albert@desilva.com" could not be created - "Group matching query does not exist. Lookup parameters were {'name': u'Others'}"
 [03/Jul/2013 22:37:53] ERROR [Group_backend.group:19] New Group with name = "Others" and user = "albert@desilva.com" could not be created - "Group matching query does not exist. Lookup parameters were {'name': u'Others'}"
+[04/Jul/2013 12:53:45] ERROR [Group_backend.group:28] New Group with name = "homies" and user = "albert@desilva.com" could not be created - "(1062, "Duplicate entry '6-homies' for key 'user_id'")"
+[04/Jul/2013 12:58:48] ERROR [Group_backend.group:19] New Group with name = "Others" and user = "albert@desilva.com" could not be created - "Group matching query does not exist. Lookup parameters were {'name': u'Others'}"
+[04/Jul/2013 12:59:11] ERROR [Group_backend.group:19] New Group with name = "Others" and user = "albert@desilva.com" could not be created - "Group matching query does not exist. Lookup parameters were {'name': u'Others'}"
+[04/Jul/2013 12:59:34] ERROR [Group_backend.group:19] New Group with name = "Others" and user = "albert@desilva.com" could not be created - "Group matching query does not exist. Lookup parameters were {'name': u'Others'}"

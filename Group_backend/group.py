@@ -15,8 +15,8 @@ def get_group_object(user, group_name):
     try:
         return user.group_set.get(name = group_name)
     except Group.DoesNotExist, e:
-        log.error('New Group with name = "' + group_name + '" and user = "' + \
-                  user.email + '" could not be created - "' + str(e) + '"')
+        log.error('Group with name = "' + group_name + '" and user = "' + \
+                  user.email + '" does not exist - "' + str(e) + '"')
         return None
 
 def create_group(user, group_name, color = ''):
@@ -37,23 +37,28 @@ def delete_group(user, group_name):
     if group != None:
         group.delete()
     
-def get_members(user, group_name):
+def get_members(user, group_name, visited = []):
     members = []
     if group_name == '':
         for group in user.group_set.all():
             members.append(get_group_details(group, group.members.all()))
     elif group_name.lower() == 'others':
-        members.append(get_group_details(None, User.objects.all()))
+        members.append(get_group_details(None, User.objects.all(), \
+                                         visited = visited))
     else:
         group = get_group_object(user, group_name)
         if group != None:
             members.append(get_group_details(group, group.members.all()))
     return members
 
-def get_group_details(group, query_set):
+def get_group_details(group, query_set, visited = []):
+    members = []
     if group == None:
+        for i in query_set:
+            if i.email not in visited:
+                members.append(get_user_details(i))
         return {"name": "Others", "color": "#F2F2F2", \
-            "members": [get_user_details(i) for i in query_set]}
+            "members": members}
     return {"name": group.name, "color": group.color, \
             "members": [get_user_details(i) for i in query_set]}
 
@@ -69,13 +74,13 @@ def remove_member_from_group(user, group_name, member_email):
         member = get_user_object(member_email)
         group.members.remove(member)
 
-def find_users_from_query(user, query, origin):
+def find_users_from_query(user, query, origin, visited = []):
     result = []
     if origin == NON_GROUPED:
         users = User.objects.filter(Q(email__icontains = query) | \
                                     Q(first_name__icontains = query) | \
                                     Q(last_name__icontains = query))
-        result.append(get_group_details(None, users))
+        result.append(get_group_details(None, users, visited = visited))
     else:
         for group in user.group_set.all():
             users = group.members.filter(Q(email__icontains = query) | \

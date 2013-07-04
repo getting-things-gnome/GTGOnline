@@ -1404,3 +1404,14 @@ div.task-row {
 .no_display {
   display: none;
 }
+
+.group_link {
+  text-decoration: none;
+  color: #C1C1C1;
+}
+
+.group_link:hover {
+  text-decoration: none;
+  color: #FFFFFF;
+  cursor: pointer;
+}

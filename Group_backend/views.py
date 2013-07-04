@@ -2,6 +2,7 @@ import json
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader, RequestContext
+from django.views.decorators.csrf import csrf_exempt
 
 from Group_backend.models import Group
 from Group_backend.group import create_group, delete_group, get_members, \
@@ -33,9 +34,14 @@ def list_members_template(request):
     #return HttpResponse(json.dumps(members, indent = 4), \
                         #mimetype = "application/json")
     
+@csrf_exempt
 def list_members(request):
-    name = request.GET.get('name', '')
-    members = get_members(request.user, name)
+    name = request.POST.get('name', '')
+    if name == '':
+        name = request.GET.get('name', '')
+    visited = request.POST.getlist('visited[]')
+    visited.append(request.user.email)
+    members = get_members(request.user, name, visited = visited)
     return HttpResponse(json.dumps(members, indent = 4), \
                         mimetype = "application/json")
 

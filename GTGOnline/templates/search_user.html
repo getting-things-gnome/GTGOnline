@@ -1,5 +1,11 @@
 {% extends 'topbar.html' %}
 
+{% block topbar_switching_icon %}
+    <div class="div-inline" id="topbar_group_div">
+        <a href="{% url "tasks:main" %}" id="topbar_group_link" class="group_link" title="Go back to Tasks" onclick="window.location = '{% url "tasks:main" %}'"><i class="icon-tasks icon-2x" style="margin: 10px"></i></a>
+    </div>
+{% endblock topbar_switching_icon %}
+
 {% block page_content %}
 <div class="content clearfix" id="wrapper2">
 {% block sidebar %}
@@ -22,14 +28,14 @@
             </div>
             <div class="widget bg-color blue">
                 <div class="widget-header">
-                	<h3>Edit Group</h3>
+                	<h3>Your Groups</h3>
                 </div>
-                <div class="widget-content" style="padding: 0px">
+                <div class="widget-content" style="padding: 0px; max-height: 320px;">
 					<ul class="nav nav-list" data-bind="foreach: group_list">
                         <li>
 							<a href="#" style="text-decoration: none; cursor: default">
                                 <span data-bind="text: $data.substring(0, USER_NAME_MAX_LENGTH)" style="font-size: 12px"></span>
-                                <span class="pull-right" style="color: #962828; cursor: pointer;" onclick="alert('delete')"><i class="icon-trash icon-large"></i></span>
+                                <span class="pull-right" style="color: #962828; cursor: pointer;" data-bind="click: $root.delete_group.bind($data)"><i class="icon-trash icon-large"></i></span>
                                 <span class="pull-right" style="color: #4D4D4D; cursor: pointer; margin-right: 5px;" onclick="alert('edit')"><i class="icon-edit icon-large"></i></span>
                             </a>
 						</li>
@@ -57,7 +63,7 @@
 <div style="height: 8px;">&nbsp;</div>
 <div data-bind="foreach: user_list" id="group_container">
     <span class="group_header" data-bind="text: name + ' -'"></span>
-    <span data-bind="visible: members.length == 0, text: '{{ origin }}' == 'group' ? '&nbsp;No members' : '&nbsp;No search results'" class="no_members"></span>
+    <span data-bind="visible: members.length == 0, text: '{{ origin }}' == 'group' ? '&nbsp;No members' : '&nbsp;No results'" class="no_members"></span>
     <br>
     <div data-bind="foreach: members" id="user_list_container" class="user_list_container">
         <div class="user_cell" data-bind="attr: { 'id': email }, style: { 'backgroundColor': hex2rgba($parent.color)}" style="position: relative">
@@ -88,6 +94,7 @@
     <hr>
 </div>
 <button class="btn btn-primary" data-bind="visible: '{{ origin }}' == 'search', text: 'Show users not connected to you', click: $root.show_more_users" id="more_users" style="position: absolute; left: 50%; margin-left: -118px;"></button>
+<div style="height: 100px">&nbsp;</div>
 {% endblock main %}
 </div>
 </div>

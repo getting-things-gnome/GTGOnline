@@ -130,6 +130,7 @@ function TaskFoldersViewModel() {
     self.task_dict = ko.observableArray();
     self.user_list = ko.observableArray();
     self.group_list = ko.observableArray();
+    self.visited_users = ko.observableArray();
     
     self.tasks_list.subscribe(function (newValue) {
         self.tasks_list_length(newValue.length);
@@ -184,6 +185,21 @@ function TaskFoldersViewModel() {
             show_popover();
         });
     }, self);
+    
+    self.user_list.subscribe(function (newValue) {
+        self.group_list([]);
+        self.visited_users([]);
+        for (var i=0; i < newValue.length; i++) {
+            var group = newValue[i];
+            if (group.name != 'Others') {
+                self.group_list.push(group.name);
+                for (var j=0; j < group.members.length; j++) {
+                    self.visited_users.push(group.members[j].email);
+                }
+            }
+        }
+        console.log(self.visited_users());
+    });
     
     // Behaviours
     self.goToFolder = function(folder) {
@@ -532,7 +548,7 @@ function TaskFoldersViewModel() {
                 });
                 //description_string = "";
             }
-            drwef = '»(\s*[\S\s]*)\t*•';
+            var drwef = '»(\s*[\S\s]*)\t*•';
         }
         
         console.log(self.task_dict());
@@ -635,13 +651,13 @@ function TaskFoldersViewModel() {
     
     self.show_users = function(origin, query, user_list) {
         //console.log(query);
+        document.getElementById('topbar_search_input').setAttribute('placeholder', 'Search in Users');
         console.log(origin);
         self.search_query(query);
         var obj = JSON.parse(user_list);
         console.log(obj);
         self.user_list(obj);
-        document.getElementById('task_option_button').setAttribute('class', 'btn');
-        document.getElementById('user_option_button').setAttribute('class', 'btn active');
+        //document.getElementById('user_option_button').setAttribute('class', 'btn active');
         if (origin == 'group') {
             self.titlebar_display('Groups and members');
         }
@@ -649,9 +665,6 @@ function TaskFoldersViewModel() {
             self.titlebar_display('Users matching query "' + query + '"');
         }
         self.search_option(1);
-        for (var i=0; i < obj.length; i++) {
-            self.group_list.push(obj[i].name);
-        }
         console.log(self.group_list());
     };
     
@@ -665,11 +678,11 @@ function TaskFoldersViewModel() {
     };
     
     self.show_more_users = function() {
-        $.get('/user/search/json/', { query: self.search_query() }, function(data) {
+        $.post('/user/search/json/', { query: self.search_query(), visited: self.visited_users() }, function(data) {
             console.log(data[0]);
             //console.log(self.user_list());
             self.user_list.push(data[0]);
-            document.getElementById('more_users').setAttribute('class', 'no_display');
+            document.getElementById('more_users').style.display = 'none';
         });
     };
     
@@ -688,7 +701,7 @@ function TaskFoldersViewModel() {
             else {
                 alert("no match found");
             };
-            $.get('/groups/list/', { name: group_old }, function(data) {
+            $.post('/groups/list/', { name: group_old, visited: self.visited_users() }, function(data) {
                 var match = ko.utils.arrayFirst(self.user_list(), function(item) {
                     //alert(data[0].id);
                     return data[0].name === item.name;
@@ -720,6 +733,20 @@ function TaskFoldersViewModel() {
             else {
                 alert("no match found");
             }
+            $.post('/groups/list/', { name: 'Others', visited: self.visited_users() }, function(data) {
+                var match = ko.utils.arrayFirst(self.user_list(), function(item) {
+                    //alert(data[0].id);
+                    return data[0].name === item.name;
+                });
+                if (match) {
+                    //alert(match.name);
+                    self.user_list.replace(match, data[0]);
+                    //alert(match.name);
+                }
+                else {
+                    //self.user_list.push(data[0]);
+                }
+            });
         });
     };
     
@@ -732,6 +759,26 @@ function TaskFoldersViewModel() {
         $.get('/groups/new/', { name: self.new_group_name(), color: self.tag_color() }, function(data) {
             console.log(data);
             self.user_list(data);
+            if (document.getElementById('more_users').style.display == 'none') {
+                $.post('/groups/list/', { name: 'Others', visited: self.visited_users() }, function(data) {
+                    self.user_list.push(data[0]);
+                });
+            }
+            self.new_group_name('');
+            self.tag_color('#F89406');
+        });
+    }
+    
+    self.delete_group = function(name) {
+        console.log(name);
+        $.get('/groups/delete/', { name: name }, function(data) {
+            console.log(data);
+            self.user_list(data);
+            if (document.getElementById('more_users').style.display == 'none') {
+                $.post('/groups/list/', { name: 'Others', visited: self.visited_users() }, function(data) {
+                    self.user_list.push(data[0]);
+                });
+            }
         });
     }
 };
