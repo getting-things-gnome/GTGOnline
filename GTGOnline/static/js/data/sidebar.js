@@ -1207,9 +1207,6 @@ function hex2rgba(h) {
 
 function prettify_group_name(name) {
     if (name == 'Others') {
-        if (a.group_list().length == 0) {
-            alert('fdf');
-        }
         return '<i class="icon-check-empty">&nbsp;</i>Add'
     }
     return '<i class="icon-circle-blank">&nbsp;</i>' + name.substring(0, USER_NAME_MAX_LENGTH)
