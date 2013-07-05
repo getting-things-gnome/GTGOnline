@@ -154,6 +154,8 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
 	<script src = "http://www.myersdaily.org/joseph/javascript/md5.js"></script>
 	<script src="{{ STATIC_URL }}js/bootstrap.js"></script>
+	<script src="{{ STATIC_URL }}js/data/jquery-jsonp.js"></script>
+	<!--<script src="{{ STATIC_URL }}js/data/jquery.cross-domain.js"></script>-->
 	<script type="text/javascript">
 		var email_exists = false;
 		var problem_flag = 0;
@@ -168,7 +170,8 @@
 			register_button.setAttribute('class', 'btn btn-success disabled');
 			
 			validate_email();
-			console.log('received = ' + data_received);
+			console.log('returned');
+			console.log(gravatar_profile);
 			
 			var password = form["password"].value;
 			var password_warning = document.getElementById('password-warning');
@@ -228,6 +231,12 @@
 			}
 		}
 		
+		function show_profile( profile ) {
+			gravatar_profile = profile;
+			console.log(gravatar_profile);
+			return;
+		};
+		
 		function validate_email() {
 			var email = document.forms["RegistrationForm"]["email"].value;
 			console.log('email = ' + email);
@@ -255,22 +264,110 @@
 						}
 				   }
 			});
-			/*var profile_url = get_gravatar_url(email);
+			var profile_url = get_gravatar_url(email);
 			console.log('email sent = "' + email + '" profile url = "' + profile_url + '"');
 			gravatar_profile = [];
 			data_received = 0;
-			$.ajax({ url: "http://www.gravatar.com/" + get_gravatar_url(email) + ".json",
-				async: true,
+			
+			var req;
+			
+			/*$.jsonp({
+				async: false,
+				url: "http://www.gravatar.com/" + get_gravatar_url(email) + ".json?callback=show_profile",
+				dataType: "jsonp",
+				crossDomain: true,
+				//timeout: 5000,
+				success: function(data){
+					alert(data);
+				},
+				error: function(XHR, textStatus, errorThrown){
+					//alert("ERREUR: " + textStatus);
+					//alert("ERREUR: " + errorThrown);
+					return;
+				},
+				complete: function() {
+					return;
+				}
+			});*/
+			
+			/*$.ajax({
+				type:'GET',
+				async: false,
 				dataType: 'jsonp',
-				contentType: "application/json; charset=utf-8",
+				//jsonpCallback: 'loadit',
+				//jsonp: false,
+				url: "http://www.gravatar.com/" + get_gravatar_url(email) + ".json",
+				success: function (responseData) { //Your server responseData should be like this "loadit('otp sent')"
+					console.log(responseData);
+					//loadit(responseData);
+				},
+				error: function(xhr, textStatus, errorThrown){
+					alert('error');
+				}
+			});*/
+			
+			console.log('reached here');
+			return;
+			/*var req = $.ajax({
+				async: false,
+				url : "http://www.gravatar.com/" + get_gravatar_url(email) + ".json",
+				dataType : "jsonp",
+				timeout : 4000,
+				success: function(data) {
+					console.log('Yes! Success!');
+					gravatar_profile = data;
+					//console.log('data = ' + gravatar_profile);
+				},
+				error: function() {
+					console.log('oh noes!');
+				}
+			});*/
+			/*$.ajax({
+				async: false,
+				url: "http://www.gravatar.com/" + get_gravatar_url(email) + ".json",
+				type: 'GET',
+				dataType: 'jsonp',
+				crossDomain: true,
 				success: function(data){
 					gravatar_profile = data;
 					console.log('data = ' + gravatar_profile);
 					data_received = 1;
 				},
+				error: function() {
+					console.log('oh noes!');
+				}
+			});*/
+			
+			/*$.ajax({ url: "http://www.gravatar.com/" + get_gravatar_url(email) + ".json",
+				async: true,
+				//dataType: 'jsonp',
+				contentType: "application/json; charset=utf-8",
+				crossDomain: true,
+				success: function(data){
+					gravatar_profile = data;
+					console.log('data = ' + gravatar_profile);
+					data_received = 1;
+				},
+				error: function(jqXHR, exception) {
+					if (jqXHR.status === 0) {
+						alert('Not connect.\n Verify Network.');
+					} else if (jqXHR.status == 404) {
+						alert('Requested page not found. [404]');
+					} else if (jqXHR.status == 500) {
+						alert('Internal Server Error [500].');
+					} else if (exception === 'parsererror') {
+						alert('Requested JSON parse failed.');
+					} else if (exception === 'timeout') {
+						alert('Time out error.');
+					} else if (exception === 'abort') {
+						alert('Ajax request aborted.');
+					} else {
+						alert('Uncaught Error.\n' + jqXHR.responseText);
+					}
+				},
 				//jsonp: false,
-				complete: function(xhr, data) {
-					/*if (xhr.status == 0)
+				/*complete: function(xhr, data) {
+					if (xhr.status == 0)
 					    {alert('fail');}
 					else
 					    {alert('success');}
@@ -285,6 +382,11 @@
 			});*/
 		}
 		
+		function loadit(data){
+			console.log(data);
+			alert(data); //This will alert the popup as "opt sent".
+		}
+		
 		function get_gravatar_url(email) {
 			var base_url = "http://www.gravatar.com/";
 			var hash = md5(email);
@@ -292,7 +394,7 @@
 		};
 		
 		$(document).ajaxError(function() {
-			alert('error');
+			alert('error detected in ajaxError');
 		});
 	</script>
     </body>

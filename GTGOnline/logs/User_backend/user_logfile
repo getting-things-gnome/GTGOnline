@@ -146,3 +146,11 @@
 [04/Jul/2013 15:32:52] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 6
 [04/Jul/2013 17:33:00] INFO [User_backend.user:44] LogOUT - email = albert@desilva.com | id = 6
 [04/Jul/2013 17:33:22] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 6
+[04/Jul/2013 18:22:45] INFO [User_backend.user:44] LogOUT - email = albert@desilva.com | id = 6
+[04/Jul/2013 19:59:49] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 6
+[04/Jul/2013 20:13:41] INFO [User_backend.user:44] LogOUT - email = albert@desilva.com | id = 6
+[05/Jul/2013 11:13:57] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 6
+[05/Jul/2013 11:14:09] INFO [User_backend.user:44] LogOUT - email = albert@desilva.com | id = 6
+[05/Jul/2013 17:34:50] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 6
+[05/Jul/2013 17:37:05] INFO [User_backend.user:44] LogOUT - email = albert@desilva.com | id = 6
+[05/Jul/2013 17:57:18] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 6
