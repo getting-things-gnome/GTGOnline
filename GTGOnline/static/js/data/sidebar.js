@@ -4,6 +4,7 @@ var DESCRIPTION_MAX_LENGTH = 40;
 var TAGS_MAX_LENGTH = 3;
 var EMAIL_MAX_LENGTH = 30;
 var USER_NAME_MAX_LENGTH = 13;
+var GROUP_NAME_MAX_LENGTH = 7;
 //var TAG_REGEX = /(?:^|[\s])(@[\w\/\.\-\:]*\w)/g;
 var TAG_REGEX = /(@[\w\/\.\-\:]*\w)/g;
 var a;
@@ -1209,5 +1210,8 @@ function prettify_group_name(name) {
     if (name == 'Others') {
         return '<i class="icon-check-empty">&nbsp;</i>Add'
     }
-    return '<i class="icon-circle-blank">&nbsp;</i>' + name.substring(0, USER_NAME_MAX_LENGTH)
+    if (name.length > GROUP_NAME_MAX_LENGTH) {
+        return '<i class="icon-circle-blank">&nbsp;</i>' + name.substring(0, GROUP_NAME_MAX_LENGTH-2) + '...'
+    }
+    return '<i class="icon-circle-blank">&nbsp;</i>' + name
 }
