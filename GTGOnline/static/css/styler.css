@@ -1234,6 +1234,8 @@ div.task-row {
 .share_modal_div {
   margin-bottom: 10px;
   /*padding: 4px;*/
+  width: 498px;
+  max-width: 520px;
   height: 300px;
   background-color: #DEDEDE;
   font-size: 12px;
@@ -1423,4 +1425,12 @@ div.task-row {
   text-decoration: none;
   color: #FFFFFF;
   cursor: pointer;
+}
+
+.user_selection_cell {
+  height: 30px;
+  width: 120px;
+  border: 1px solid #DEDEDE;
+  background-color: #F7F7F7;
+  display: inline-block;
 }

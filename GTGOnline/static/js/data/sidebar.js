@@ -5,6 +5,7 @@ var TAGS_MAX_LENGTH = 3;
 var EMAIL_MAX_LENGTH = 30;
 var USER_NAME_MAX_LENGTH = 13;
 var GROUP_NAME_MAX_LENGTH = 7;
+var NAME_USER_SELECTION_MAX_LENGTH = 24;
 //var TAG_REGEX = /(?:^|[\s])(@[\w\/\.\-\:]*\w)/g;
 var TAG_REGEX = /(@[\w\/\.\-\:]*\w)/g;
 var a;
@@ -1244,4 +1245,19 @@ function prettify_group_name(name) {
         return '<i class="icon-circle-blank">&nbsp;</i>' + name.substring(0, GROUP_NAME_MAX_LENGTH-2) + '...'
     }
     return '<i class="icon-circle-blank">&nbsp;</i>' + name
+}
+
+function get_attr_user_selection(name) {
+    if (name.length < USER_NAME_MAX_LENGTH) {
+        return {'width': '85px','lineHeight': '30px', 'marginLeft': '5px', 'fontSize': '14px'}
+    }
+    return {'width': '85px','lineHeight': '15px', 'marginLeft': '5px', 'fontSize': '12px'}
+}
+
+function prettify_name_user_selection(name) {
+    var max = NAME_USER_SELECTION_MAX_LENGTH;
+    if (name.length > max) {
+        return name.substring(0, max-2) + '..'
+    }
+    return name
 }

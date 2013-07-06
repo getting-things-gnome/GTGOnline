@@ -125,15 +125,15 @@
 
 
 {% block share_task_modal %}
-<div id="share_task_modal" class="modal hide fade task_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 500px; margin-left: -250px;">
+<div id="share_task_modal" class="modal hide fade task_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 533px; margin-left: -266px;">
 	<!--<div class="modal-header" style="padding: 10px">
 		<span>Share</span>
 	</div>-->
 	<div class="modal-body" style="padding: 10px; padding-bottom: 0px;">
 		<div class="share_modal_div">
-			<div style="height: 30px; width: 120px; border: 1px solid #DEDEDE; background-color: #F7F7F7;">
-				<img class="pull-left" data-bind="attr: { 'src': get_gravatar_image_url('parinporecha@gmail.com', 30)}" style="width: 30px; height: 30px" />
-				<span style="height: 30px; width: 90px; white-space: normal; line-height: 15px;" class="pull-left">Niko Bellic</span>
+			<div class="user_selection_cell">
+				<img class="pull-left" data-bind="attr: { 'src': get_gravatar_image_url('parinporecha@gmail.com', 30)}" style="width: 30px; height: 30px;" />
+				<span style="height: 30px; white-space: normal;" class="pull-left" data-bind="style: get_attr_user_selection('Niko Bellic Lucie'), text: prettify_name_user_selection('Niko Bellic Lucie Wayne Manor')"></span>
 			</div>
 		</div>
 	</div>
