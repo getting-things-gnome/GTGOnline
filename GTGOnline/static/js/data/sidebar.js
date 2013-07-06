@@ -12,7 +12,8 @@ var task_name_editor;
 var task_description_editor;
 
 // GLOBAL VARIABLES
-var parentId = -1
+var parentId = -1;
+var shareId = -1;
 var is_edit_task = 1;
 
 // Task Folders
@@ -768,7 +769,7 @@ function TaskFoldersViewModel() {
             self.new_group_name('');
             self.tag_color('#F89406');
         });
-    }
+    };
     
     self.delete_group = function(name) {
         console.log(name);
@@ -781,6 +782,27 @@ function TaskFoldersViewModel() {
                 });
             }
         });
+    };
+    
+    self.show_share_task_modal = function(id) {
+        setShareId(id);
+        $('#share_task_modal').modal('show');
+        
+        $('#share_task_modal').on('shown', function() {
+            console.log('share task modal shown');
+        });
+        
+        $('#share_task_modal').on('hidden', function() {
+            console.log('share task modal hidden');
+        });
+    };
+    
+    self.close_share_task_modal = function() {
+        $('#share_task_modal').modal('hide');
+    };
+    
+    self.share_task = function() {
+        console.log('id = ' + getShareID());
     }
 };
 
@@ -966,6 +988,14 @@ function setMode(mode) {
 
 function getMode() {
     return is_edit_task;
+}
+
+function setShareId(new_share_id) {
+    shareId = new_share_id;
+}
+
+function getShareID() {
+    return shareId
 }
 
 function eliminateDuplicates(arr) {
