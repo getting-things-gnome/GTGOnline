@@ -134,6 +134,8 @@ function TaskFoldersViewModel() {
     self.user_list = ko.observableArray();
     self.group_list = ko.observableArray();
     self.visited_users = ko.observableArray();
+    self.checked_groups = ko.observableArray();
+    self.checked_users = ko.observableArray();
     
     self.tasks_list.subscribe(function (newValue) {
         self.tasks_list_length(newValue.length);
@@ -160,7 +162,7 @@ function TaskFoldersViewModel() {
             $("#dropdown").hide();
             //$("#header").show();
         }
-    });
+    }, self);
     
     self.task_start_date_field.subscribe(function (newValue) {
         //console.log('newvalue = "' + get_date_object(newValue) + '" due_date = "' + $('.task_due_datepicker').datetimepicker('getDate') + '"')
@@ -202,7 +204,32 @@ function TaskFoldersViewModel() {
             }
         }
         console.log(self.visited_users());
-    });
+    }, self);
+    
+    self.checked_groups.subscribe(function (newValue) {
+        //alert('newvalue = "' + newValue + '"');
+        self.checked_users([]);
+        for (var i=0; i < newValue.length; i++) {
+            var match = ko.utils.arrayFirst(self.user_list(), function(item) {
+                //alert(data[0].id);
+                return newValue[i] === item.name;
+            });
+            if (match) {
+                console.log(match);
+                for (var j=0; j < match.members.length; j++) {
+                    var email = match.members[j].email;
+                    console.log('email = ' + email);
+                    self.checked_users.push(email);
+                    //document.getElementById('e' + email).style.border = "2px solid green";
+                }
+            }
+        }
+        console.log(self.checked_users());
+    }, self);
+    
+    self.checked_users.subscribe(function (newValue) {
+        console.log(newValue);
+    }, self);
     
     // Behaviours
     self.goToFolder = function(folder) {

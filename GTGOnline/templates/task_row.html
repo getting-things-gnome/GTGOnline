@@ -36,6 +36,7 @@
 						</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 							<li><a href="#" data-bind="click: $root.show_new_task_modal.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtasks</a></li>
+							<li><a href="#" data-bind="click: $root.show_share_task_modal.bind($data, id)"><i class="icon-share"></i>&nbsp;Share</a></li>
 							<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
 							<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
 							<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
@@ -125,35 +126,43 @@
 
 
 {% block share_task_modal %}
-<div id="share_task_modal" class="modal hide fade task_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 533px; margin-left: -266px;">
+<div id="share_task_modal" class="modal hide fade task_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 550px; margin-left: -275px;">
 	<!--<div class="modal-header" style="padding: 10px">
 		<span>Share</span>
 	</div>-->
-	<div class="modal-body" style="padding: 10px; padding-bottom: 0px;">
+	<div class="modal-body" style="padding: 10px; padding-bottom: 0px; height: 400px; max-height: 400px;">
 		<div class="share_modal_div">
 			<!--<span style="font: 300 18px/1 'Open Sans', Helvetica, sans-serif;">Friends -</span><br>
 			<div class="user_selection_cell">
 				<img class="pull-left" data-bind="attr: { 'src': get_gravatar_image_url('parinporecha@gmail.com', 30)}" style="width: 30px; height: 30px;" />
 				<span style="height: 30px; white-space: normal;" class="pull-left" data-bind="style: get_attr_user_selection('Niko Bellic Lucie'), text: prettify_name_user_selection('Niko Bellic Lucie Wayne Manor')"></span>
 			</div>-->
-			<div class="accordion" id="accordion" style="padding: 0px; margin: 0px;">
-				<div class="accordion-group startup-accordion-group" style="text-decoration: none; padding: 0px;">
-					<div class="accordion-heading startup-accordion-heading" style="padding: 0px;">
-						<div style="display: inline-block; vertical-align: top;"><input type="checkbox" style="vertical-align: top;"/></div>
-						<div class="accordion-toggle" data-toggle="collapse" href="#" data-target="#inner_class" style="display: inline-block;">
-							<span style="font: 300 18px/1 'Open Sans', Helvetica, sans-serif;">Friends -</span>
+			<div class="accordion" id="accordion" style="padding: 0px; margin: 0px;" data-bind="foreach: user_list">
+				<div class="accordion-group startup-accordion-group" style="text-decoration: none; padding: 0px; border: none;" data-bind="visible: members.length > 0">
+					<div class="accordion-heading startup-accordion-heading" style="padding: 0px; border: none;">
+						<div style="display: inline-block; vertical-align: top;">
+							<input type="checkbox" style="vertical-align: top;" data-bind="attr: { 'value': name }, checked: $root.checked_groups" />
+						</div>
+						<div class="accordion-toggle" data-toggle="collapse" href="#" style="display: inline-block;" data-bind="attr: { 'data-target': '#s' + name }">
+							<span style="font: 300 18px/1 'Open Sans', Helvetica, sans-serif;" data-bind="text: name"></span>
 						</div>
 					</div>
-					<div class="collapse" id="inner_class" style="padding: 0px;">
-						<div class="accordion-inner" style="padding: 0px;">
-							<div class="user_selection_cell" style="background-color: green">
-								<img class="pull-left" data-bind="attr: { 'src': get_gravatar_image_url('parinporecha@gmail.com', 30)}" style="width: 30px; height: 30px;" />
-								<span style="height: 30px; white-space: normal;" class="pull-left" data-bind="style: get_attr_user_selection('Niko Bellic Lucie'), text: prettify_name_user_selection('Niko Bellic Lucie Wayne Manor')"></span>
+					<div class="collapse" style="padding: 0px; border: 1px solid #DEDEDE; background-color: #F4F4F4;" data-bind="attr: { 'id': 's' + name }">
+						<div class="accordion-inner" style="padding: 5px 5px 0px 5px; border: none;" data-bind="foreach: members">
+							<div style="display: inline-block; margin-right: 7px; margin-left: 7px;">
+								<div style="vertical-align: top; display: inline-block; height: 30px; line-height: 30px;">
+									<input type="checkbox" data-bind="attr: { 'value': email }, checked: $root.checked_users" />
+								</div>
+								<div class="user_selection_cell" data-bind="attr: { 'id': 'e' + email }">
+									<img class="pull-left" data-bind="attr: { 'src': get_gravatar_image_url(email, 30)}" style="width: 30px; height: 30px;" />
+									<span style="height: 30px; white-space: normal;" class="pull-left" data-bind="style: get_attr_user_selection(full_name), text: prettify_name_user_selection(full_name)"></span>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			
 		</div>
 	</div>
 	<div class="modal-footer">

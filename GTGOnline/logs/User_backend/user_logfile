@@ -161,3 +161,6 @@
 [07/Jul/2013 11:32:20] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 6
 [08/Jul/2013 11:49:54] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 6
 [08/Jul/2013 11:50:16] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 6
+[08/Jul/2013 12:00:03] INFO [User_backend.user:44] LogOUT - email = albert@desilva.com | id = 6
+[08/Jul/2013 12:00:25] INFO [User_backend.user:44] LogOUT - email = albert@desilva.com | id = 6
+[08/Jul/2013 15:20:14] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 6

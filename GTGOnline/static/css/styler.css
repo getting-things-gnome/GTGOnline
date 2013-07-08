@@ -1234,10 +1234,10 @@ div.task-row {
 .share_modal_div {
   margin-bottom: 10px;
   /*padding: 4px;*/
-  width: 498px;
+  width: 518px;
   max-width: 520px;
-  height: 300px;
-  background-color: #DEDEDE;
+  height: 380px;
+  /*background-color: #F4F4F4;*/
   font-size: 12px;
 }
 
@@ -1431,6 +1431,6 @@ div.task-row {
   height: 30px;
   width: 120px;
   border: 1px solid #DEDEDE;
-  background-color: #F7F7F7;
+  /*background-color: #F7F7F7;*/
   display: inline-block;
 }
