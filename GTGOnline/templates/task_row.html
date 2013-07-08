@@ -153,7 +153,7 @@
 								<div style="vertical-align: top; display: inline-block; height: 30px; line-height: 30px;">
 									<input type="checkbox" data-bind="attr: { 'value': email }, checked: $root.checked_users" />
 								</div>
-								<div class="user_selection_cell" data-bind="attr: { 'id': 'e' + email }">
+								<div class="user_selection_cell" data-bind="attr: { 'id': 'e' + email }" style="background-color: #FFFFFF;">
 									<img class="pull-left" data-bind="attr: { 'src': get_gravatar_image_url(email, 30)}" style="width: 30px; height: 30px;" />
 									<span style="height: 30px; white-space: normal;" class="pull-left" data-bind="style: get_attr_user_selection(full_name), text: prettify_name_user_selection(full_name)"></span>
 								</div>
