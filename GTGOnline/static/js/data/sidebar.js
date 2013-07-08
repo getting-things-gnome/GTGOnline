@@ -786,6 +786,9 @@ function TaskFoldersViewModel() {
     };
     
     self.show_share_task_modal = function(id) {
+        $.post('/groups/list/', {}, function(data) {
+            self.user_list(data);
+        });
         setShareId(id);
         $('#share_task_modal').modal('show');
         

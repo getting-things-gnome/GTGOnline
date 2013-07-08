@@ -131,9 +131,28 @@
 	</div>-->
 	<div class="modal-body" style="padding: 10px; padding-bottom: 0px;">
 		<div class="share_modal_div">
+			<!--<span style="font: 300 18px/1 'Open Sans', Helvetica, sans-serif;">Friends -</span><br>
 			<div class="user_selection_cell">
 				<img class="pull-left" data-bind="attr: { 'src': get_gravatar_image_url('parinporecha@gmail.com', 30)}" style="width: 30px; height: 30px;" />
 				<span style="height: 30px; white-space: normal;" class="pull-left" data-bind="style: get_attr_user_selection('Niko Bellic Lucie'), text: prettify_name_user_selection('Niko Bellic Lucie Wayne Manor')"></span>
+			</div>-->
+			<div class="accordion" id="accordion" style="padding: 0px; margin: 0px;">
+				<div class="accordion-group startup-accordion-group" style="text-decoration: none; padding: 0px;">
+					<div class="accordion-heading startup-accordion-heading" style="padding: 0px;">
+						<div style="display: inline-block; vertical-align: top;"><input type="checkbox" style="vertical-align: top;"/></div>
+						<div class="accordion-toggle" data-toggle="collapse" href="#" data-target="#inner_class" style="display: inline-block;">
+							<span style="font: 300 18px/1 'Open Sans', Helvetica, sans-serif;">Friends -</span>
+						</div>
+					</div>
+					<div class="collapse" id="inner_class" style="padding: 0px;">
+						<div class="accordion-inner" style="padding: 0px;">
+							<div class="user_selection_cell" style="background-color: green">
+								<img class="pull-left" data-bind="attr: { 'src': get_gravatar_image_url('parinporecha@gmail.com', 30)}" style="width: 30px; height: 30px;" />
+								<span style="height: 30px; white-space: normal;" class="pull-left" data-bind="style: get_attr_user_selection('Niko Bellic Lucie'), text: prettify_name_user_selection('Niko Bellic Lucie Wayne Manor')"></span>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
