@@ -1285,9 +1285,10 @@ function prettify_group_name(name) {
 
 function get_attr_user_selection(name) {
     if (name.length < USER_NAME_MAX_LENGTH) {
-        return {'width': '85px','lineHeight': '30px', 'marginLeft': '5px', 'fontSize': '14px'}
+        //return {'width': '85px','lineHeight': '30px', 'marginLeft': '5px', 'fontSize': '14px'}
+        return {'width': '85px','lineHeight': '15px', 'marginLeft': '5px', 'fontSize': '12px'}
     }
-    return {'width': '85px','lineHeight': '15px', 'marginLeft': '5px', 'fontSize': '12px'}
+    return {'width': '90px','lineHeight': '15px', 'marginLeft': '0px', 'fontSize': '12px'}
 }
 
 function prettify_name_user_selection(name) {
