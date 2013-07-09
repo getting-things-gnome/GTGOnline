@@ -830,6 +830,7 @@ function TaskFoldersViewModel() {
         
         $('#share_task_modal').on('hidden', function() {
             console.log('share task modal hidden');
+            self.user_list([]);
         });
     };
     
