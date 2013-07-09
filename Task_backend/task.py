@@ -449,3 +449,9 @@ def add_new_list(user, new_list, folder, parent_id):
         return None
     oldest = get_oldest_parent(get_task_object(user, parent_id))
     return get_task_tree(user, oldest, 0, [], folder)
+
+def add_shared_users(user, task_id, user_list, folder):
+    task = get_task_object(user, task_id)
+    if task == None:
+        return None
+    return None

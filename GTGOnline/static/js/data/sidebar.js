@@ -708,7 +708,11 @@ function TaskFoldersViewModel() {
     };
     
     self.show_more_users = function() {
-        document.getElementById('more_users').style.display = 'none';
+        var users = document.getElementById('more_users');
+        if (users == null) {
+            users = document.getElementById('share_more_users');
+        }
+        users.style.display = 'none';
         $.post('/user/search/json/', { query: self.search_query(), visited: self.visited_users() }, function(data) {
             console.log(data[0]);
             //console.log(self.user_list());
@@ -818,6 +822,7 @@ function TaskFoldersViewModel() {
         });
         setShareId(id);
         $('#share_task_modal').modal('show');
+        document.getElementById('share_more_users').style.display = 'block';
         
         $('#share_task_modal').on('shown', function() {
             console.log('share task modal shown');

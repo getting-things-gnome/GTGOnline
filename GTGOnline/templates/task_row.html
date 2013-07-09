@@ -4,7 +4,7 @@
 	<div data-bind="foreach: tasks_list" id="task_rows_container" class="min-width950">
 		<div class="accordion-heading">
 			<div class="task-row min-width950" style="display: block;" data-bind="style: { marginLeft: (30*indent) + 'px', borderLeft: indent > 0 ? '1px solid #dedede' : '0px'}, css: { taskDone: status == 1, taskDismissed: status == 2 }, attr: { 'id': 'for_marking' + id }">
-				<div class="div-inline pull-left min-width25" style="margin-left: 5px">
+				<div class="div-inline pull-left min-width30" style="margin-left: 5px">
 					<input type="checkbox" class="checkbox show_dropdown" data-bind="attr: { 'value': id }, checked: $root.modify_selected" />
 				</div>
 				
@@ -14,8 +14,9 @@
 						<!--<span data-bind="text: $index()"></span>-->
 			        </span>
 					<span data-bind="visible: subtasks.length == 0, text: '&nbsp;'"></span>
+					<!--<i class="icon-user" style="font-size: 20px; color: #757575; margin-right: 2px;" title="Shared with"></i>-->
 				</div>
-		
+				
 				<div class="dropdown div-inline pull-left min-width250" style="width: 26%;">
 					<div data-bind="if: name_is_short(name)">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration:none; color:#4d4d4d; font-size: 15px;">
@@ -162,7 +163,7 @@
 					</div>
 				</div>
 			</div>
-			
+			<button id="share_more_users" class="btn btn-primary btn-small" style="position: absolute; left: 50%; margin-left: -100px; margin-top: 10px;" data-bind="text: 'Show users not connected to you', click: $root.show_more_users"></button>
 		</div>
 	</div>
 	<div class="modal-footer">

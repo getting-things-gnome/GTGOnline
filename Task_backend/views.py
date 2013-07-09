@@ -14,7 +14,8 @@ from Task_backend.task import get_task_object, get_task_tree, \
                               change_task_status, change_task_tree_status, \
                               get_oldest_parent, delete_task_tree, add_task, \
                               get_tasks_by_due_date, update_task_details, \
-                              delete_single_task, search_tasks, add_new_list
+                              delete_single_task, search_tasks, add_new_list, \
+                              add_shared_users
 from Tag_backend.tag import find_tags
 from Tools.constants import *
 from Tools.dates import get_datetime_object
@@ -198,6 +199,20 @@ def create_new_list(request):
     if received_list != []:
         task = add_new_list(request.user, received_list, folder, parent_id)
         if task != None:
-            return HttpResponse(json.dumps(task, indent=4), \
-                                mimetype='application/json')
+            return HttpResponse(json.dumps(task, indent = 4), \
+                                mimetype = 'application/json')
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)
+
+@csrf_exempt
+def share_add(request):
+    folder = request.POST.get('folder', 'Active')
+    task_id = request.POST.get('id', -1)
+    user_list = request.POST.getlist('list[]')
+    task = add_shared_users(request.user, task_id, user_list, folder)
+    if task != None:
+        return HttpResponse(json.dumps(task, indent = 4), \
+                            mimetype = 'application/json')
+    return HttpResponseRedirect('tasks/get/?folder=' + folder)
+
+def share_remove(request):
+    return HttpResponseRedirect('tasks/get/?folder=' + folder)

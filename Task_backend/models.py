@@ -20,6 +20,8 @@ class Task(models.Model):
     status = models.SmallIntegerField(choices = TASK_STATUS, default = 0)
     tags = models.ManyToManyField(Tag)
     subtasks = models.ManyToManyField('self', symmetrical = False)
+    shared_with = models.ManyToManyField(settings.AUTH_USER_MODEL, \
+                                         related_name = "shared_set")
     
     class Meta:
         ordering = ['due_date']

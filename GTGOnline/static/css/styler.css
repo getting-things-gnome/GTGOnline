@@ -1021,6 +1021,10 @@ div.task-row {
   height: 20px;
 }
 
+.min-width20 {
+  min-width: 20px;
+}
+
 .min-width25 {
   min-width: 25px;
 }
