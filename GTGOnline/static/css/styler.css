@@ -1240,7 +1240,7 @@ div.task-row {
   /*padding: 4px;*/
   width: 518px;
   max-width: 520px;
-  height: 380px;
+  min-height: 380px;
   /*background-color: #F4F4F4;*/
   font-size: 12px;
 }
