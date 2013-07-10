@@ -136,9 +136,15 @@ function TaskFoldersViewModel() {
     self.visited_users = ko.observableArray();
     self.checked_groups = ko.observableArray();
     self.checked_users = ko.observableArray();
+    self.shared_users = ko.observable('');
     
     self.tasks_list.subscribe(function (newValue) {
         self.tasks_list_length(newValue.length);
+        var ans = '';
+        //for (var i=0; i < shared_obj.length; i++) {
+            //ans += shared_obj.full_name + '\n';
+        //}
+        //self.shared_users(ans);
         show_popover();
     }, self);
     
@@ -1071,6 +1077,12 @@ function show_popover() {
         html: true,
         //delay: { show: 400, hide: 0 },
     });
+    $('i.shared_icon').tooltip({
+        placement: 'top',
+        trigger: 'hover',
+        html: true,
+        //delay: { show: 400, hide: 0 },
+    });
 }
 
 function startup_modal_header_string(length) {
@@ -1297,4 +1309,15 @@ function prettify_name_user_selection(name) {
         return name.substring(0, max-2) + '..'
     }
     return name
+}
+
+function show_shared_name(shared_obj) {
+    console.log(shared_obj);
+    var names = '';
+    for (var i=0; i < shared_obj.length; i++) {
+        names += shared_obj[i].full_name + '<br>'
+    }
+    
+    console.log('names = "' + names + '"');
+    return names
 }

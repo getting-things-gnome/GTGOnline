@@ -168,3 +168,11 @@
 [09/Jul/2013 11:38:16] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 6
 [09/Jul/2013 15:15:24] INFO [User_backend.user:44] LogOUT - email = albert@desilva.com | id = 6
 [09/Jul/2013 15:30:49] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 6
+[09/Jul/2013 16:21:59] INFO [User_backend.user:44] LogOUT - email = albert@desilva.com | id = 6
+[09/Jul/2013 16:40:06] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 2
+[09/Jul/2013 16:40:22] INFO [User_backend.user:44] LogOUT - email = albert@desilva.com | id = 2
+[09/Jul/2013 16:43:15] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 2
+[09/Jul/2013 22:28:11] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 2
+[09/Jul/2013 23:04:32] INFO [User_backend.user:44] LogOUT - email = albert@desilva.com | id = 2
+[10/Jul/2013 11:09:55] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 2
+[10/Jul/2013 14:48:24] INFO [User_backend.user:35] LogIN -- email = albert@desilva.com | id = 2

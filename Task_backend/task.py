@@ -5,7 +5,7 @@ import sys
 import re
 
 from Task_backend.models import Task
-from User_backend.user import get_user_object
+from User_backend.user import get_user_object, get_user_details
 from Tag_backend.tag import find_tags, create_tag_objects, get_tags_by_task, \
                             delete_orphan_tags, get_tag_object
 from Tools.constants import *
@@ -142,6 +142,9 @@ def get_task_tree_details(user, task, indent, visited_list, folder):
         subtasks_list = task.subtasks.all()
     else:
         subtasks_list = task.subtasks.filter(status = task.status)
+
+    shared = [get_user_details(i) for i in task.shared_with.all()]
+
     details =  {"id": task.id, "name": task.name, \
                 "description": task.description, \
                 "start_date": start_date, "due_date": due_date, \
@@ -149,7 +152,8 @@ def get_task_tree_details(user, task, indent, visited_list, folder):
                 "last_modified_date": last_modified_date, \
                 "status": task.status, "tags": get_tags_by_task(task), \
                 "subtasks": get_task_tree(user, subtasks_list, \
-                                          indent+1, visited_list, folder),
+                                          indent+1, visited_list, folder), \
+                "shared_with": shared,
                 "indent": indent}    
     return details
 
