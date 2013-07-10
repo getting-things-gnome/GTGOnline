@@ -5,7 +5,8 @@ import sys
 import re
 
 from Task_backend.models import Task
-from User_backend.user import get_user_object, get_user_details
+from User_backend.user import get_user_object, get_user_details, \
+                              get_bulk_users
 from Tag_backend.tag import find_tags, create_tag_objects, get_tags_by_task, \
                             delete_orphan_tags, get_tag_object
 from Tools.constants import *
@@ -454,8 +455,16 @@ def add_new_list(user, new_list, folder, parent_id):
     oldest = get_oldest_parent(get_task_object(user, parent_id))
     return get_task_tree(user, oldest, 0, [], folder)
 
-def add_shared_users(user, task_id, user_list, folder):
+def share_task(user, task_id, email_list, folder):
     task = get_task_object(user, task_id)
     if task == None:
         return None
-    return None
+    
+    users_obj = get_bulk_users(email_list)
+    to_be_deleted = list(set(task.shared_with.all()) - set(users_obj))
+    to_be_added = list(set(users_obj) - set(task.shared_with.all()))
+    task.shared_with.remove(*to_be_deleted)
+    task.shared_with.add(*to_be_added)
+    
+    oldest = get_oldest_parent(task)
+    return get_task_tree(user, oldest, 0, [], folder)

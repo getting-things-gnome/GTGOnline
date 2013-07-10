@@ -214,7 +214,6 @@ function TaskFoldersViewModel() {
     
     self.checked_groups.subscribe(function (newValue) {
         //alert('newvalue = "' + newValue + '"');
-        self.checked_users([]);
         for (var i=0; i < newValue.length; i++) {
             var match = ko.utils.arrayFirst(self.user_list(), function(item) {
                 //alert(data[0].id);
@@ -231,6 +230,7 @@ function TaskFoldersViewModel() {
             }
         }
         console.log(self.checked_users());
+        old_grps = newValue;
     }, self);
     
     self.checked_users.subscribe(function (newValue) {
@@ -822,12 +822,20 @@ function TaskFoldersViewModel() {
         });
     };
     
-    self.show_share_task_modal = function(id) {
+    self.show_share_task_modal = function(id, shared_list) {
         $.post('/groups/list/', {}, function(data) {
             self.user_list(data);
         });
         setShareId(id);
+        console.log(shared_list);
         $('#share_task_modal').modal('show');
+        
+        self.checked_users([]);
+        for (var i=0; i < shared_list.length; i++) {
+            self.checked_users.push(shared_list[i].email);
+        }
+        
+        console.log(self.checked_users());
         document.getElementById('share_more_users').style.display = 'block';
         
         $('#share_task_modal').on('shown', function() {

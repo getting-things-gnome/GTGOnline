@@ -15,7 +15,7 @@ from Task_backend.task import get_task_object, get_task_tree, \
                               get_oldest_parent, delete_task_tree, add_task, \
                               get_tasks_by_due_date, update_task_details, \
                               delete_single_task, search_tasks, add_new_list, \
-                              add_shared_users
+                              share_task
 from Tag_backend.tag import find_tags
 from Tools.constants import *
 from Tools.dates import get_datetime_object
@@ -204,15 +204,12 @@ def create_new_list(request):
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)
 
 @csrf_exempt
-def share_add(request):
+def share(request):
     folder = request.POST.get('folder', 'Active')
     task_id = request.POST.get('id', -1)
     user_list = request.POST.getlist('list[]')
-    task = add_shared_users(request.user, task_id, user_list, folder)
+    task = share_task(request.user, task_id, user_list, folder)
     if task != None:
         return HttpResponse(json.dumps(task, indent = 4), \
                             mimetype = 'application/json')
-    return HttpResponseRedirect('tasks/get/?folder=' + folder)
-
-def share_remove(request):
     return HttpResponseRedirect('tasks/get/?folder=' + folder)

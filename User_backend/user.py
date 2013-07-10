@@ -25,6 +25,9 @@ def get_user_object(user):
     else:
         return None
     
+def get_bulk_users(email_list):
+    return User.objects.filter(email__in = email_list)
+    
 def login_user(request):
     user = authenticate(email = request.POST['email'], \
                         password = request.POST['password'])
