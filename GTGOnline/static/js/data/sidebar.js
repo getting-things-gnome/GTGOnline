@@ -854,6 +854,20 @@ function TaskFoldersViewModel() {
     
     self.share_task = function() {
         console.log('id = ' + getShareID());
+        $('#share_task_modal').modal('hide');
+        $.post('/tasks/share/', { id: getShareID(), list: self.checked_users(), folder: self.chosenFolderId() }, function(data) {
+            var match = ko.utils.arrayFirst(self.tasks_list(), function(item) {
+                //alert(data[0].id);
+                return data[0].id === item.id;
+            });
+            if (match) {
+                //alert(match.name);
+                self.tasks_list.replace(match, data[0]);
+                //alert(match.name);
+            }
+            //$('i.shared_icon').tooltip('destroy')
+            show_popover();
+        });
     }
 };
 

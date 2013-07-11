@@ -461,10 +461,20 @@ def share_task(user, task_id, email_list, folder):
         return None
     
     users_obj = get_bulk_users(email_list)
+    print >>sys.stderr, 'received list = ' + str(users_obj)
+    add_remove_shared_users(task, users_obj)
+    share_task_children(task, users_obj)
+    
+    oldest = get_oldest_parent(task)
+    return get_task_tree(user, oldest, 0, [], folder)
+
+def share_task_children(task, users_obj):
+    for subtask in task.subtasks.all():
+        add_remove_shared_users(subtask, users_obj)
+        share_task_children(subtask, users_obj)
+
+def add_remove_shared_users(task, users_obj):
     to_be_deleted = list(set(task.shared_with.all()) - set(users_obj))
     to_be_added = list(set(users_obj) - set(task.shared_with.all()))
     task.shared_with.remove(*to_be_deleted)
     task.shared_with.add(*to_be_added)
-    
-    oldest = get_oldest_parent(task)
-    return get_task_tree(user, oldest, 0, [], folder)
