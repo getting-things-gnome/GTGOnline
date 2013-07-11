@@ -11,6 +11,7 @@ var TAG_REGEX = /(@[\w\/\.\-\:]*\w)/g;
 var a;
 var task_name_editor;
 var task_description_editor;
+var group_count = new Object();
 
 // GLOBAL VARIABLES
 var parentId = -1;
@@ -137,6 +138,8 @@ function TaskFoldersViewModel() {
     self.checked_groups = ko.observableArray();
     self.checked_users = ko.observableArray();
     self.shared_users = ko.observable('');
+    self.email_group_dict = ko.observableArray();
+    self.group_count = ko.observableArray();
     
     self.tasks_list.subscribe(function (newValue) {
         self.tasks_list_length(newValue.length);
@@ -200,42 +203,71 @@ function TaskFoldersViewModel() {
     self.user_list.subscribe(function (newValue) {
         self.group_list([]);
         self.visited_users([]);
+        self.email_group_dict([]);
         for (var i=0; i < newValue.length; i++) {
             var group = newValue[i];
             if (group.name != 'Others') {
                 self.group_list.push(group.name);
-                for (var j=0; j < group.members.length; j++) {
+            }
+            for (var j=0; j < group.members.length; j++) {
+                if (group.name != 'Others') {
                     self.visited_users.push(group.members[j].email);
                 }
+                self.email_group_dict.push({ email: group.members[j].email, name: group.name });
             }
+            //self.group_count.push({ name: group.name, count: 0 });
+            group_count[group.name] = [0, group.members.length];
         }
-        console.log(self.visited_users());
+        console.log(self.email_group_dict());
+        console.log(group_count);
     }, self);
     
-    self.checked_groups.subscribe(function (newValue) {
+    /*self.checked_groups.subscribe(function (newValue) {
         //alert('newvalue = "' + newValue + '"');
+        //self.checked_users([]);
         for (var i=0; i < newValue.length; i++) {
             var match = ko.utils.arrayFirst(self.user_list(), function(item) {
                 //alert(data[0].id);
                 return newValue[i] === item.name;
             });
             if (match) {
-                console.log(match);
+                //console.log(match);
                 for (var j=0; j < match.members.length; j++) {
                     var email = match.members[j].email;
-                    console.log('email = ' + email);
-                    self.checked_users.push(email);
+                    //console.log('email = ' + email);
+                    self.checked_users.push(email + ',' + match.name);
                     //document.getElementById('e' + email).style.border = "2px solid green";
                 }
             }
         }
         console.log(self.checked_users());
         old_grps = newValue;
-    }, self);
+    }, self);*/
     
     self.checked_users.subscribe(function (newValue) {
-        console.log(newValue);
+        console.log('checked users, new value = ' + newValue);
+        for (var key in group_count) {
+            group_count[key][0] = 0;
+        }
+        
+        self.checked_groups([]);
+        for (var i=0; i < newValue.length; i++) {
+            console.log('index ' + i + ' value = ' + newValue[i]);
+            var pos = newValue[i].indexOf(',');
+            var name = newValue[i].substring(pos+1);
+            console.log('group name = ' + name);
+            group_count[name][0]++;
+            
+            if (group_count[name][0] == group_count[name][1]) {
+                self.checked_groups.push(name);
+            }
+        }
+        console.log(group_count);
     }, self);
+    
+    self.check_these = function(data, name) {
+        console.log('data = "' + data + '" name = "' + name + '"');
+    }
     
     // Behaviours
     self.goToFolder = function(folder) {
@@ -827,15 +859,16 @@ function TaskFoldersViewModel() {
             self.user_list(data);
         });
         setShareId(id);
-        console.log(shared_list);
+        self.checked_groups([]);
+        console.log('list = ' + shared_list);
         $('#share_task_modal').modal('show');
         
         self.checked_users([]);
-        for (var i=0; i < shared_list.length; i++) {
+        /*for (var i=0; i < shared_list.length; i++) {
             self.checked_users.push(shared_list[i].email);
-        }
+        }*/
         
-        console.log(self.checked_users());
+        console.log('checked users = ' + self.checked_users());
         document.getElementById('share_more_users').style.display = 'block';
         
         $('#share_task_modal').on('shown', function() {
@@ -844,12 +877,12 @@ function TaskFoldersViewModel() {
         
         $('#share_task_modal').on('hidden', function() {
             console.log('share task modal hidden');
-            self.user_list.remove(function(item) { return item.name == 'Others' });
         });
     };
     
     self.close_share_task_modal = function() {
         $('#share_task_modal').modal('hide');
+        self.user_list.remove(function(item) { return item.name == 'Others' });
     };
     
     self.share_task = function() {
@@ -868,6 +901,16 @@ function TaskFoldersViewModel() {
             //$('i.shared_icon').tooltip('destroy')
             show_popover();
         });
+    };
+    
+    self.check_group = function(data, name) {
+        console.log(data);
+        console.log('group = "' + name + '"');
+    }
+    
+    self.check_user = function(data, name) {
+        console.log(data);
+        console.log('name = "' + name + '"');
     }
 };
 
@@ -1342,4 +1385,59 @@ function show_shared_name(shared_obj) {
     
     console.log('names = "' + names + '"');
     return names
+}
+
+function group_checkbox_change(obj) {
+    //console.log('name = ' + name + ' obj = ' + obj);
+    if (obj.checked) {
+        //console.log(data);
+        console.log('obj value = ' + obj.value);
+        var match = ko.utils.arrayFirst(a.user_list(), function(item) {
+            //alert(data[0].id);
+            return obj.value === item.name;
+        });
+        if (match) {
+            //console.log(match);
+            for (var j=0; j < match.members.length; j++) {
+                var email = match.members[j].email;
+                //console.log('email = ' + email);
+                a.checked_users.push(email + ',' + match.name);
+                //document.getElementById('e' + email).style.border = "2px solid green";
+            }
+        }
+    }
+    else {
+        var match = ko.utils.arrayFirst(a.user_list(), function(item) {
+            //alert(data[0].id);
+            return obj.value === item.name;
+        });
+        if (match) {
+            for (var i=0; i < match.members.length; i++) {
+                a.checked_users.remove(function(item) { return match.members[i].email + ',' + match.name == item })
+            }
+        }
+    }
+}
+
+function user_checkbox_change(obj) {
+    //console.log('email = ' + email + ' name = ' + name + ' obj = ' + obj);
+    if (obj.checked) {
+        console.log('user value = ' + obj.value);
+        var pos = obj.value.indexOf(',');
+        var name = obj.value.substring(0,pos+1);
+        console.log('name = ' + name);
+        for (var i=0; i < a.group_list().length; i++) {
+            var match = ko.utils.arrayFirst(a.checked_users(), function(item) {
+                //alert(data[0].id);
+                return name + a.group_list()[i] === item;
+            });
+            if (match) {
+                console.log('match found for "' + a.group_list()[i] + '"');
+            }
+            else {
+                console.log('NOT FOUND for "' + a.group_list()[i] + '"');
+                //a.checked_users.push(name + a.group_list()[i]);
+            }
+        }
+    }
 }

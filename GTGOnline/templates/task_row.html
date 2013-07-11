@@ -143,7 +143,7 @@
 				<div class="accordion-group startup-accordion-group" style="text-decoration: none; padding: 0px; border: none;" data-bind="visible: members.length > 0">
 					<div class="accordion-heading startup-accordion-heading" style="padding: 0px; border: none;">
 						<div style="display: inline-block; vertical-align: top;">
-							<input type="checkbox" style="vertical-align: top;" data-bind="attr: { 'value': name }, checked: $root.checked_groups" />
+							<input type="checkbox" style="vertical-align: top;" data-bind="attr: { 'value': name }, checked: $root.checked_groups" onchange='group_checkbox_change(this)'/> <!--'onchange': 'check_group(\'' + name + '\', ' + this + ')'-->
 						</div>
 						<div class="accordion-toggle" data-toggle="collapse" href="#" style="display: inline-block;" data-bind="attr: { 'data-target': '#s' + name }">
 							<span style="font: 300 18px/1 'Open Sans', Helvetica, sans-serif;" data-bind="text: name"></span>
@@ -153,7 +153,7 @@
 						<div class="accordion-inner" style="padding: 5px 5px 0px 5px; border: none;" data-bind="foreach: members">
 							<div style="display: inline-block; margin-right: 7px; margin-left: 7px;">
 								<div style="vertical-align: top; display: inline-block; height: 30px; line-height: 30px;">
-									<input type="checkbox" data-bind="attr: { 'value': email }, checked: $root.checked_users" />
+									<input type="checkbox" data-bind="attr: { 'value': [email, $parent.name] }, checked: $root.checked_users" onchange='user_checkbox_change(this)'/> <!-- 'onchange': 'check_user(\'' + email + '\', \'' + name + '\', ' + this + ')'  -->
 								</div>
 								<div class="user_selection_cell" data-bind="attr: { 'id': 'e' + email }" style="background-color: #FFFFFF;">
 									<img class="pull-left" data-bind="attr: { 'src': get_gravatar_image_url(email, 30)}" style="width: 30px; height: 30px;" />
