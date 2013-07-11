@@ -1402,7 +1402,7 @@ function group_checkbox_change(obj) {
                 var email = match.members[j].email;
                 //console.log('email = ' + email);
                 a.checked_users.push(email + ',' + match.name);
-                //document.getElementById('e' + email).style.border = "2px solid green";
+                mark_cell_selected(document.getElementById('c' + email + ',' + match.name));
             }
         }
     }
@@ -1414,6 +1414,7 @@ function group_checkbox_change(obj) {
         if (match) {
             for (var i=0; i < match.members.length; i++) {
                 a.checked_users.remove(function(item) { return match.members[i].email + ',' + match.name == item })
+                mark_cell_notselected(document.getElementById('c' + match.members[i].email + ',' + match.name));
             }
         }
     }
@@ -1421,6 +1422,7 @@ function group_checkbox_change(obj) {
 
 function user_checkbox_change(obj) {
     //console.log('email = ' + email + ' name = ' + name + ' obj = ' + obj);
+    var cell = document.getElementById('c' + obj.value);
     if (obj.checked) {
         console.log('user value = ' + obj.value);
         var pos = obj.value.indexOf(',');
@@ -1439,5 +1441,36 @@ function user_checkbox_change(obj) {
                 //a.checked_users.push(name + a.group_list()[i]);
             }
         }
+        mark_cell_selected(cell);
     }
+    else {
+        mark_cell_notselected(cell);
+    }
+}
+
+function check_this_out(obj) {
+    var id = obj.id.substring(1);
+    console.log('id received = "' + id + '"');
+    var match = ko.utils.arrayFirst(a.checked_users(), function(item) {
+        //alert(data[0].id);
+        return id === item;
+    });
+    if (match) {
+        a.checked_users.remove(function(item) { return id == item })
+        mark_cell_notselected(obj);
+    }
+    else {
+        a.checked_users.push(id);
+        mark_cell_selected(obj);
+    }
+}
+
+function mark_cell_selected(cell) {
+    cell.style.border = "1px solid green";
+    cell.style.backgroundColor = "rgba(0, 255, 38, 0.1)";
+}
+
+function mark_cell_notselected(cell) {
+    cell.style.border = "1px solid #DEDEDE";
+    cell.style.backgroundColor = "#FFFFFF";
 }

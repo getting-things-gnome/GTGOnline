@@ -143,19 +143,19 @@
 				<div class="accordion-group startup-accordion-group" style="text-decoration: none; padding: 0px; border: none;" data-bind="visible: members.length > 0">
 					<div class="accordion-heading startup-accordion-heading" style="padding: 0px; border: none;">
 						<div style="display: inline-block; vertical-align: top;">
-							<input type="checkbox" style="vertical-align: top;" data-bind="attr: { 'value': name }, checked: $root.checked_groups" onchange='group_checkbox_change(this)'/> <!--'onchange': 'check_group(\'' + name + '\', ' + this + ')'-->
+							<input type="checkbox" style="vertical-align: top;" data-bind="attr: { 'value': name, 'id': 'group'+name }, checked: $root.checked_groups" onchange='group_checkbox_change(this)'/> <!--'onchange': 'check_group(\'' + name + '\', ' + this + ')'-->
 						</div>
-						<div class="accordion-toggle" data-toggle="collapse" href="#" style="display: inline-block;" data-bind="attr: { 'data-target': '#s' + name }">
+						<div class="accordion-toggle" data-toggle="collapse" href="#" style="display: inline-block;" data-bind="attr: { 'data-target': '#s' + name.replace(/ /g, '_') }">
 							<span style="font: 300 18px/1 'Open Sans', Helvetica, sans-serif;" data-bind="text: name"></span>
 						</div>
 					</div>
-					<div class="collapse" style="padding: 0px; border: 1px solid #DEDEDE; background-color: #F4F4F4;" data-bind="attr: { 'id': 's' + name }">
+					<div class="collapse" style="padding: 0px; border: 1px solid #DEDEDE; background-color: #F4F4F4;" data-bind="attr: { 'id': 's' + name.replace(/ /g, '_') }">
 						<div class="accordion-inner" style="padding: 5px 5px 0px 5px; border: none;" data-bind="foreach: members">
 							<div style="display: inline-block; margin-right: 7px; margin-left: 7px;">
 								<div style="vertical-align: top; display: inline-block; height: 30px; line-height: 30px;">
-									<input type="checkbox" data-bind="attr: { 'value': [email, $parent.name] }, checked: $root.checked_users" onchange='user_checkbox_change(this)'/> <!-- 'onchange': 'check_user(\'' + email + '\', \'' + name + '\', ' + this + ')'  -->
+									<input type="checkbox" data-bind="attr: { 'value': [email, $parent.name], 'id': [email, $parent.name] }, checked: $root.checked_users" onchange='user_checkbox_change(this)' style="display: none;"/> <!-- 'onchange': 'check_user(\'' + email + '\', \'' + name + '\', ' + this + ')'  -->
 								</div>
-								<div class="user_selection_cell" data-bind="attr: { 'id': 'e' + email }" style="background-color: #FFFFFF;">
+								<div class="user_selection_cell" data-bind="attr: { 'id': 'c' + email + ',' + $parent.name }" style="background-color: #FFFFFF; cursor: pointer;" onclick="check_this_out(this)">
 									<img class="pull-left" data-bind="attr: { 'src': get_gravatar_image_url(email, 30)}" style="width: 30px; height: 30px;" />
 									<span style="height: 30px; white-space: normal;" class="pull-left" data-bind="style: get_attr_user_selection(full_name), text: prettify_name_user_selection(full_name)"></span>
 								</div>
@@ -168,6 +168,8 @@
 		</div>
 	</div>
 	<div class="modal-footer">
+		<span data-bind="text: $root.checked_users().length" class="pull-left" style="font: 500 24px/1 'Open Sans', Helvetica, sans-serif; line-height: 24px;"></span>
+		<span class="pull-left" style="font-size: 14px; line-height: 24px;">&nbsp;users selected</span>
 		<button class="btn" data-bind="click: $root.close_share_task_modal">Close</button>
 		<button class="btn btn-primary" data-bind="click: $root.share_task">Share</button>
 	</div>
