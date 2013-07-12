@@ -866,6 +866,8 @@ function TaskFoldersViewModel() {
     };
     
     self.show_share_task_modal = function(id, shared_list) {
+        self.checked_groups([]);
+        self.checked_users([]);
         $.post('/groups/list/', {}, function(data) {
             self.user_list(data);
             for (var i=0; i < shared_list.length; i++) {
@@ -883,12 +885,9 @@ function TaskFoldersViewModel() {
             }
         });
         setShareId(id);
-        self.checked_groups([]);
         //console.log('list = ');
         //console.log(shared_list);
         $('#share_task_modal').modal('show');
-        
-        self.checked_users([]);
         
         console.log('checked users = ' + self.checked_users());
         document.getElementById('share_more_users').style.display = 'block';
