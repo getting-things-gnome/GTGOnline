@@ -140,6 +140,7 @@ function TaskFoldersViewModel() {
     self.shared_users = ko.observable('');
     self.email_group_dict = ko.observableArray();
     self.group_count = ko.observableArray();
+    self.share_subtasks = ko.observable(true);
     
     self.tasks_list.subscribe(function (newValue) {
         self.tasks_list_length(newValue.length);
@@ -888,7 +889,19 @@ function TaskFoldersViewModel() {
     self.share_task = function() {
         console.log('id = ' + getShareID());
         $('#share_task_modal').modal('hide');
-        $.post('/tasks/share/', { id: getShareID(), list: self.checked_users(), folder: self.chosenFolderId() }, function(data) {
+        
+        var users = [];
+        for (var i=0; i < self.checked_users().length; i++) {
+            var pos = self.checked_users()[i].indexOf(',');
+            users.push(self.checked_users()[i].substring(0, pos));
+        }
+        
+        $.post('/tasks/share/', {
+                id: getShareID(),
+                list: users,
+                share_subtasks: self.share_subtasks(),
+                folder: self.chosenFolderId(),
+            }, function(data) {
             var match = ko.utils.arrayFirst(self.tasks_list(), function(item) {
                 //alert(data[0].id);
                 return data[0].id === item.id;
@@ -1398,11 +1411,20 @@ function group_checkbox_change(obj) {
         });
         if (match) {
             //console.log(match);
-            for (var j=0; j < match.members.length; j++) {
-                var email = match.members[j].email;
+            for (var i=0; i < match.members.length; i++) {
+                var email = match.members[i].email;
                 //console.log('email = ' + email);
                 a.checked_users.push(email + ',' + match.name);
                 mark_cell_selected(document.getElementById('c' + email + ',' + match.name));
+                for (var j=0; j < a.group_list().length; j++) {
+                    console.log('group checked = "' + email + ',' + a.group_list()[j] + '"');
+                    a.checked_users.remove(function(item) { return email + ',' + a.group_list()[j] == item })
+                    var value = mark_cell_selected(document.getElementById('c' + email + ',' + a.group_list()[j]));
+                    if (value != null && match.name != a.group_list()[j]) {
+                        //a.checked_users.push(email + ',' + a.group_list()[j]);
+                        a.group_count[a.group_list()[j]]++;
+                    }
+                }
             }
         }
     }
@@ -1413,8 +1435,14 @@ function group_checkbox_change(obj) {
         });
         if (match) {
             for (var i=0; i < match.members.length; i++) {
-                a.checked_users.remove(function(item) { return match.members[i].email + ',' + match.name == item })
-                mark_cell_notselected(document.getElementById('c' + match.members[i].email + ',' + match.name));
+                var email = match.members[i].email
+                a.checked_users.remove(function(item) { return email + ',' + match.name == item })
+                mark_cell_notselected(document.getElementById('c' + email + ',' + match.name));
+                for (var j=0; j < a.group_list().length; j++) {
+                    console.log('group unchecked = "' + email + ',' + a.group_list()[j] + '"');
+                    a.checked_users.remove(function(item) { return email + ',' + a.group_list()[j] == item })
+                    mark_cell_notselected(document.getElementById('c' + email + ',' + a.group_list()[j]));
+                }
             }
         }
     }
@@ -1458,19 +1486,44 @@ function check_this_out(obj) {
     if (match) {
         a.checked_users.remove(function(item) { return id == item })
         mark_cell_notselected(obj);
+        var pos = id.indexOf(',');
+        var name = id.substring(0,pos+1);
+        for (var i=0; i < a.group_list().length; i++) {
+            console.log('unchecked = "' + name + a.group_list()[i] + '"');
+            a.checked_users.remove(function(item) { return name + a.group_list()[i] == item })
+            mark_cell_notselected(document.getElementById('c' + name + a.group_list()[i]));
+        }
     }
     else {
         a.checked_users.push(id);
         mark_cell_selected(obj);
+        var pos = id.indexOf(',');
+        var name = id.substring(0,pos+1);
+        var group = id.substring(pos+1);
+        for (var i=0; i < a.group_list().length; i++) {
+            console.log('checked = "' + name + a.group_list()[i] + '"');
+            var value = mark_cell_selected(document.getElementById('c' + name + a.group_list()[i]));
+            if (value != null && group != a.group_list()[i]) {
+                //a.checked_users.push(name + a.group_list()[i]);
+                a.group_count[a.group_list()[i]]++;
+            }
+        }
     }
 }
 
 function mark_cell_selected(cell) {
+    if (cell == null) {
+        return null;
+    }
     cell.style.border = "1px solid green";
     cell.style.backgroundColor = "rgba(0, 255, 38, 0.1)";
+    return 1;
 }
 
 function mark_cell_notselected(cell) {
+    if (cell == null) {
+        return;
+    }
     cell.style.border = "1px solid #DEDEDE";
     cell.style.backgroundColor = "#FFFFFF";
 }

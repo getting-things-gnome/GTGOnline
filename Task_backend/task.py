@@ -455,7 +455,7 @@ def add_new_list(user, new_list, folder, parent_id):
     oldest = get_oldest_parent(get_task_object(user, parent_id))
     return get_task_tree(user, oldest, 0, [], folder)
 
-def share_task(user, task_id, email_list, folder):
+def share_task(user, task_id, email_list, share_subtasks, folder):
     task = get_task_object(user, task_id)
     if task == None:
         return None
@@ -463,7 +463,8 @@ def share_task(user, task_id, email_list, folder):
     users_obj = get_bulk_users(email_list)
     print >>sys.stderr, 'received list = ' + str(users_obj)
     add_remove_shared_users(task, users_obj)
-    share_task_children(task, users_obj)
+    if share_subtasks == 'true':
+        share_task_children(task, users_obj)
     
     oldest = get_oldest_parent(task)
     return get_task_tree(user, oldest, 0, [], folder)

@@ -170,6 +170,11 @@
 	<div class="modal-footer">
 		<span data-bind="text: $root.checked_users().length" class="pull-left" style="font: 500 24px/1 'Open Sans', Helvetica, sans-serif; line-height: 24px;"></span>
 		<span class="pull-left" style="font-size: 14px; line-height: 24px;">&nbsp;users selected</span>
+		<label class="checkbox" style="display: inline; margin: 0px;">
+			<input type="checkbox" class="checkbox" data-bind="checked: $root.share_subtasks" value="1" id="share_subtasks" style="float: none;" /> Share subtasks
+		</label>
+		<!--<label for="share_subtasks" style="display: inline; margin: 0px;">Share subtasks</label>-->
+		<!--<button type="button" class="btn" data-toggle="button">Share subtasks</button>-->
 		<button class="btn" data-bind="click: $root.close_share_task_modal">Close</button>
 		<button class="btn btn-primary" data-bind="click: $root.share_task">Share</button>
 	</div>

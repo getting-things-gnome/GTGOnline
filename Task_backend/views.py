@@ -208,7 +208,8 @@ def share(request):
     folder = request.POST.get('folder', 'Active')
     task_id = request.POST.get('id', -1)
     user_list = request.POST.getlist('list[]')
-    task = share_task(request.user, task_id, user_list, folder)
+    share_subtasks = request.POST.get('share_subtasks', 0)
+    task = share_task(request.user, task_id, user_list, share_subtasks, folder)
     if task != None:
         return HttpResponse(json.dumps(task, indent = 4), \
                             mimetype = 'application/json')
