@@ -868,16 +868,27 @@ function TaskFoldersViewModel() {
     self.show_share_task_modal = function(id, shared_list) {
         $.post('/groups/list/', {}, function(data) {
             self.user_list(data);
+            for (var i=0; i < shared_list.length; i++) {
+                for (var j=0; j < self.group_list().length; j++) {
+                    var match = ko.utils.arrayFirst(self.email_group_dict(), function(item) {
+                        //alert(data[0].id);
+                        console.log('checking email = "' + shared_list[i].email + '" item email = "' + item.email + '" item name = "' + item.name + '"');
+                        return shared_list[i].email == item.email && self.group_list()[j] == item.name;
+                    });
+                    if (match) {
+                        self.checked_users.push(match.email + ',' + match.name);
+                        mark_cell_selected(document.getElementById('c' + match.email + ',' + match.name));
+                    }
+                }
+            }
         });
         setShareId(id);
         self.checked_groups([]);
-        console.log('list = ' + shared_list);
+        console.log('list = ');
+        console.log(shared_list);
         $('#share_task_modal').modal('show');
         
         self.checked_users([]);
-        /*for (var i=0; i < shared_list.length; i++) {
-            self.checked_users.push(shared_list[i].email);
-        }*/
         
         console.log('checked users = ' + self.checked_users());
         document.getElementById('share_more_users').style.display = 'block';
