@@ -66,10 +66,12 @@ def get_first_name(user):
 def get_time_format(user):
     return 0
 
-def validate_form(email, password):
+def validate_form(email, password, first_name, last_name):
     if len(password) < 6:
         return False
     elif not email_is_valid(email):
+        return False
+    elif first_name == '' or last_name == '':
         return False
     return True
 

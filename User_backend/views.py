@@ -70,11 +70,12 @@ def register(request):
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
-        if not validate_form(email, password):
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        if not validate_form(email, password, first_name, last_name):
             request.session['error'] = '3'
             return HttpResponseRedirect('/user/landing/')
-        user = register_user(email, password, \
-                      request.POST['first_name'], request.POST['last_name'])
+        user = register_user(email, password, first_name, last_name)
         if user != None:
             create_default_groups(user)
     request.session['error'] = '4'

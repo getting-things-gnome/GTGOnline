@@ -103,7 +103,7 @@
                                         <label class="control-label" for="first_name">First Name</label>
                                         <div class="controls">
                                             <input type="text" id="first_name" name="first_name" placeholder="" class="input-xlarge">
-                                            <p class="muted">Optional</p>
+                                            <p class="muted" id="first-name-warning"></p>
                                         </div>
                                     </div>
 									<div class="control-group">
@@ -111,7 +111,7 @@
                                         <label class="control-label" for="last_name">Last Name</label>
                                         <div class="controls">
                                             <input type="text" id="last_name" name="last_name" placeholder="" class="input-xlarge">
-                                            <p class="muted">Optional</p>
+                                            <p class="muted" id="last-name-warning"></p>
                                         </div>
                                     </div>
                                     <div class="control-group">
@@ -172,6 +172,32 @@
 			validate_email();
 			console.log('returned');
 			console.log(gravatar_profile);
+			
+			var first_name = form["first_name"].value;
+			var first_name_warning = document.getElementById('first-name-warning');
+			//alert('first name = ' + first_name);
+			if (first_name == '') {
+				first_name_warning.innerHTML = 'Please fill out this field';
+				first_name_warning.setAttribute('class', 'validation-error');
+				problem_flag = 1;
+			}
+			else {
+				first_name_warning.innerHTML = '';
+				//first_name_warning.setAttribute('class', 'validation-success');
+			}
+			
+			var last_name = form["last_name"].value;
+			var last_name_warning = document.getElementById('last-name-warning');
+			//alert('last name = ' + last_name);
+			if (last_name == '') {
+				last_name_warning.innerHTML = 'Please fill out this field';
+				last_name_warning.setAttribute('class', 'validation-error');
+				problem_flag = 1;
+			}
+			else {
+				last_name_warning.innerHTML = '';
+				//last_name_warning.setAttribute('class', 'validation-success');
+			}
 			
 			var password = form["password"].value;
 			var password_warning = document.getElementById('password-warning');
