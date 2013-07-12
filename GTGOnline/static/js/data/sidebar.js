@@ -905,6 +905,7 @@ function TaskFoldersViewModel() {
     self.close_share_task_modal = function() {
         $('#share_task_modal').modal('hide');
         self.user_list.remove(function(item) { return item.name == 'Others' });
+        self.checked_users([]);
     };
     
     self.share_task = function() {
