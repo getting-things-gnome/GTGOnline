@@ -884,8 +884,8 @@ function TaskFoldersViewModel() {
         });
         setShareId(id);
         self.checked_groups([]);
-        console.log('list = ');
-        console.log(shared_list);
+        //console.log('list = ');
+        //console.log(shared_list);
         $('#share_task_modal').modal('show');
         
         self.checked_users([]);
