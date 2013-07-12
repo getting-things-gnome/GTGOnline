@@ -1416,15 +1416,15 @@ function group_checkbox_change(obj) {
                 //console.log('email = ' + email);
                 a.checked_users.push(email + ',' + match.name);
                 mark_cell_selected(document.getElementById('c' + email + ',' + match.name));
-                for (var j=0; j < a.group_list().length; j++) {
+                /*for (var j=0; j < a.group_list().length; j++) {
                     console.log('group checked = "' + email + ',' + a.group_list()[j] + '"');
                     a.checked_users.remove(function(item) { return email + ',' + a.group_list()[j] == item })
                     var value = mark_cell_selected(document.getElementById('c' + email + ',' + a.group_list()[j]));
                     if (value != null && match.name != a.group_list()[j]) {
-                        //a.checked_users.push(email + ',' + a.group_list()[j]);
-                        a.group_count[a.group_list()[j]]++;
+                        a.checked_users.push(email + ',' + a.group_list()[j]);
+                        //group_count[a.group_list()[j]]++;
                     }
-                }
+                }*/
             }
         }
     }
@@ -1438,11 +1438,11 @@ function group_checkbox_change(obj) {
                 var email = match.members[i].email
                 a.checked_users.remove(function(item) { return email + ',' + match.name == item })
                 mark_cell_notselected(document.getElementById('c' + email + ',' + match.name));
-                for (var j=0; j < a.group_list().length; j++) {
+                /*for (var j=0; j < a.group_list().length; j++) {
                     console.log('group unchecked = "' + email + ',' + a.group_list()[j] + '"');
                     a.checked_users.remove(function(item) { return email + ',' + a.group_list()[j] == item })
                     mark_cell_notselected(document.getElementById('c' + email + ',' + a.group_list()[j]));
-                }
+                }*/
             }
         }
     }
@@ -1484,6 +1484,7 @@ function check_this_out(obj) {
         return id === item;
     });
     if (match) {
+        console.log('not selected id = ' + id);
         a.checked_users.remove(function(item) { return id == item })
         mark_cell_notselected(obj);
         var pos = id.indexOf(',');
@@ -1495,6 +1496,7 @@ function check_this_out(obj) {
         }
     }
     else {
+        console.log('selected id = ' + id);
         a.checked_users.push(id);
         mark_cell_selected(obj);
         var pos = id.indexOf(',');
@@ -1504,8 +1506,8 @@ function check_this_out(obj) {
             console.log('checked = "' + name + a.group_list()[i] + '"');
             var value = mark_cell_selected(document.getElementById('c' + name + a.group_list()[i]));
             if (value != null && group != a.group_list()[i]) {
-                //a.checked_users.push(name + a.group_list()[i]);
-                a.group_count[a.group_list()[i]]++;
+                a.checked_users.push(name + a.group_list()[i]);
+                //group_count[a.group_list()[i]]++;
             }
         }
     }
