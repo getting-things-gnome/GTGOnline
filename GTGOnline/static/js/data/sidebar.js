@@ -137,6 +137,7 @@ function TaskFoldersViewModel() {
     self.visited_users = ko.observableArray();
     self.checked_groups = ko.observableArray();
     self.checked_users = ko.observableArray();
+    self.user_emails = ko.observableArray();
     self.shared_users = ko.observable('');
     self.email_group_dict = ko.observableArray();
     self.group_count = ko.observableArray();
@@ -252,6 +253,7 @@ function TaskFoldersViewModel() {
         }
         
         self.checked_groups([]);
+        self.user_emails([]);
         for (var i=0; i < newValue.length; i++) {
             console.log('index ' + i + ' value = ' + newValue[i]);
             var pos = newValue[i].indexOf(',');
@@ -261,6 +263,14 @@ function TaskFoldersViewModel() {
             
             if (group_count[name][0] == group_count[name][1]) {
                 self.checked_groups.push(name);
+            }
+            
+            var match = ko.utils.arrayFirst(self.user_emails(), function(item) {
+                //alert(data[0].id);
+                return newValue[i].substring(0, pos) === item;
+            });
+            if (!match) {
+                self.user_emails.push(newValue[i].substring(0, pos));
             }
         }
         console.log(group_count);
@@ -890,15 +900,15 @@ function TaskFoldersViewModel() {
         console.log('id = ' + getShareID());
         $('#share_task_modal').modal('hide');
         
-        var users = [];
+        /*var users = [];
         for (var i=0; i < self.checked_users().length; i++) {
             var pos = self.checked_users()[i].indexOf(',');
             users.push(self.checked_users()[i].substring(0, pos));
-        }
+        }*/
         
         $.post('/tasks/share/', {
                 id: getShareID(),
-                list: users,
+                list: self.user_emails(),
                 share_subtasks: self.share_subtasks(),
                 folder: self.chosenFolderId(),
             }, function(data) {
@@ -1416,15 +1426,15 @@ function group_checkbox_change(obj) {
                 //console.log('email = ' + email);
                 a.checked_users.push(email + ',' + match.name);
                 mark_cell_selected(document.getElementById('c' + email + ',' + match.name));
-                /*for (var j=0; j < a.group_list().length; j++) {
+                for (var j=0; j < a.group_list().length; j++) {
                     console.log('group checked = "' + email + ',' + a.group_list()[j] + '"');
-                    a.checked_users.remove(function(item) { return email + ',' + a.group_list()[j] == item })
+                    //a.checked_users.remove(function(item) { return email + ',' + a.group_list()[j] == item })
                     var value = mark_cell_selected(document.getElementById('c' + email + ',' + a.group_list()[j]));
                     if (value != null && match.name != a.group_list()[j]) {
                         a.checked_users.push(email + ',' + a.group_list()[j]);
                         //group_count[a.group_list()[j]]++;
                     }
-                }*/
+                }
             }
         }
     }
@@ -1438,11 +1448,11 @@ function group_checkbox_change(obj) {
                 var email = match.members[i].email
                 a.checked_users.remove(function(item) { return email + ',' + match.name == item })
                 mark_cell_notselected(document.getElementById('c' + email + ',' + match.name));
-                /*for (var j=0; j < a.group_list().length; j++) {
+                for (var j=0; j < a.group_list().length; j++) {
                     console.log('group unchecked = "' + email + ',' + a.group_list()[j] + '"');
                     a.checked_users.remove(function(item) { return email + ',' + a.group_list()[j] == item })
                     mark_cell_notselected(document.getElementById('c' + email + ',' + a.group_list()[j]));
-                }*/
+                }
             }
         }
     }
