@@ -12,6 +12,7 @@ var a;
 var task_name_editor;
 var task_description_editor;
 var group_count = new Object();
+var global_shared_list = [];
 
 // GLOBAL VARIABLES
 var parentId = -1;
@@ -756,7 +757,7 @@ function TaskFoldersViewModel() {
         });
     };
     
-    self.show_more_users = function() {
+    self.show_more_users = function(is_from_dialog) {
         var users = document.getElementById('more_users');
         if (users == null) {
             users = document.getElementById('share_more_users');
@@ -766,6 +767,19 @@ function TaskFoldersViewModel() {
             console.log(data[0]);
             //console.log(self.user_list());
             self.user_list.push(data[0]);
+            if (is_from_dialog == 1) {
+                for (var i=0; i < global_shared_list.length; i++) {
+                    var match = ko.utils.arrayFirst(self.email_group_dict(), function(item) {
+                        //alert(data[0].id);
+                        //console.log('checking email = "' + global_shared_list[i].email + '" item email = "' + item.email + '" item name = "' + item.name + '"');
+                        return global_shared_list[i].email == item.email && data[0].name == item.name;
+                    });
+                    if (match) {
+                        self.checked_users.push(match.email + ',' + match.name);
+                        mark_cell_selected(document.getElementById('c' + match.email + ',' + match.name));
+                    }
+                }
+            }
         });
     };
     
@@ -868,6 +882,7 @@ function TaskFoldersViewModel() {
     self.show_share_task_modal = function(id, shared_list) {
         self.checked_groups([]);
         self.checked_users([]);
+        global_shared_list = shared_list;
         $.post('/groups/list/', {}, function(data) {
             self.user_list(data);
             for (var i=0; i < shared_list.length; i++) {

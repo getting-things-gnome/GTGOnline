@@ -94,7 +94,7 @@
     </div>
     <hr>
 </div>
-<button class="btn btn-primary" data-bind="visible: '{{ origin }}' == 'search', text: 'Show users not connected to you', click: $root.show_more_users" id="more_users" style="position: absolute; left: 50%; margin-left: -118px;"></button>
+<button class="btn btn-primary" data-bind="visible: '{{ origin }}' == 'search', text: 'Show users not connected to you', click: $root.show_more_users.bind($data, 0)" id="more_users" style="position: absolute; left: 50%; margin-left: -118px;"></button>
 <div style="height: 100px">&nbsp;</div>
 {% endblock main %}
 </div>
