@@ -139,7 +139,7 @@ def get_task_tree_details(user, task, indent, visited_list, folder):
     due_date = get_datetime_str(user, task.due_date)
     closed_date = get_datetime_str(user, task.closed_date)
     last_modified_date = get_datetime_str(user, task.last_modified_date)
-    if folder == -1:
+    if folder <= -1:
         subtasks_list = task.subtasks.all()
     else:
         subtasks_list = task.subtasks.filter(status = task.status)
@@ -160,14 +160,16 @@ def get_task_tree_details(user, task, indent, visited_list, folder):
 
 def get_task_tree(user, task_list, indent, visited_list, folder):
     task_tree = []
+    print >>sys.stderr, 'task_list = ' + str(task_list)
     for index, task in enumerate(task_list):
         # The following condition will have to changed in the future
         # to enable tasks with multiple parents
-        # Detailed explanation - 
+        # Detailed explanation -
         if not visited(task, visited_list) and ( not task.task_set.exists() \
                 or visited(get_parent(task), visited_list) \
                 or ( task.status != get_parent_status(task) and \
-                     folder != -1 )):
+                     folder != -1 ) or folder == -2):
+            print >>sys.stderr, 'visiting = ' + str(task)
             visited_list = set_visited(task, visited_list)
             task_tree.append(get_task_tree_details(user, task, \
                                               indent, visited_list, folder))

@@ -103,7 +103,7 @@ ko.bindingHandlers.minicolors = {
 function TaskFoldersViewModel() {
     // Data
     var self = this;
-    self.folders = ['All', 'Active', 'Done', 'Dismissed'];
+    self.folders = ['All', 'Active', 'Done', 'Dismissed', 'Shared'];
     self.chosenFolderId = ko.observable();
     self.titlebar_display = ko.observable('');
     self.tasks_list = ko.observableArray();

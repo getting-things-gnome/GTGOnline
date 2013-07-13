@@ -4,6 +4,7 @@ import json
 import sys
 
 from django.core import serializers
+from django.db.models import Count
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader, RequestContext
 from django.contrib.auth.decorators import login_required
@@ -33,6 +34,7 @@ def get_tasks(request):
         'Active': IS_ACTIVE,
         'Done': IS_DONE,
         'Dismissed': IS_DISMISSED,
+        'Shared': -2,
     }
     
     folder_get = request.GET.get('folder', 'Active')
@@ -41,6 +43,11 @@ def get_tasks(request):
     if folder_state == -1:
         task_tree = get_task_tree(request.user, \
                                   request.user.task_set.all(), \
+                                  0, [], folder_state)
+    elif folder_state == -2:
+        q_set = request.user.task_set.annotate(num = Count('shared_with'))
+        q_set = q_set.filter(num__gt = 0)
+        task_tree = get_task_tree(request.user, q_set, \
                                   0, [], folder_state)
     else:
         task_tree = get_task_tree(request.user, \
