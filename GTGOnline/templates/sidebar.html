@@ -3,10 +3,10 @@
 {% block sidebar %}
     <div style="position: fixed; min-width: 100px;" id="sidebar">
         <div class="section sidebar" style="position: relative">
-			<button class="modern" id="showhide" style="width: 85%" data-bind="click: $root.show_new_task_modal.bind($data, -1)">
+			<button class="modern" id="showhide" style="position: absolute; top: 0px; left: 0px; right: 0px;" data-bind="click: $root.show_new_task_modal.bind($data, -1)">
 				<span style="font: 400 16px/1 'Open Sans', Helvetica, sans-serif; color: #636363;">New Task List</span>
 			</button>
-            <div class="widget">
+            <div class="widget" style="position: absolute; top: 53px; left: 0px; right: 0px;">
 				<div class="widget-header" style="margin-bottom: 0px">
 						<h3 class="light">Tasks</h3>
                 </div>
@@ -22,11 +22,11 @@
                     </ul>
                 </div>
             </div>
-            <div class="widget bg-color blue">
+            <div class="widget bg-color blue" style="position: absolute; left: 0px; right: 0px; top: 235px; bottom: 105px; min-height: 100px;">
                 <div class="widget-header">
                 	<h3>Tags</h3>
                 </div>
-                <div class="widget-content" data-bind="foreach: tags_list" id="sidebar_tags_list" style="padding: 5px 15px; max-height: 200px; overflow: auto;">
+                <div class="widget-content" data-bind="foreach: tags_list" id="sidebar_tags_list" style="padding: 5px 15px; overflow: auto;">
 					<a href="#" style="text-decoration: none;" data-bind="click: $root.get_tasks_by_tag.bind($data, name)">
 						<span class="label" data-bind="text: name + '|' + count, style: { backgroundColor: color }, attr: { 'id': id }"></span>
 					</a>
@@ -36,22 +36,22 @@
 					</ul>
                 </div>
             </div>
-            <div class="widget bg-color dark-grey">
+            <div class="widget bg-color dark-grey" style="position: absolute; bottom: 0px; left: 0px; right: 0px; min-height: 90px;">
             	<div class="widget-header" style="margin-bottom: 0px">
-            		<h3>Due Dates</h3>
+            		<h3>Sharing</h3>
             	</div>
             	<div class="widget-content" style="padding: 0px">
-            		<ul class="nav nav-list">
+            		<ul class="nav nav-list" style="font-size: 12px;">
                         <li>
-							<a href="#" onclick="window.location = '{% url "groups:list" %}'">
-								<span>Show Groups</span>
-								<span class="pull-right label">3</span>
+							<a href="#">
+								<span>Tasks shared with you</span>
+								<!--<span class="pull-right label">3</span>-->
 							</a>
 						</li>
 						<li>
 							<a href="#">
-								<span>Due Week</span>
-								<span class="pull-right label">9</span>
+								<span>Your shared tasks</span>
+								<!--<span class="pull-right label">9</span>-->
 							</a>
 						</li>
 						<!--<li>

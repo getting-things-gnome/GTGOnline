@@ -4,6 +4,8 @@ import json
 import sys
 import re
 
+from django.db.models import Count
+
 from Task_backend.models import Task
 from User_backend.user import get_user_object, get_user_details, \
                               get_bulk_users
@@ -139,8 +141,11 @@ def get_task_tree_details(user, task, indent, visited_list, folder):
     due_date = get_datetime_str(user, task.due_date)
     closed_date = get_datetime_str(user, task.closed_date)
     last_modified_date = get_datetime_str(user, task.last_modified_date)
-    if folder <= -1:
+    if folder == -1:
         subtasks_list = task.subtasks.all()
+    elif folder == -2:
+        subtasks_list = task.subtasks.annotate(num = Count('shared_with'))
+        subtasks_list = subtasks_list.filter(num__gt = 0)
     else:
         subtasks_list = task.subtasks.filter(status = task.status)
 
