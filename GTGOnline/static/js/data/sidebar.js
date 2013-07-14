@@ -330,7 +330,7 @@ function TaskFoldersViewModel() {
             $("#tag_dropdown_options").hide();
             $.get('/tasks/get', { folder: this.params.folder }, function(data) {
                 self.tasks_list(data);
-                self.titlebar_display('(' + self.tasks_list().length + ') ' + display);
+                //self.titlebar_display('(' + self.tasks_list().length + ') ' + display);
                 show_popover();
                 /*$('.show_dropdown').click(function() {
                     if( $(this).is(':checked')) {
