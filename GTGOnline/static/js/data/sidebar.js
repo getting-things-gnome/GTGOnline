@@ -934,12 +934,12 @@ function TaskFoldersViewModel() {
         
         $('#share_task_modal').on('hidden', function() {
             console.log('share task modal hidden');
-            self.user_list.remove(function(item) { return item.name == 'Others' });
+            /*self.user_list.remove(function(item) { return item.name == 'Others' });
             
             for (var i=0; i < self.checked_users().length; i++) {
                 mark_cell_notselected(document.getElementById('c' + self.checked_users()[i]));
             }
-            self.checked_users([]);
+            self.checked_users([]);*/
         });
     };
     
