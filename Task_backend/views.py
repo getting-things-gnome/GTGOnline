@@ -34,7 +34,7 @@ def get_tasks(request):
         'Active': IS_ACTIVE,
         'Done': IS_DONE,
         'Dismissed': IS_DISMISSED,
-        'Shared': -2,
+        'Your_shared_tasks': -2,
     }
     
     folder_get = request.GET.get('folder', 'Active')

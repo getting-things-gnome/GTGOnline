@@ -14,7 +14,7 @@
                     <!--<ul class="unstyled user-list clearfix">-->
                     <ul class="nav nav-list" data-bind="foreach: folders">
                         <li data-bind="css: { active: $data == $root.chosenFolderId() }, click: $root.goToFolder">
-							<a href="#">
+							<a data-bind="attr: { 'href': '#' + $data }">
 								<span data-bind="text: $data"></span>
 								<span class="pull-right label"></span>
 							</a>
@@ -41,23 +41,13 @@
             		<h3>Sharing</h3>
             	</div>
             	<div class="widget-content" style="padding: 0px">
-            		<ul class="nav nav-list" style="font-size: 12px;">
-                        <li>
-							<a href="#">
-								<span>Tasks shared with you</span>
-								<!--<span class="pull-right label">3</span>-->
+            		<ul class="nav nav-list" style="font-size: 12px;" data-bind="foreach: shared_folders">
+						<li data-bind="css: { active: $data.replace(/ /g, '_') == $root.chosenSharedFolderId() }, click: $root.goToSharedFolder">
+							<a data-bind="attr: { 'href': '#' + $data.replace(/ /g, '_') }">
+								<span data-bind="text: $data"></span>
+								<!--<span class="pull-right label"></span>-->
 							</a>
 						</li>
-						<li>
-							<a href="#">
-								<span>Your shared tasks</span>
-								<!--<span class="pull-right label">9</span>-->
-							</a>
-						</li>
-						<!--<li>
-							<a href="#" data-bind="text: ko.toJSON($root.modify_selected)">
-							</a>
-						</li>-->
                     </ul>
             	</div>
             </div>

@@ -104,7 +104,9 @@ function TaskFoldersViewModel() {
     // Data
     var self = this;
     self.folders = ['All', 'Active', 'Done', 'Dismissed', 'Shared'];
+    self.shared_folders = ['Tasks shared with you', 'Your shared tasks'];
     self.chosenFolderId = ko.observable();
+    self.chosenSharedFolderId = ko.observable();
     self.titlebar_display = ko.observable('');
     self.tasks_list = ko.observableArray();
     self.tasks_list_length = ko.observable('0');
@@ -289,6 +291,13 @@ function TaskFoldersViewModel() {
         $("#tag_dropdown_options").hide();
     };
     
+    self.goToSharedFolder = function(folder) {
+        location.hash = folder.replace(/ /g, '_');
+        self.header_name(this.params.folder);
+        self.titlebar_display(this.params.folder);
+        $("#tag_dropdown_options").hide();
+    };
+    
     $.get('/tasks/get/due_by', { days_left: 0, folder: self.chosenFolderId() }, function(data) {
         self.todays_tasks(data);
                 
@@ -304,9 +313,18 @@ function TaskFoldersViewModel() {
     // Client-side routes
     Sammy(function() {
         this.get('#:folder', function() {
-            self.chosenFolderId(this.params.folder);
-            self.header_name(this.params.folder + ' Tasks');
-            self.titlebar_display(this.params.folder + ' Tasks');
+            if (this.params.folder.substring(0,5) == 'Tasks' || this.params.folder.substring(0,4) == 'Your') {
+                self.chosenFolderId(this.params.folder);
+                self.chosenSharedFolderId(this.params.folder);
+                self.header_name(this.params.folder.replace(/_/g, ' '));
+                self.titlebar_display(this.params.folder.replace(/_/g, ' '));
+            }
+            else {
+                self.chosenFolderId(this.params.folder);
+                self.chosenSharedFolderId(this.params.folder);
+                self.header_name(this.params.folder + ' Tasks');
+                self.titlebar_display(this.params.folder + ' Tasks');
+            }
             $("#tag_dropdown_options").hide();
             $.get('/tasks/get', { folder: this.params.folder }, function(data) {
                 self.tasks_list(data);
