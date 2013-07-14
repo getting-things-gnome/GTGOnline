@@ -316,18 +316,21 @@ function TaskFoldersViewModel() {
             if (this.params.folder.substring(0,5) == 'Tasks' || this.params.folder.substring(0,4) == 'Your') {
                 self.chosenFolderId(this.params.folder);
                 self.chosenSharedFolderId(this.params.folder);
-                self.header_name(this.params.folder.replace(/_/g, ' '));
-                self.titlebar_display(this.params.folder.replace(/_/g, ' '));
+                var display = this.params.folder.replace(/_/g, ' ')
+                self.header_name(display);
+                self.titlebar_display(display);
             }
             else {
                 self.chosenFolderId(this.params.folder);
                 self.chosenSharedFolderId(this.params.folder);
-                self.header_name(this.params.folder + ' Tasks');
-                self.titlebar_display(this.params.folder + ' Tasks');
+                var display = this.params.folder + ' Tasks';
+                self.header_name(display);
+                self.titlebar_display(display);
             }
             $("#tag_dropdown_options").hide();
             $.get('/tasks/get', { folder: this.params.folder }, function(data) {
                 self.tasks_list(data);
+                self.titlebar_display('(' + self.tasks_list().length + ') ' + display);
                 show_popover();
                 /*$('.show_dropdown').click(function() {
                     if( $(this).is(':checked')) {
