@@ -141,7 +141,7 @@
 			</div>-->
 			<div class="accordion" id="accordion" style="padding: 0px; margin: 0px;" data-bind="foreach: user_list">
 				<div class="accordion-group startup-accordion-group" style="text-decoration: none; padding: 0px; border: none;" data-bind="visible: members.length > 0">
-					<div class="accordion-heading startup-accordion-heading" style="padding: 0px; border: none;">
+					<div class="accordion-heading startup-accordion-heading" style="padding: 0px; border: none; height: 27px;">
 						<div style="display: inline-block; vertical-align: top;">
 							<input type="checkbox" style="vertical-align: top;" data-bind="attr: { 'value': name, 'id': 'group'+name }, checked: $root.checked_groups" onchange='group_checkbox_change(this)'/> <!--'onchange': 'check_group(\'' + name + '\', ' + this + ')'-->
 						</div>
@@ -150,7 +150,7 @@
 						</div>
 						<div class="pull-right div-inline" data-bind="foreach: members">
 							<!-- ko if: $index() < 5 -->
-							<img class="pull-right" data-bind="attr: { 'src': get_gravatar_image_url(email, 20)}" style="width: 20px; height: 20px;" />
+							<img class="pull-right" data-bind="attr: { 'src': get_gravatar_image_url(email, 25)}" style="width: 25px; height: 25px; margin-left: 2px;" />
 							<!-- /ko -->
 						</div>
 					</div>
