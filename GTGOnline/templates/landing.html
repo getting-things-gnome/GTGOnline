@@ -94,11 +94,11 @@
                                         <!-- Email -->
                                         <label class="control-label"  for="email">Email</label>
                                         <div class="controls">
-                                            <input type="text" id="email" name="email" placeholder="" class="input-xlarge" onblur="validate_email()">
-                                            <p class="muted" id="email-warning">This email will be used to notify you of urgent tasks, and to fetch your gravatar</p>
+                                            <input type="text" id="email" name="email" placeholder="" class="input-xlarge" onblur="validate_email()" onfocus="hide_name_inputs()">
+                                            <p class="muted" id="email-warning">This email will be used to notify you of urgent tasks, and to fetch your Gravatar profile</p>
                                         </div>
                                     </div>
-									<div class="control-group">
+									<div class="control-group" id="first_name_div" style="display: none;">
                                         <!-- First Name -->
                                         <label class="control-label" for="first_name">First Name</label>
                                         <div class="controls">
@@ -106,7 +106,7 @@
                                             <p class="muted" id="first-name-warning"></p>
                                         </div>
                                     </div>
-									<div class="control-group">
+									<div class="control-group" id="last_name_div" style="display: none;">
                                         <!-- Last Name -->
                                         <label class="control-label" for="last_name">Last Name</label>
                                         <div class="controls">
@@ -171,10 +171,22 @@
 			
 			validate_email();
 			var profile = null;
-			if (false == false) {
+			if (false == false && form["first_name"].value == '' && form["last_name"].value == '') {
 				register_button.innerHTML = "Fetching Gravatar profile ...";
 				register_button.setAttribute('class', 'btn btn-success disabled');
 				profile = get_gravatar_profile(document.forms["RegistrationForm"]["email"].value);
+				if (profile == null) {
+					document.getElementById('first_name_div').style.display = 'block';
+					document.getElementById('last_name_div').style.display = 'block';
+					form["first_name"].value = "";
+					form["last_name"].value = "";
+				}
+				else {
+					document.getElementById('first_name_div').style.display = 'none';
+					document.getElementById('last_name_div').style.display = 'none';
+					form["first_name"].value = profile[0];
+					form["last_name"].value = profile[1];
+				}
 				console.log('returned profile = ');
 				console.log(profile);
 			}
@@ -183,8 +195,8 @@
 			var first_name_warning = document.getElementById('first-name-warning');
 			//alert('first name = ' + first_name);
 			if (first_name == '') {
-				first_name_warning.innerHTML = 'Please fill out this field';
-				first_name_warning.setAttribute('class', 'validation-error');
+				first_name_warning.innerHTML = 'Your Gravatar profile could not be fetched or did not contain first name<br>Please fill out this field';
+				first_name_warning.setAttribute('class', 'validation-info');
 				problem_flag = 1;
 			}
 			else {
@@ -196,8 +208,8 @@
 			var last_name_warning = document.getElementById('last-name-warning');
 			//alert('last name = ' + last_name);
 			if (last_name == '') {
-				last_name_warning.innerHTML = 'Please fill out this field';
-				last_name_warning.setAttribute('class', 'validation-error');
+				last_name_warning.innerHTML = 'Your Gravatar profile could not be fetched or did not contain family name<br>Please fill out this field';
+				last_name_warning.setAttribute('class', 'validation-info');
 				problem_flag = 1;
 			}
 			else {
@@ -301,6 +313,10 @@
 			var profile = null;
 			$.ajax({ url:"/user/gravatar/", async:false,
 				data: { email: email, hash: md5(email) },
+				beforeSend: function() {
+					register_button.innerHTML = "Fetching Gravatar profile ...";
+					register_button.setAttribute('class', 'btn btn-success disabled');
+				},
 				success:function(data){
 					 if (data == '0') {
 						 console.log('profile does not exist');
@@ -309,13 +325,28 @@
 					 else {
 						 console.log("Here's the profile - ");
 						 console.log(data);
-						 problem_flag = 1;
-						 profile = data;
+						 if ("name" in data["entry"]["0"]) {
+							console.log('name found');
+							profile = [data["entry"]["0"]["name"]["givenName"], data["entry"]["0"]["name"]["familyName"]];
+							problem_flag = 0;
+						 }
+						 else {
+							console.log('name not found');
+							problem_flag = 1;
+						 }
+						 //profile = data;
 					 }
 				},
 			});
 			return profile;
 		};
+		
+		function hide_name_inputs() {
+			//if (document.forms["RegistrationForm"]["first_name"] == '' && document.forms["RegistrationForm"]["last_name"] == '') {
+				document.getElementById('first_name_div').style.display = "none";
+				document.getElementById('last_name_div').style.display = "none";
+			//}
+		}
 	</script>
     </body>
 </html>

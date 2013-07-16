@@ -1297,6 +1297,11 @@ div.task-row {
   color: #23AA2A;
 }
 
+.validation-info {
+  /*color: #6c7496;*/
+  color: #5d699b;
+}
+
 .mark_selected {
   background-color: #23AA2A;
 }

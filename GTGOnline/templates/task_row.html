@@ -146,7 +146,12 @@
 							<input type="checkbox" style="vertical-align: top;" data-bind="attr: { 'value': name, 'id': 'group'+name }, checked: $root.checked_groups" onchange='group_checkbox_change(this)'/> <!--'onchange': 'check_group(\'' + name + '\', ' + this + ')'-->
 						</div>
 						<div class="accordion-toggle" data-toggle="collapse" href="#" style="display: inline-block;" data-bind="attr: { 'data-target': '#s' + name.replace(/ /g, '_') }">
-							<span style="font: 300 18px/1 'Open Sans', Helvetica, sans-serif;" data-bind="text: name"></span>
+							<span style="font: 300 18px/1 'Open Sans', Helvetica, sans-serif;" data-bind="text: name" class="div-inline pull-left"></span>
+						</div>
+						<div class="pull-right div-inline" data-bind="foreach: members">
+							<!-- ko if: $index() < 5 -->
+							<img class="pull-right" data-bind="attr: { 'src': get_gravatar_image_url(email, 20)}" style="width: 20px; height: 20px;" />
+							<!-- /ko -->
 						</div>
 					</div>
 					<div class="collapse" style="padding: 0px; border: 1px solid #DEDEDE; background-color: #F4F4F4;" data-bind="attr: { 'id': 's' + name.replace(/ /g, '_') }">
