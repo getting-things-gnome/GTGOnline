@@ -2,6 +2,7 @@ import sys
 import logging
 
 from re import match
+from urllib2 import urlopen, HTTPError
 
 from django.db.models import Q
 from django.contrib.auth import get_user_model
@@ -100,3 +101,11 @@ def get_user_details(user):
 #    for user in users:
 #        user_list.append(get_user_details(user))
 #    return user_list
+
+def fetch_gravatar_profile(email, email_hash):
+    try:
+        return urlopen(GRAVATAR_BASE_URL + email_hash + '.json')
+    except HTTPError, e:
+        log.error('Gravatar profile fetch error for email = "' + email + \
+                  '" hash = "' + email_hash + '" error = "' + str(e) + '"')
+        return None

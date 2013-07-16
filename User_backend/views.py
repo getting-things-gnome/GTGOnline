@@ -10,7 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
 from User_backend.user import register_user, login_user, logout_user, \
-                              validate_form, does_email_exist
+                              validate_form, does_email_exist, \
+                              fetch_gravatar_profile
 from Group_backend.group import find_users_from_query
 from Group_backend.group import create_default_groups
 from Tools.constants import *
@@ -112,3 +113,13 @@ def show_user_profile(request):
                                        'name': request.user.get_full_name(), \
                                        'profile_email': profile_email})
     return HttpResponse(template.render(context))
+
+def get_gravatar(request):
+    email = request.GET.get('email', '')
+    email_hash = request.GET.get('hash', '')
+    profile_obj = fetch_gravatar_profile(email, email_hash)
+    if profile_obj == None:
+        return HttpResponse('0', mimetype='application/json')
+    profile = json.load(profile_obj)
+    print >>sys.stderr, 'profile = ' + str(profile)
+    return HttpResponse(json.dumps(profile), mimetype='application/json')

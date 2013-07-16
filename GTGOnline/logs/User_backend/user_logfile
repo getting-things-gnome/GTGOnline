@@ -204,3 +204,10 @@
 [14/Jul/2013 10:09:03] INFO [User_backend.user:38] LogIN -- email = albert@desilva.com | id = 2
 [14/Jul/2013 12:41:33] INFO [User_backend.user:47] LogOUT - email = albert@desilva.com | id = 2
 [14/Jul/2013 17:54:03] INFO [User_backend.user:38] LogIN -- email = albert@desilva.com | id = 2
+[14/Jul/2013 20:23:49] INFO [User_backend.user:47] LogOUT - email = albert@desilva.com | id = 2
+[16/Jul/2013 15:21:01] INFO [User_backend.user:38] LogIN -- email = albert@desilva.com | id = 2
+[16/Jul/2013 15:23:53] INFO [User_backend.user:47] LogOUT - email = albert@desilva.com | id = 2
+[16/Jul/2013 16:40:13] ERROR [User_backend.user:110] Gravatar profile fetch error for email = "albert@desilva.com" hash = "cbcb461e960456eff1239e6bbcfe7d7e" error = "HTTP Error 404: Not Found"
+[16/Jul/2013 16:56:26] ERROR [User_backend.user:110] Gravatar profile fetch error for email = "albert@desilva.com" hash = "cbcb461e960456eff1239e6bbcfe7d7e" error = "HTTP Error 404: Not Found"
+[16/Jul/2013 16:58:33] ERROR [User_backend.user:110] Gravatar profile fetch error for email = "albert@desilva.com" hash = "cbcb461e960456eff1239e6bbcfe7d7e" error = "HTTP Error 404: Not Found"
+[16/Jul/2013 17:09:32] ERROR [User_backend.user:110] Gravatar profile fetch error for email = "albert@desilva.com" hash = "cbcb461e960456eff1239e6bbcfe7d7e" error = "HTTP Error 404: Not Found"

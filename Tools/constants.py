@@ -58,3 +58,6 @@ USER_INVALID = 2
 # Groups related
 NON_GROUPED = 0
 GROUPED = 1
+
+# Gravatar profile URL
+GRAVATAR_BASE_URL = "http://www.gravatar.com/"
