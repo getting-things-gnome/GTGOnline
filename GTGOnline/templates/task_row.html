@@ -150,7 +150,7 @@
 						</div>
 						<div class="pull-right div-inline" data-bind="foreach: members, attr: { 'id': 'i' + name.replace(/ /g, '_') }">
 							<!-- ko if: $index() < 10 -->
-							<img class="pull-right" data-bind="attr: { 'src': get_gravatar_image_url(email, 25)}" style="width: 25px; height: 25px; margin-left: 2px;" />
+							<img class="pull-right" data-bind="attr: { 'src': get_gravatar_image_url(email, 25) }" style="width: 25px; height: 25px; margin-left: 2px;" />
 							<!-- /ko -->
 						</div>
 					</div>
@@ -169,7 +169,7 @@
 					</div>
 				</div>
 			</div>
-			<button id="share_more_users" class="btn btn-primary btn-small" style="position: absolute; left: 50%; margin-left: -100px; margin-top: 10px; margin-bottom: 10px;" data-bind="text: 'Show users not connected to you', click: $root.show_more_users.bind($data, 1)"></button>
+			<button id="share_more_users" class="btn btn-primary btn-small" style="position: absolute; left: 50%; margin-left: -51px; margin-top: 10px; margin-bottom: 10px;" data-bind="text: 'Other Contacts', click: $root.show_more_users.bind($data, 1)"></button>
 		</div>
 	</div>
 	<div class="modal-footer">
@@ -202,9 +202,6 @@
 	});
 	
 	$(document).ready(function(){
-		$('i.shared_icon').on('hover', function (e) {
-		    
-		});
 		//var obj = get_tasks_ajax();
 		//get_tags_by_user();
 		//alert(obj);

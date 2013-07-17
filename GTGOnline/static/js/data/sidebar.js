@@ -924,6 +924,7 @@ function TaskFoldersViewModel() {
         //console.log('list = ');
         //console.log(shared_list);
         $('#share_task_modal').modal('show');
+        show_popover();
         
         console.log('checked users = ' + self.checked_users());
         document.getElementById('share_more_users').style.display = 'block';
@@ -1610,3 +1611,12 @@ $('#share_task_modal').on('hidden', function() {
     }
     self.checked_users([]);*/
 });
+
+function new_group_focus() {
+    $('#new_group_input').focus();
+    document.getElementById('new_group_widget').style.border = '2px solid green';
+}
+
+function new_group_blur() {
+    document.getElementById('new_group_widget').style.border = '1px solid #dedede';
+}

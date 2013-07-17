@@ -171,7 +171,9 @@
 			
 			validate_email();
 			var profile = null;
-			if (false == false && form["first_name"].value == '' && form["last_name"].value == '') {
+			//form["first_name"].value = "";
+			//form["last_name"].value = "";
+			if (email_exists == false && form["first_name"].value == '' && form["last_name"].value == '') {
 				register_button.innerHTML = "Fetching Gravatar profile ...";
 				register_button.setAttribute('class', 'btn btn-success disabled');
 				profile = get_gravatar_profile(document.forms["RegistrationForm"]["email"].value);
@@ -280,6 +282,7 @@
 			console.log('email = ' + email);
 			
 			if (!check_email_syntax(email)) {
+				email_exists = true;
 				return;
 			}
 			
@@ -345,6 +348,8 @@
 			//if (document.forms["RegistrationForm"]["first_name"] == '' && document.forms["RegistrationForm"]["last_name"] == '') {
 				document.getElementById('first_name_div').style.display = "none";
 				document.getElementById('last_name_div').style.display = "none";
+				document.forms["RegistrationForm"]["first_name"].value = "";
+				document.forms["RegistrationForm"]["last_name"].value = "";
 			//}
 		}
 	</script>

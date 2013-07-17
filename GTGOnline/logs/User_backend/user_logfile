@@ -228,3 +228,11 @@
 [16/Jul/2013 23:49:18] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
 [17/Jul/2013 10:52:16] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
 [17/Jul/2013 12:00:56] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
+[17/Jul/2013 12:54:19] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
+[17/Jul/2013 13:03:22] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
+[17/Jul/2013 13:33:27] ERROR [User_backend.user:110] Gravatar profile fetch error for email = "izidor.matusov2@gmail.com" hash = "3548beea4aac72d9a538a7d5333b9b03" error = "HTTP Error 404: Not Found"
+[17/Jul/2013 13:43:58] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
+[17/Jul/2013 13:45:50] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
+[17/Jul/2013 13:46:00] INFO [User_backend.user:39] LogIN -- email = gagalago@gmail.com | id = 11
+[17/Jul/2013 13:56:22] INFO [User_backend.user:48] LogOUT - email = gagalago@gmail.com | id = 11
+[17/Jul/2013 14:59:05] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
