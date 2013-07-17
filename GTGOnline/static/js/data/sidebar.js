@@ -927,20 +927,6 @@ function TaskFoldersViewModel() {
         
         console.log('checked users = ' + self.checked_users());
         document.getElementById('share_more_users').style.display = 'block';
-        
-        $('#share_task_modal').on('shown', function() {
-            console.log('share task modal shown');
-        });
-        
-        $('#share_task_modal').on('hidden', function() {
-            console.log('share task modal hidden');
-            /*self.user_list.remove(function(item) { return item.name == 'Others' });
-            
-            for (var i=0; i < self.checked_users().length; i++) {
-                mark_cell_notselected(document.getElementById('c' + self.checked_users()[i]));
-            }
-            self.checked_users([]);*/
-        });
     };
     
     self.close_share_task_modal = function() {
@@ -1592,3 +1578,35 @@ function mark_cell_notselected(cell) {
     cell.style.border = "1px solid #DEDEDE";
     cell.style.backgroundColor = "#FFFFFF";
 }
+
+/*$('#sFriends').on('shown', function () {
+    console.log('this is shown');
+})*/
+
+function toggle_shown(obj) {
+    console.log('this is toggled class= "' + obj.className + '"');
+    var id = 'i' + obj.getAttribute('data-target').substring(2);
+    //document.getElementById(id).style.display = 'none';
+    $('#' + id).fadeToggle('2000');
+    /*if (obj.className.indexOf('collapsed') != -1) {
+        console.log('it is open id="' + obj.getAttribute('data-target').substring(2) + '"');
+        document.getElementById(id).style.display = 'none';
+    }
+    else {
+        document.getElementById(id).style.display = 'block';
+    }*/
+}
+
+$('#share_task_modal').on('shown', function() {
+    console.log('share task modal shown');
+});
+
+$('#share_task_modal').on('hidden', function() {
+    console.log('share task modal hidden');
+    /*self.user_list.remove(function(item) { return item.name == 'Others' });
+    
+    for (var i=0; i < self.checked_users().length; i++) {
+        mark_cell_notselected(document.getElementById('c' + self.checked_users()[i]));
+    }
+    self.checked_users([]);*/
+});

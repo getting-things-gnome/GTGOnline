@@ -145,11 +145,11 @@
 						<div style="display: inline-block; vertical-align: top;">
 							<input type="checkbox" style="vertical-align: top;" data-bind="attr: { 'value': name, 'id': 'group'+name }, checked: $root.checked_groups" onchange='group_checkbox_change(this)'/> <!--'onchange': 'check_group(\'' + name + '\', ' + this + ')'-->
 						</div>
-						<div class="accordion-toggle" data-toggle="collapse" href="#" style="display: inline-block;" data-bind="attr: { 'data-target': '#s' + name.replace(/ /g, '_') }">
-							<span style="font: 300 18px/1 'Open Sans', Helvetica, sans-serif;" data-bind="text: name" class="div-inline pull-left"></span>
+						<div class="accordion-toggle" data-toggle="collapse" href="#" style="display: inline-block;" data-bind="attr: { 'data-target': '#s' + name.replace(/ /g, '_') }" onclick="toggle_shown(this)">
+							<span style="font: 300 18px/1 'Open Sans', Helvetica, sans-serif;" data-bind="text: name.substring(0, 13)" class="div-inline pull-left"></span>
 						</div>
-						<div class="pull-right div-inline" data-bind="foreach: members">
-							<!-- ko if: $index() < 5 -->
+						<div class="pull-right div-inline" data-bind="foreach: members, attr: { 'id': 'i' + name.replace(/ /g, '_') }">
+							<!-- ko if: $index() < 10 -->
 							<img class="pull-right" data-bind="attr: { 'src': get_gravatar_image_url(email, 25)}" style="width: 25px; height: 25px; margin-left: 2px;" />
 							<!-- /ko -->
 						</div>
