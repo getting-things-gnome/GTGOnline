@@ -34,7 +34,8 @@ def get_tasks(request):
         'Active': IS_ACTIVE,
         'Done': IS_DONE,
         'Dismissed': IS_DISMISSED,
-        'Your_shared_tasks': -2,
+        'Your_shared_tasks': YOUR_SHARED,
+        'Tasks_shared_with_you': THEY_SHARED,
     }
     
     folder_get = request.GET.get('folder', 'Active')
@@ -44,10 +45,13 @@ def get_tasks(request):
         task_tree = get_task_tree(request.user, \
                                   request.user.task_set.all(), \
                                   0, [], folder_state)
-    elif folder_state == -2:
+    elif folder_state == YOUR_SHARED:
         q_set = request.user.task_set.annotate(num = Count('shared_with'))
         q_set = q_set.filter(num__gt = 0)
         task_tree = get_task_tree(request.user, q_set, \
+                                  0, [], folder_state)
+    elif folder_state == THEY_SHARED:
+        task_tree = get_task_tree(request.user, request.user.shared_set.all(), \
                                   0, [], folder_state)
     else:
         task_tree = get_task_tree(request.user, \

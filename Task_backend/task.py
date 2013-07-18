@@ -143,14 +143,16 @@ def get_task_tree_details(user, task, indent, visited_list, folder):
     last_modified_date = get_datetime_str(user, task.last_modified_date)
     if folder == -1:
         subtasks_list = task.subtasks.all()
-    elif folder == -2:
+    elif folder == YOUR_SHARED:
         subtasks_list = task.subtasks.annotate(num = Count('shared_with'))
         subtasks_list = subtasks_list.filter(num__gt = 0)
+    elif folder == THEY_SHARED:
+        subtasks_list = []
     else:
         subtasks_list = task.subtasks.filter(status = task.status)
-
+        
     shared = [get_user_details(i) for i in task.shared_with.all()]
-
+        
     details =  {"id": task.id, "name": task.name, \
                 "description": task.description, \
                 "start_date": start_date, "due_date": due_date, \
@@ -173,7 +175,7 @@ def get_task_tree(user, task_list, indent, visited_list, folder):
         if not visited(task, visited_list) and ( not task.task_set.exists() \
                 or visited(get_parent(task), visited_list) \
                 or ( task.status != get_parent_status(task) and \
-                     folder != -1 ) or folder == -2):
+                     folder != -1 ) or folder == YOUR_SHARED):
             print >>sys.stderr, 'visiting = ' + str(task)
             visited_list = set_visited(task, visited_list)
             task_tree.append(get_task_tree_details(user, task, \

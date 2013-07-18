@@ -236,3 +236,8 @@
 [17/Jul/2013 13:46:00] INFO [User_backend.user:39] LogIN -- email = gagalago@gmail.com | id = 11
 [17/Jul/2013 13:56:22] INFO [User_backend.user:48] LogOUT - email = gagalago@gmail.com | id = 11
 [17/Jul/2013 14:59:05] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
+[17/Jul/2013 17:04:01] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
+[17/Jul/2013 21:22:46] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
+[17/Jul/2013 22:31:10] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
+[18/Jul/2013 13:00:14] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
+[18/Jul/2013 14:19:11] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
