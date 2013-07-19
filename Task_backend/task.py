@@ -125,10 +125,11 @@ def get_task_details(user, task):
                 "closed_date": closed_date, \
                 "last_modified_date": last_modified_date, \
                 "status": task.status, "tags": get_tags_by_task(task), \
-                "subtasks": [], "indent": 0}    
+                "subtasks": [], "indent": 0}
     return details
 
-def get_task_tree_details(user, task, indent, visited_list, folder):
+def get_task_tree_details(user, task, indent, visited_list, folder, \
+                          main_list=[]):
     '''
     Takes input an user object and a task object, and returns a dictionary of all
     the details for the task AND all of it's subtasks having the same status.
@@ -141,17 +142,21 @@ def get_task_tree_details(user, task, indent, visited_list, folder):
     due_date = get_datetime_str(user, task.due_date)
     closed_date = get_datetime_str(user, task.closed_date)
     last_modified_date = get_datetime_str(user, task.last_modified_date)
+    
+    shared = [get_user_details(i) for i in task.shared_with.all()]
+    
     if folder == -1:
         subtasks_list = task.subtasks.all()
     elif folder == YOUR_SHARED:
         subtasks_list = task.subtasks.annotate(num = Count('shared_with'))
         subtasks_list = subtasks_list.filter(num__gt = 0)
+        print >>sys.stderr, "subtasks found = " + str(subtasks_list)
     elif folder == THEY_SHARED:
-        subtasks_list = []
+        q = list(set(task.subtasks.all()).intersection(user.shared_set.all()))
+        subtasks_list = q
+        shared = []
     else:
         subtasks_list = task.subtasks.filter(status = task.status)
-        
-    shared = [get_user_details(i) for i in task.shared_with.all()]
         
     details =  {"id": task.id, "name": task.name, \
                 "description": task.description, \
@@ -160,27 +165,73 @@ def get_task_tree_details(user, task, indent, visited_list, folder):
                 "last_modified_date": last_modified_date, \
                 "status": task.status, "tags": get_tags_by_task(task), \
                 "subtasks": get_task_tree(user, subtasks_list, \
-                                          indent+1, visited_list, folder), \
+                                          indent+1, visited_list, folder, \
+                                          main_list = main_list), \
                 "shared_with": shared,
                 "indent": indent}    
     return details
 
-def get_task_tree(user, task_list, indent, visited_list, folder):
+def get_task_tree(user, task_list, indent, visited_list, folder, main_list=[]):
     task_tree = []
     print >>sys.stderr, 'task_list = ' + str(task_list)
     for index, task in enumerate(task_list):
         # The following condition will have to changed in the future
         # to enable tasks with multiple parents
         # Detailed explanation -
+        parent = get_parent(task)
+        if not visited(task, visited_list) and ( not task.task_set.exists() \
+                or visited(parent, visited_list) \
+                or (task.status != get_parent_status(task) and \
+                    folder != -1 ) or ((folder == YOUR_SHARED or \
+                                         folder == THEY_SHARED)) and \
+                parent not in main_list): # problem here
+            print >>sys.stderr, 'visiting = ' + str(task)
+            visited_list = set_visited(task, visited_list)
+            task_tree.append(get_task_tree_details(user, task, indent, \
+                                                   visited_list, folder, \
+                                                   main_list = main_list))
+    return task_tree
+
+def any_parent_visited(task, obj_list):
+    if task in obj_list:
+        return True
+    parent = get_parent(task)
+    if parent == None:
+        return False
+    return any_parent_visited(parent, obj_list)
+
+def get_shared_task_tree(user, task_list, indent, visited_list, folder):
+    task_tree = []
+    print >>sys.stderr, 'task_list = ' + str(task_list)
+    while list(task_list) != []:
+        parent = check_any_parent_in_list(task, task_list)
+        if parent == None:
+            if not visited(task, visited_list):
+                visited_list = set_visited(task, visited_list)
+                task_tree.append(get_task_details(user, task))
+                task_list.remove(task)
+        else:
+            if not visited(parent, visited_list):
+                continue
         if not visited(task, visited_list) and ( not task.task_set.exists() \
                 or visited(get_parent(task), visited_list) \
                 or ( task.status != get_parent_status(task) and \
-                     folder != -1 ) or folder == YOUR_SHARED):
+                     folder != -1 ) or ((folder == YOUR_SHARED or \
+                                         folder == THEY_SHARED) and \
+                    visited(get_oldest_parent(task), visited_list))):
             print >>sys.stderr, 'visiting = ' + str(task)
             visited_list = set_visited(task, visited_list)
             task_tree.append(get_task_tree_details(user, task, \
                                               indent, visited_list, folder))
     return task_tree
+
+def check_any_parent_in_list(task, obj_list):
+    if task.task_set.exists():
+        parent = task.task_set.all()[0]
+        if parent in obj_list:
+            return parent
+        return check_any_parent_in_list(parent, obj_list)
+    return None
 
 def get_task_tree2(user, task_list, indent, visited_list, folder):
     task_tree = []
@@ -464,7 +515,7 @@ def add_new_list(user, new_list, folder, parent_id):
     oldest = get_oldest_parent(get_task_object(user, parent_id))
     return get_task_tree(user, oldest, 0, [], folder)
 
-def share_task(user, task_id, email_list, share_subtasks, folder):
+def share_task(user, task_id, email_list, folder):
     task = get_task_object(user, task_id)
     if task == None:
         return None
@@ -472,8 +523,7 @@ def share_task(user, task_id, email_list, share_subtasks, folder):
     users_obj = get_bulk_users(email_list)
     print >>sys.stderr, 'received list = ' + str(users_obj)
     add_remove_shared_users(task, users_obj)
-    if share_subtasks == 'true':
-        share_task_children(task, users_obj)
+    share_task_children(task, users_obj)
     
     oldest = get_oldest_parent(task)
     return get_task_tree(user, oldest, 0, [], folder)

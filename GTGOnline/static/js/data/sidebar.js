@@ -144,7 +144,6 @@ function TaskFoldersViewModel() {
     self.shared_users = ko.observable('');
     self.email_group_dict = ko.observableArray();
     self.group_count = ko.observableArray();
-    self.share_subtasks = ko.observable(true);
     
     self.tasks_list.subscribe(function (newValue) {
         self.tasks_list_length(newValue.length);
@@ -949,7 +948,6 @@ function TaskFoldersViewModel() {
         $.post('/tasks/share/', {
                 id: getShareID(),
                 list: self.user_emails(),
-                share_subtasks: self.share_subtasks(),
                 folder: self.chosenFolderId(),
             }, function(data) {
             var match = ko.utils.arrayFirst(self.tasks_list(), function(item) {
@@ -1619,4 +1617,19 @@ function new_group_focus() {
 
 function new_group_blur() {
     document.getElementById('new_group_widget').style.border = '1px solid #dedede';
+}
+
+function share_check_all() {
+    for (var i=0; i < a.group_list().length; i++) {
+        var box = document.getElementById('group' + a.group_list()[i]);
+        box.checked = true;
+        group_checkbox_change(box);
+    }
+}
+
+function share_uncheck_all() {
+    for (var i=0; i < a.checked_users().length; i++) {
+        mark_cell_notselected(document.getElementById('c' + a.checked_users()[i]));
+    }
+    a.checked_users([]);
 }

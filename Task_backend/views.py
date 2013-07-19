@@ -49,10 +49,11 @@ def get_tasks(request):
         q_set = request.user.task_set.annotate(num = Count('shared_with'))
         q_set = q_set.filter(num__gt = 0)
         task_tree = get_task_tree(request.user, q_set, \
-                                  0, [], folder_state)
+                                  0, [], folder_state, main_list = q_set)
     elif folder_state == THEY_SHARED:
-        task_tree = get_task_tree(request.user, request.user.shared_set.all(), \
-                                  0, [], folder_state)
+        q_set = request.user.shared_set.all()
+        task_tree = get_task_tree(request.user, q_set, \
+                                  0, [], folder_state, main_list = q_set)
     else:
         task_tree = get_task_tree(request.user, \
                                   request.user.task_set.filter(status = \
@@ -219,8 +220,7 @@ def share(request):
     folder = request.POST.get('folder', 'Active')
     task_id = request.POST.get('id', -1)
     user_list = request.POST.getlist('list[]')
-    share_subtasks = request.POST.get('share_subtasks', 0)
-    task = share_task(request.user, task_id, user_list, share_subtasks, folder)
+    task = share_task(request.user, task_id, user_list, folder)
     if task != None:
         return HttpResponse(json.dumps(task, indent = 4), \
                             mimetype = 'application/json')
