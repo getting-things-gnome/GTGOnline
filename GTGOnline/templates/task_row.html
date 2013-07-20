@@ -3,13 +3,13 @@
 {% block task_row %}
 	<div data-bind="foreach: tasks_list" id="task_rows_container" class="min-width950">
 		<div class="accordion-heading">
-			<div class="task-row min-width950" style="display: block;" data-bind="style: { marginLeft: (30*indent) + 'px', borderLeft: indent > 0 ? '1px solid #dedede' : '0px'}, css: { taskDone: status == 1, taskDismissed: status == 2 }, attr: { 'id': 'for_marking' + id }">
+			<div class="task-row min-width950" style="display: block;" data-bind="style: { marginLeft: (30*indent) + 'px', borderLeft: indent > 0 ? '1px solid #dedede' : '0px', backgroundImage: 'url(' + get_gravatar_image_url(owner.email, 40) + ')' }, css: { taskDone: status == 1, taskDismissed: status == 2, taskShared: owner.email != '' && indent == 0 }, attr: { 'id': 'for_marking' + id }">
 				<div class="div-inline pull-left min-width30" style="margin-left: 5px">
 					<input type="checkbox" class="checkbox show_dropdown" data-bind="attr: { 'value': id }, checked: $root.modify_selected" />
 				</div>
 				
 				<div class="div-inline pull-left min-width30" style="margin-right: 2px; border-right: 1px solid #dedede; min-width: 30px;">
-					<span data-toggle="collapse" data-bind="attr: { 'data-target': '#row' + id }" style="text-decoration:none; color:#4d4d4d; font-size: 20px; cursor: pointer" id="subtask_count" data-bind="visible: subtasks.length > 0">
+					<span data-toggle="collapse" data-bind="attr: { 'data-target': '#row' + id }" style="text-decoration:none; color:#4d4d4d; font-size: 20px; cursor: pointer;" id="subtask_count" data-bind="visible: subtasks.length > 0">
 			            <span data-bind="text: subtasks.length > 0 ? '+' + subtasks.length : ''"></span>
 						<!--<span data-bind="text: $index()"></span>-->
 			        </span>
@@ -17,7 +17,7 @@
 					<!--<i class="icon-user shared_icon" style="font-size: 20px; color: #757575; margin-right: 2px;" title="Shared with" data-bind="attr: { 'data-content': $root.shared_users }"  rel="popover" data-trigger="hover"></i>-->
 					<i class="icon-user shared_icon" style="font-size: 20px; color: #757575; margin-right: 2px;" data-toggle="tooltip" title="first tooltip" data-bind="visible: shared_with.length > 0, attr: { 'title': show_shared_name(shared_with) }"></i>
 					<!-- ko if: owner != '' && indent == 0-->
-					<img style="height: 30px; width: 30px; margin-right: -1px;" data-bind="attr: { 'src': get_gravatar_image_url(owner.email, 30), 'title': owner.full_name }", data-toggle="tooltip" class="owner_img" />
+					<!--<img style="height: 30px; width: 30px; margin-right: -1px;" data-bind="attr: { 'src': get_gravatar_image_url(owner.email, 30), 'title': owner.full_name }", data-toggle="tooltip" class="owner_img" />-->
 					<!-- /ko -->
 				</div>
 				

@@ -1135,6 +1135,13 @@ div.task-row {
   background-position: center;
 }
 
+.taskShared {
+  background-image:url(../img/tickmark.png);
+  background-repeat: no-repeat;
+  background-size: 40px 40px;
+  background-position: 6% 0%;
+}
+
 .marginleft5 {
   margin-left: 5px;
 }

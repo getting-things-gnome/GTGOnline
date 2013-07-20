@@ -144,7 +144,7 @@ def get_task_tree_details(user, task, indent, visited_list, folder, \
     last_modified_date = get_datetime_str(user, task.last_modified_date)
     
     shared = [get_user_details(i) for i in task.shared_with.all()]
-    owner = ''
+    owner = {"email": '', "full_name": ''}
     
     if folder == -1:
         subtasks_list = task.subtasks.all()
