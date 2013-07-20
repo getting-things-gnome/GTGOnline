@@ -33,6 +33,7 @@
 							<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
 							<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
 							<li><a href="#" data-bind="click: $root.delete_task.bind($data, id, $index())"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+							<li><a href="#" data-bind="click: $root.show_task_log.bind($data, id), visible: owner != ''"><i class="icon-plus"></i>&nbsp;Log</a></li>
 						</ul>
 					</div>
 					<div data-bind="ifnot: name_is_short(name)">
@@ -46,6 +47,7 @@
 							<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
 							<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
 							<li><a href="#" data-bind="click: $root.delete_task.bind($data, id, $index())"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+							<li><a href="#" data-bind="click: $root.show_task_log.bind($data, id), visible: owner != ''"><i class="icon-plus"></i>&nbsp;Log</a></li>
 						</ul>
 					</div>
 				</div>

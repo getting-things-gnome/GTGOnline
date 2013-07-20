@@ -285,15 +285,15 @@ function TaskFoldersViewModel() {
     // Behaviours
     self.goToFolder = function(folder) {
         location.hash = folder;
-        self.header_name(this.params.folder + ' Tasks');
-        self.titlebar_display(this.params.folder + ' Tasks');
+        self.header_name(folder + ' Tasks');
+        self.titlebar_display(folder + ' Tasks');
         $("#tag_dropdown_options").hide();
     };
     
     self.goToSharedFolder = function(folder) {
         location.hash = folder.replace(/ /g, '_');
-        self.header_name(this.params.folder);
-        self.titlebar_display(this.params.folder);
+        self.header_name(folder);
+        self.titlebar_display(folder);
         $("#tag_dropdown_options").hide();
     };
     
@@ -967,12 +967,16 @@ function TaskFoldersViewModel() {
     self.check_group = function(data, name) {
         console.log(data);
         console.log('group = "' + name + '"');
-    }
+    };
     
     self.check_user = function(data, name) {
         console.log(data);
         console.log('name = "' + name + '"');
-    }
+    };
+    
+    self.show_task_log = function(id) {
+        return;
+    };
 };
 
 ko.applyBindings(a = new TaskFoldersViewModel(), document.getElementById("html_page"));
