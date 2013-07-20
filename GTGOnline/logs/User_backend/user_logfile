@@ -307,3 +307,7 @@
 [20/Jul/2013 14:59:34] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
 [20/Jul/2013 15:02:28] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
 [20/Jul/2013 15:02:38] INFO [User_backend.user:39] LogIN -- email = michael@hollick.com | id = 3
+[20/Jul/2013 16:46:48] INFO [User_backend.user:48] LogOUT - email = michael@hollick.com | id = 3
+[20/Jul/2013 16:46:55] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
+[20/Jul/2013 16:47:11] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
+[20/Jul/2013 16:47:18] INFO [User_backend.user:39] LogIN -- email = michael@hollick.com | id = 3
