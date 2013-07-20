@@ -16,7 +16,9 @@
 					<span data-bind="visible: subtasks.length == 0, text: '&nbsp;'"></span>
 					<!--<i class="icon-user shared_icon" style="font-size: 20px; color: #757575; margin-right: 2px;" title="Shared with" data-bind="attr: { 'data-content': $root.shared_users }"  rel="popover" data-trigger="hover"></i>-->
 					<i class="icon-user shared_icon" style="font-size: 20px; color: #757575; margin-right: 2px;" data-toggle="tooltip" title="first tooltip" data-bind="visible: shared_with.length > 0, attr: { 'title': show_shared_name(shared_with) }"></i>
-					<img style="height: 27px; width: 27px; margin-right: 2px;" data-bind="visible: owner != '', attr: { 'src': get_gravatar_image_url(owner, 27) }">
+					<!-- ko if: owner != '' && indent == 0-->
+					<img style="height: 30px; width: 30px; margin-right: -1px;" data-bind="attr: { 'src': get_gravatar_image_url(owner.email, 30), 'title': owner.full_name }", data-toggle="tooltip" class="owner_img" />
+					<!-- /ko -->
 				</div>
 				
 				<div class="dropdown div-inline pull-left min-width250" style="width: 26%;">

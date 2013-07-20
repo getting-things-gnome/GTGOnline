@@ -1209,6 +1209,12 @@ function show_popover() {
         html: true,
         //delay: { show: 400, hide: 0 },
     });
+    $('img.owner_img').tooltip({
+        placement: 'top',
+        trigger: 'hover',
+        html: true,
+        //delay: { show: 400, hide: 0 },
+    });
 }
 
 function startup_modal_header_string(length) {

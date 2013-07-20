@@ -293,3 +293,17 @@
 [19/Jul/2013 22:58:40] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
 [19/Jul/2013 22:58:50] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
 [19/Jul/2013 22:59:01] INFO [User_backend.user:39] LogIN -- email = trevor@philips.com | id = 5
+[19/Jul/2013 23:05:39] INFO [User_backend.user:48] LogOUT - email = trevor@philips.com | id = 5
+[20/Jul/2013 11:20:38] INFO [User_backend.user:39] LogIN -- email = trevor@philips.com | id = 5
+[20/Jul/2013 13:11:20] INFO [User_backend.user:48] LogOUT - email = trevor@philips.com | id = 5
+[20/Jul/2013 13:11:30] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
+[20/Jul/2013 13:11:46] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
+[20/Jul/2013 13:52:10] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
+[20/Jul/2013 13:53:33] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
+[20/Jul/2013 13:53:39] INFO [User_backend.user:39] LogIN -- email = trevor@philips.com | id = 5
+[20/Jul/2013 14:05:54] INFO [User_backend.user:48] LogOUT - email = trevor@philips.com | id = 5
+[20/Jul/2013 14:52:11] INFO [User_backend.user:39] LogIN -- email = trevor@philips.com | id = 5
+[20/Jul/2013 14:59:27] INFO [User_backend.user:48] LogOUT - email = trevor@philips.com | id = 5
+[20/Jul/2013 14:59:34] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
+[20/Jul/2013 15:02:28] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
+[20/Jul/2013 15:02:38] INFO [User_backend.user:39] LogIN -- email = michael@hollick.com | id = 3

@@ -156,7 +156,7 @@ def get_task_tree_details(user, task, indent, visited_list, folder, \
         q = list(set(task.subtasks.all()).intersection(user.shared_set.all()))
         subtasks_list = q
         shared = []
-        owner = task.user.email
+        owner = get_user_details(task.user)
     else:
         subtasks_list = task.subtasks.filter(status = task.status)
         
