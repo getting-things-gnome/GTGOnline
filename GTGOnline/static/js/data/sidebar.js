@@ -988,6 +988,11 @@ function TaskFoldersViewModel() {
         $('#task_details_modal').modal('hide');
         self.task_details('');
     }
+    
+    $('#task_details_modal').on('hidden', function() {
+        self.task_details('');
+        console.log('task details modal hidden');
+    });
 };
 
 ko.applyBindings(a = new TaskFoldersViewModel(), document.getElementById("html_page"));
