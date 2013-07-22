@@ -16,7 +16,7 @@ from Task_backend.task import get_task_object, get_task_tree, \
                               get_oldest_parent, delete_task_tree, add_task, \
                               get_tasks_by_due_date, update_task_details, \
                               delete_single_task, search_tasks, add_new_list, \
-                              share_task
+                              share_task, get_task_details
 from Tag_backend.tag import find_tags
 from Tools.constants import *
 from Tools.dates import get_datetime_object
@@ -225,3 +225,14 @@ def share(request):
         return HttpResponse(json.dumps(task, indent = 4), \
                             mimetype = 'application/json')
     return HttpResponseRedirect('tasks/get/?folder=' + folder)
+
+def get_details(request):
+    task_id = request.GET.get('id', -1)
+    get_log = request.GET.get('log', '0')
+    
+    task = get_task_object(request.user, task_id)
+    details = []
+    if task != None and task.shared_with.exists():
+        details = get_task_details(task)
+    return HttpResponse(json.dumps(details, indent = 4), \
+                        mimetype = 'application/json')

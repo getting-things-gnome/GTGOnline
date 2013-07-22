@@ -6,7 +6,7 @@ import re
 
 from django.db.models import Count
 
-from Task_backend.models import Task
+from Task_backend.models import Task, Log
 from User_backend.user import get_user_object, get_user_details, \
                               get_bulk_users
 from Tag_backend.tag import find_tags, create_tag_objects, get_tags_by_task, \
@@ -19,8 +19,18 @@ from Tools.dates import get_datetime_object, get_datetime_str, \
 
 def get_task_object(user, task_id):
     try:
-        return Task.objects.get(user = user.pk, id = task_id)
+        task = Task.objects.get(id = task_id)
+        if user != task.user:
+            if user not in task.shared_with.all():
+                return None
+        return task
     except Task.DoesNotExist:
+        return None
+    
+def get_log_object(task):
+    try:
+        return Log.objects.get(task = task)
+    except Log.DoesNotExist:
         return None
     
 def get_tasks(username):
@@ -540,3 +550,14 @@ def add_remove_shared_users(task, users_obj):
     to_be_added = list(set(users_obj) - set(task.shared_with.all()))
     task.shared_with.remove(*to_be_deleted)
     task.shared_with.add(*to_be_added)
+
+def get_task_details(task, log = False):
+    if log == False:
+        shared = []
+        for user in task.shared_with.all():
+            shared.append(get_user_details(user))
+        return { "owner": get_user_details(task.user), \
+                 "shared_with": shared }
+    else:
+        log_obj = get_log_object(task)
+        return { "log": log_obj.log }

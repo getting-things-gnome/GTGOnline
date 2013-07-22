@@ -28,6 +28,8 @@ class Task(models.Model):
     
     def __unicode__(self, ):
         return self.name
-    
 
 
+class Log(models.Model):
+    task = models.ForeignKey(Task)
+    log = models.TextField()

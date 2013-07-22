@@ -17,7 +17,7 @@
 					<!--<i class="icon-user shared_icon" style="font-size: 20px; color: #757575; margin-right: 2px;" title="Shared with" data-bind="attr: { 'data-content': $root.shared_users }"  rel="popover" data-trigger="hover"></i>-->
 					<i class="icon-user shared_icon" style="font-size: 20px; color: #757575; margin-right: 2px;" data-toggle="tooltip" title="first tooltip" data-bind="visible: shared_with.length > 0, attr: { 'title': show_shared_name(shared_with) }"></i>
 					<!-- ko if: owner != '' && indent == 0-->
-					<img style="height: 30px; width: 30px; margin-right: -1px; margin-top: -5px;" data-bind="attr: { 'src': get_gravatar_image_url(owner.email, 30), 'title': owner.full_name }", data-toggle="tooltip" class="owner_img" />
+					<img style="height: 30px; width: 30px; margin-right: -1px; margin-top: -5px;" data-bind="attr: { 'src': get_gravatar_image_url(owner.email, 30), 'title': owner.full_name }" data-toggle="tooltip" rel="tooltip" />
 					<!-- /ko -->
 				</div>
 				
@@ -33,7 +33,7 @@
 							<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
 							<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
 							<li><a href="#" data-bind="click: $root.delete_task.bind($data, id, $index())"><i class="icon-trash"></i>&nbsp;Delete</a></li>
-							<li><a href="#" data-bind="click: $root.show_task_log.bind($data, id), visible: owner != ''"><i class="icon-plus"></i>&nbsp;Log</a></li>
+							<li><a href="#" data-bind="click: $root.show_task_details.bind($data, id), visible: owner != ''"><i class="icon-hospital"></i>&nbsp;View Details</a></li>
 						</ul>
 					</div>
 					<div data-bind="ifnot: name_is_short(name)">
@@ -42,12 +42,12 @@
 						</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 							<li><a href="#" data-bind="click: $root.show_new_task_modal.bind($data, id)"><i class="icon-plus"></i>&nbsp;Add subtasks</a></li>
-							<li><a href="#" data-bind="click: $root.show_share_task_modal.bind($data, id, shared_with)"><i class="icon-share"></i>&nbsp;Share</a></li>
+							<li><a href="#" data-bind="click: $root.show_share_task_modal.bind($data, id, shared_with), visible: owner == ''"><i class="icon-share"></i>&nbsp;Share</a></li>
 							<li data-bind="visible: status != 0"><a href="#" data-bind="click: $root.change_status.bind($data, id, 0, $index())"><i class="icon-play"></i>&nbsp;Active</a></li>
 							<li data-bind="visible: status != 1"><a href="#" data-bind="click: $root.change_status.bind($data, id, 1, $index())"><i class="icon-ok"></i>&nbsp;Done</a></li>
 							<li data-bind="visible: status != 2"><a href="#" data-bind="click: $root.change_status.bind($data, id, 2, $index())"><i class="icon-minus-sign"></i>&nbsp;Dismissed</a></li>
 							<li><a href="#" data-bind="click: $root.delete_task.bind($data, id, $index())"><i class="icon-trash"></i>&nbsp;Delete</a></li>
-							<li><a href="#" data-bind="click: $root.show_task_log.bind($data, id), visible: owner != ''"><i class="icon-plus"></i>&nbsp;Log</a></li>
+							<li><a href="#" data-bind="click: $root.show_task_details.bind($data, id), visible: owner != ''"><i class="icon-hospital"></i>&nbsp;View Details</a></li>
 						</ul>
 					</div>
 				</div>
@@ -192,6 +192,32 @@
 	</div>
 </div>
 {% endblock share_task_modal %}
+
+{% block task_details_modal %}
+<div id="task_details_modal" class="modal hide fade task_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 550px; margin-left: -275px;">
+	<div class="modal-header" style="padding: 10px">
+		<span style="font: 300 22px/1 'Open Sans', Helvetica, sans-serif;">Task Details</span>
+	</div>
+	<div class="modal-body" style="padding: 10px; padding-bottom: 0px; height: 400px; max-height: 400px; overflow-x: hidden;">
+		<div style="height: 300px; width: 100%;" data-bind="with: $root.task_details">
+			<div class="div-inline pull-left" style="border: 1px solid #dedede; display: inline-block; padding: 5px;">
+				<span>Shared by -&nbsp;</span><br>
+				<img data-bind="attr: { 'src': get_gravatar_image_url(owner.email, 60), 'title': owner.full_name }" style="width: 60px; height: 60px; margin-left: 2px;" data-toggle="tooltip" rel="tooltip" /><br>
+				<!--<span data-bind="text: owner.full_name"></span>-->
+			</div>
+			<div class="div-inline pull-left" style="width: 40%; border: 1px solid #dedede; border-left: none; display: inline-block; padding: 5px;">
+				<span>Other users -&nbsp;</span><br>
+				<span data-bind="foreach: shared_with">
+					<img data-bind="attr: { 'src': get_gravatar_image_url(email, 30), 'title': full_name }" style="width: 30px; height: 30px; margin-left: 1px;" data-toggle="tooltip" rel="tooltip" />
+				</span>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-bind="click: $root.close_task_details_modal">Close</button>
+	</div>
+</div>
+{% endblock task_details_modal %}
 
 
 {% block external_js %}

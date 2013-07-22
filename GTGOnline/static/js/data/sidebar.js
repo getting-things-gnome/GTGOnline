@@ -144,6 +144,7 @@ function TaskFoldersViewModel() {
     self.shared_users = ko.observable('');
     self.email_group_dict = ko.observableArray();
     self.group_count = ko.observableArray();
+    self.task_details = ko.observable();
     
     self.tasks_list.subscribe(function (newValue) {
         self.tasks_list_length(newValue.length);
@@ -974,9 +975,18 @@ function TaskFoldersViewModel() {
         console.log('name = "' + name + '"');
     };
     
-    self.show_task_log = function(id) {
-        return;
+    self.show_task_details = function(id) {
+        $.get('/tasks/details/', { id: id, log: 0 }, function(data) {
+            console.log(data);
+            self.task_details(data);
+            show_popover();
+        });
+        $('#task_details_modal').modal('show');
     };
+    
+    self.close_task_details_modal = function() {
+        $('#task_details_modal').modal('hide');
+    }
 };
 
 ko.applyBindings(a = new TaskFoldersViewModel(), document.getElementById("html_page"));
@@ -1214,6 +1224,24 @@ function show_popover() {
         //delay: { show: 400, hide: 0 },
     });
     $('img.owner_img').tooltip({
+        placement: 'top',
+        trigger: 'hover',
+        html: true,
+        //delay: { show: 400, hide: 0 },
+    });
+    /*$('img.details_img').tooltip({
+        placement: 'top',
+        trigger: 'hover',
+        html: true,
+        //delay: { show: 400, hide: 0 },
+    });
+    $('img.shared_with_img').tooltip({
+        placement: 'top',
+        trigger: 'hover',
+        html: true,
+        //delay: { show: 400, hide: 0 },
+    });*/
+    $("[rel='tooltip']").tooltip({
         placement: 'top',
         trigger: 'hover',
         html: true,
