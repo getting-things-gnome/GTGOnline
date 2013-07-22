@@ -199,18 +199,20 @@
 		<span style="font: 300 22px/1 'Open Sans', Helvetica, sans-serif;">Task Details</span>
 	</div>
 	<div class="modal-body" style="padding: 10px; padding-bottom: 0px; height: 400px; max-height: 400px; overflow-x: hidden;">
-		<div style="height: 300px; width: 100%;" data-bind="with: $root.task_details">
-			<div class="div-inline pull-left" style="border: 1px solid #dedede; display: inline-block; padding: 5px; height: 91px;">
+		<div style="height: 100px; width: 100%;" data-bind="with: $root.task_details">
+			<div class="div-inline pull-left" style="border: 1px solid #dedede; display: inline-block; padding: 5px;">
 				<span>Shared by -&nbsp;</span><br>
 				<img data-bind="attr: { 'src': get_gravatar_image_url(owner.email, 66), 'title': owner.full_name }" style="width: 66px; height: 66px; margin-left: 2px;" data-toggle="tooltip" rel="tooltip" /><br>
-				<!--<span data-bind="text: owner.full_name"></span>-->
 			</div>
-			<div class="div-inline pull-left" style="border: 1px solid #dedede; border-left: none; display: inline-block; padding: 5px; min-height: 91px;">
+			<div class="div-inline pull-left" style="width: 150px; border: 1px solid #dedede; border-left: none; display: inline-block; padding: 5px; max-height: 91px;">
 				<span style="padding-left: 3px;">Other users -&nbsp;</span><br>
 				<span data-bind="foreach: shared_with">
 					<img class="pull-left" data-bind="attr: { 'src': get_gravatar_image_url(email, 30), 'title': full_name }" style="width: 30px; height: 30px; margin-left: 4px;" data-toggle="tooltip" rel="tooltip" />
 				</span>
 			</div>
+		</div>
+		<div class="pull-left">
+			<span style="font: 500 20px/1 'Open Sans', Helvetica, sans-serif;">Log -</span>
 		</div>
 	</div>
 	<div class="modal-footer">
