@@ -986,6 +986,7 @@ function TaskFoldersViewModel() {
     
     self.close_task_details_modal = function() {
         $('#task_details_modal').modal('hide');
+        self.task_details('');
     }
 };
 
