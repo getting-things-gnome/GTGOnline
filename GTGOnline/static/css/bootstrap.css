@@ -5279,8 +5279,9 @@ input[type="submit"].btn.btn-mini {
 }
 
 .tooltip-inner {
-  max-width: 200px;
-  padding: 3px 8px;
+  /*max-width: 200px;*/
+  /*padding: 3px 8px;*/
+  padding: 3px 5px;
   color: #ffffff;
   text-align: center;
   text-decoration: none;

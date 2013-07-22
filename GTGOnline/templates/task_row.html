@@ -195,16 +195,16 @@
 
 {% block task_details_modal %}
 <div id="task_details_modal" class="modal hide fade task_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 400px; margin-left: -200px;">
-	<div class="modal-header" style="padding: 10px">
+	<div class="modal-header" style="padding: 10px; z-index: -1;">
 		<span style="font: 300 22px/1 'Open Sans', Helvetica, sans-serif;">Task Details</span>
 	</div>
 	<div class="modal-body" style="padding: 10px; padding-bottom: 0px; height: 400px; max-height: 400px; overflow-x: hidden;">
-		<div style="height: 100px; width: 100%;" data-bind="with: $root.task_details">
-			<div class="div-inline pull-left" style="border: 1px solid #dedede; display: inline-block; padding: 5px;">
+		<div style="height: 100px; width: 100%; margin-bottom: 7px;" data-bind="with: $root.task_details">
+			<div class="div-inline pull-left" style="border: 1px solid #dedede; display: inline-block; padding: 5px; height: 88px;">
 				<span>Shared by -&nbsp;</span><br>
-				<img data-bind="attr: { 'src': get_gravatar_image_url(owner.email, 66), 'title': owner.full_name }" style="width: 66px; height: 66px; margin-left: 2px;" data-toggle="tooltip" rel="tooltip" /><br>
+				<img data-bind="attr: { 'src': get_gravatar_image_url(owner.email, 66), 'title': owner.full_name.substring(0, 13) }" style="width: 66px; height: 66px; margin-left: 2px;" data-toggle="tooltip" rel="tooltip" /><br>
 			</div>
-			<div class="div-inline pull-left" style="width: 150px; border: 1px solid #dedede; border-left: none; display: inline-block; padding: 5px; max-height: 91px;">
+			<div class="div-inline pull-left" style="width: 287px; border: 1px solid #dedede; border-left: none; display: inline-block; padding: 5px; max-height: 90px; overflow-y: auto;">
 				<span style="padding-left: 3px;">Other users -&nbsp;</span><br>
 				<span data-bind="foreach: shared_with">
 					<img class="pull-left" data-bind="attr: { 'src': get_gravatar_image_url(email, 30), 'title': full_name }" style="width: 30px; height: 30px; margin-left: 4px; margin-bottom: 4px;" data-toggle="tooltip" rel="tooltip" />
