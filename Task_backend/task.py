@@ -542,6 +542,7 @@ def add_new_list(user, new_list, folder, parent_id):
     return get_task_tree(user, oldest, 0, [], folder)
 
 def share_task(user, task_id, email_list, folder):
+    print >>sys.stderr, ' User is = ' + user.get_full_name()
     task = get_task_object(user, task_id)
     if task == None:
         return None
@@ -595,8 +596,8 @@ def update_log(user, task, log_type, user_list = [], new_status = IS_ACTIVE):
             return
         obj, new = Log.objects.get_or_create(task = task)
         names = ''
-        for user in user_list:
-            names += user.get_full_name() + ', '
+        for person in user_list:
+            names += person.get_full_name() + ', '
         s = '2 [' + get_time_now() + '] "' + user.get_full_name() + \
             '" shared to ' + names[:-2] + '\n'
         obj.log += s
