@@ -1450,3 +1450,7 @@ div.task-row {
   /*background-color: #F7F7F7;*/
   display: inline-block;
 }
+
+.log_line {
+  margin-bottom: 10px;
+}

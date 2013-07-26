@@ -15,6 +15,14 @@ IS_ACTIVE = 0
 IS_DONE = 1
 IS_DISMISSED = 2
 
+# Folder status dictionary
+FOLDER_STATUS_STR = {
+    -1: 'All',
+    IS_ACTIVE: 'Active',
+    IS_DONE: 'Done',
+    IS_DISMISSED: 'Dismissed',
+}
+
 # Task sharing folders
 YOUR_SHARED = -2
 THEY_SHARED = -3
@@ -64,3 +72,10 @@ GROUPED = 1
 
 # Gravatar profile URL
 GRAVATAR_BASE_URL = "http://www.gravatar.com/"
+
+# Logs
+LOG_NEW_TASK = 0
+LOG_TASK_MODIFY = 1
+LOG_TASK_SHARE = 2
+LOG_TASK_STATUS = 3
+LOG_TASK_DELETE = 4

@@ -1677,3 +1677,23 @@ function share_uncheck_all() {
     }
     a.checked_users([]);
 }
+
+function prettify_log(log) {
+    var lines = log.split("\n");
+    var result = '';
+    for (var i=0; i < lines.length; i++) {
+        lines[i] = lines[i].replace(/"(.+)"/, '<strong>$1</strong>');
+        if (lines[i].charAt(0) == '1') {
+            result += '<span class="log_line"><span class="label label-warning">Modify</span>' + lines[i].substring(1) + '</span><br/>'
+        }
+        else if (lines[i].charAt(0) == '2') {
+            result += '<span class="log_line"><span class="label label-info">Share</span>' + lines[i].substring(1) + '</span><br/>'
+        }
+        else if (lines[i].charAt(0) == '3') {
+            result += '<span class="log_line"><span class="label label-inverse">Status</span>' + lines[i].substring(1) + '</span><br/>'
+        }
+    }
+    console.log(lines);
+    
+    return result;
+}

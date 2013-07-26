@@ -14,7 +14,7 @@ from Tag_backend.tag import find_tags, create_tag_objects, get_tags_by_task, \
 from Tools.constants import *
 from Tools.dates import get_datetime_object, get_datetime_str, \
                         get_current_datetime_object, compare_dates, \
-                        get_datetime_from_days_left
+                        get_datetime_from_days_left, get_time_now
 
 
 def get_task_object(user, task_id):
@@ -269,7 +269,10 @@ def update_task_details(user, task_id, new_name, new_description, \
     new_due_date = get_datetime_object(new_due_date)
     task = change_task_date(user, task, new_due_date, IS_DUE_DATE)
     
-    change_task_tree_due_date(task, new_due_date)
+    if task.shared_with.exists():
+        update_log(user, task, LOG_TASK_MODIFY)
+    
+    change_task_tree_due_date(user, task, new_due_date)
     task.save()
     #print >>sys.stderr, str(get_oldest_parent(task))
     return get_task_tree(user, get_oldest_parent(task), 0, [], folder)
@@ -388,9 +391,11 @@ def change_task_status(user, task_id, new_status):
         task.closed_date = get_current_datetime_object()
     
     task.save()
+    if task.shared_with.exists():
+        update_log(user, task, LOG_TASK_STATUS, new_status = new_status)
     return task
 
-def change_task_tree_status(task, new_status):
+def change_task_tree_status(user, task, new_status):
     if new_status == IS_ACTIVE:
         new_closed_date = None
     else:
@@ -398,7 +403,9 @@ def change_task_tree_status(task, new_status):
     task.subtasks.all().update(status = new_status, \
                                closed_date = new_closed_date)
     for index, subtask in enumerate(task.subtasks.all()):
-        change_task_tree_status(subtask, new_status)
+        if subtask.shared_with.exists():
+            update_log(user, subtask, LOG_TASK_STATUS, new_status = new_status)
+        change_task_tree_status(user, subtask, new_status)
 
 def change_task_date(user, task, new_date_object, date_type):
     if date_type == IS_START_DATE:
@@ -416,12 +423,12 @@ def change_task_date(user, task, new_date_object, date_type):
     task.save()
     return task
 
-def change_task_tree_due_date(task, new_date_object):
+def change_task_tree_due_date(user, task, new_date_object):
     if new_date_object != None:
-        update_children_due_date(task, new_date_object)
-    update_parent_due_date(task, new_date_object)
+        update_children_due_date(user, task, new_date_object)
+    update_parent_due_date(user, task, new_date_object)
     
-def update_children_due_date(task, new_date_object):
+def update_children_due_date(user, task, new_date_object):
     for index, subtask in enumerate(task.subtasks.all()):
         #print >>sys.stderr, "updating subtask = " + subtask.name
         if subtask.due_date == None or \
@@ -433,10 +440,11 @@ def update_children_due_date(task, new_date_object):
             if dates_diff[0] and dates_diff[1]:
                 #print >>sys.stderr, "subtask start date replaced = " + str(new_date_object)
                 subtask.start_date = subtask.due_date
+            update_log(user, subtask, LOG_TASK_MODIFY)
         subtask.save()
-        update_children_due_date(subtask, subtask.due_date)
+        update_children_due_date(user, subtask, subtask.due_date)
 
-def update_parent_due_date(task, new_date_object):
+def update_parent_due_date(user, task, new_date_object):
     for index, parent in enumerate(task.task_set.all()):
         #print >>sys.stderr, "updating parent = " + parent.name + " due date = " + str(parent.due_date)
         if parent.due_date != None:
@@ -451,21 +459,26 @@ def update_parent_due_date(task, new_date_object):
             if dates_diff[0] and dates_diff[1]:
                 #print >>sys.stderr, "parent start date replaced = " + str(new_date_object)
                 parent.start_date = parent.due_date
+            update_log(user, parent, LOG_TASK_MODIFY)
         parent.save()
-        update_parent_due_date(parent, parent.due_date)
+        update_parent_due_date(user, parent, parent.due_date)
 
-def delete_single_task(task):
+def delete_single_task(user, task):
     tags_list = task.tags.all()
     delete_orphan_tags(task, tags_list)
+    if task.shared_with.exists():
+        update_log(user, task, LOG_TASK_DELETE)
     task.delete()
     #print >>sys.stderr, "after delete, tags_list = " + str(tags_list)
 
-def delete_task_tree(task):
+def delete_task_tree(user, task):
     for index, subtask in enumerate(task.subtasks.all()):
         if subtask.subtasks.exists():
-            delete_task_tree(subtask)
+            delete_task_tree(user, subtask)
         tags_list = subtask.tags.all()
         delete_orphan_tags(subtask, tags_list)
+        if subtask.shared_with.exists():
+            update_log(user, subtask, LOG_TASK_DELETE)
         subtask.delete()
         #print >>sys.stderr, "after delete, tags_list = " + str(tags_list)
 
@@ -522,6 +535,7 @@ def add_new_list(user, new_list, folder, parent_id):
         
         #print >>sys.stderr, 'new task = ' + str(new_task)
         created_tasks[level] = new_task
+        #update_log(new_task, LOG_NEW_TASK)
     if parent_id == '-1':
         return None
     oldest = get_oldest_parent(get_task_object(user, parent_id))
@@ -534,16 +548,18 @@ def share_task(user, task_id, email_list, folder):
     
     users_obj = get_bulk_users(email_list)
     print >>sys.stderr, 'received list = ' + str(users_obj)
+    update_log(user, task, LOG_TASK_SHARE, user_list = users_obj)
     add_remove_shared_users(task, users_obj)
-    share_task_children(task, users_obj)
+    share_task_children(user, task, users_obj)
     
     oldest = get_oldest_parent(task)
     return get_task_tree(user, oldest, 0, [], folder)
 
-def share_task_children(task, users_obj):
+def share_task_children(user, task, users_obj):
     for subtask in task.subtasks.all():
         add_remove_shared_users(subtask, users_obj)
-        share_task_children(subtask, users_obj)
+        update_log(user, subtask, LOG_TASK_SHARE, user_list = users_obj)
+        share_task_children(user, subtask, users_obj)
 
 def add_remove_shared_users(task, users_obj):
     to_be_deleted = list(set(task.shared_with.all()) - set(users_obj))
@@ -556,8 +572,42 @@ def get_task_details(task, log = False):
         shared = []
         for user in task.shared_with.all():
             shared.append(get_user_details(user))
+        log_obj = get_log_object(task)
+        log = 'None' if log_obj == None else log_obj.log
         return { "owner": get_user_details(task.user), \
-                 "shared_with": shared }
+                 "shared_with": shared, "log": log }
     else:
         log_obj = get_log_object(task)
         return { "log": log_obj.log }
+
+def update_log(user, task, log_type, user_list = [], new_status = IS_ACTIVE):
+    if log_type == LOG_NEW_TASK:
+        s = get_time_now() + ' Task created by ' + \
+            task.user.get_full_name() + '\n'
+        log = Log(task = task, log = s)
+    elif log_type == LOG_TASK_MODIFY:
+        obj, new = Log.objects.get_or_create(task = task)
+        s = '1 [' + get_time_now() + '] by "' + user.get_full_name() + '"\n'
+        obj.log += s
+        obj.save()
+    elif log_type == LOG_TASK_SHARE:
+        if list(user_list) == []:
+            return
+        obj, new = Log.objects.get_or_create(task = task)
+        names = ''
+        for user in user_list:
+            names += user.get_full_name() + ', '
+        s = '2 [' + get_time_now() + '] "' + user.get_full_name() + \
+            '" shared to ' + names[:-2] + '\n'
+        obj.log += s
+        obj.save()
+    elif log_type == LOG_TASK_STATUS:
+        obj, new = Log.objects.get_or_create(task = task)
+        s = '3 [' + get_time_now() + '] "' + \
+            user.get_full_name() + '" changed to ' + \
+            FOLDER_STATUS_STR.get(new_status, 'Undefined') + '\n'
+        obj.log += s
+        obj.save()
+    else:
+        obj = Log.objects.get(task = task)
+        obj.delete()

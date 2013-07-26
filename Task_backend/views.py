@@ -88,12 +88,12 @@ def modify_status(request):
                                task_id == '-1' ):
         for task_id in task_id_list:
             task = change_task_status(request.user, task_id, new_status)
-            change_task_tree_status(task, new_status)
+            change_task_tree_status(request.user, task, new_status)
     else:
         if task_id > -1:
             task = change_task_status(request.user, task_id, new_status)
             if task != None:
-                change_task_tree_status(task, new_status)
+                change_task_tree_status(request.user, task, new_status)
                 #task_tree = get_task_tree(request.user, \
                                           #get_oldest_parent(task), \
                                           #0, [], folder)
@@ -128,16 +128,16 @@ def delete_task(request):
         for task_id in task_id_list:
             task = get_task_object(request.user, task_id)
             if task != None:
-                delete_task_tree(task)
-                delete_single_task(task)
+                delete_task_tree(request.user, task)
+                delete_single_task(request.user, task)
     else:
         task_id = request.GET.get('task_id', -1)
         print >>sys.stderr, task_id
         if task_id != '-1':
             task = get_task_object(request.user, task_id)
             if task != None:
-                delete_task_tree(task)
-                delete_single_task(task)
+                delete_task_tree(request.user, task)
+                delete_single_task(request.user, task)
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)
 
 def new_task(request):

@@ -69,3 +69,7 @@ def compare_dates(date1, date2):
 def get_datetime_from_days_left(days_left):
     that_date = datetime.now() + timedelta(days = days_left)
     return datetime(that_date.year, that_date.month, that_date.day)
+
+def get_time_now():
+    now = datetime.now()
+    return now.strftime(CONVERT_24_HR_WITH_TIME)
