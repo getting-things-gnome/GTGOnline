@@ -373,3 +373,4 @@
 [26/Jul/2013 22:43:55] INFO [User_backend.user:39] LogIN -- email = trevor@philips.com | id = 5
 [26/Jul/2013 23:00:02] INFO [User_backend.user:48] LogOUT - email = trevor@philips.com | id = 5
 [26/Jul/2013 23:00:09] INFO [User_backend.user:39] LogIN -- email = trevor@philips.com | id = 5
+[26/Jul/2013 23:34:59] INFO [User_backend.user:48] LogOUT - email = trevor@philips.com | id = 5
