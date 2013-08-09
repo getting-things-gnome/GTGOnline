@@ -388,3 +388,11 @@
 [28/Jul/2013 14:40:13] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
 [28/Jul/2013 14:40:20] INFO [User_backend.user:39] LogIN -- email = trevor@philips.com | id = 5
 [28/Jul/2013 15:47:34] INFO [User_backend.user:48] LogOUT - email = trevor@philips.com | id = 5
+[08/Aug/2013 18:55:54] INFO [User_backend.user:39] LogIN -- email = trevor@philips.com | id = 5
+[08/Aug/2013 21:25:09] INFO [User_backend.user:48] LogOUT - email = trevor@philips.com | id = 5
+[08/Aug/2013 21:25:20] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
+[08/Aug/2013 21:33:36] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
+[08/Aug/2013 21:33:45] INFO [User_backend.user:39] LogIN -- email = trevor@philips.com | id = 5
+[08/Aug/2013 22:17:50] INFO [User_backend.user:48] LogOUT - email = trevor@philips.com | id = 5
+[08/Aug/2013 22:17:57] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
+[08/Aug/2013 22:59:23] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2

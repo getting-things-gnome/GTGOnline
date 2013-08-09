@@ -711,6 +711,8 @@ function TaskFoldersViewModel() {
     
     self.get_tasks_by_tag = function(name) {
         $.get('/tags/get_tasks', { tag_name: name, folder: self.chosenFolderId() }, function(data) {
+            console.log('data = ');
+            console.log(data);
             self.tasks_list(data);
             self.header_name(self.chosenFolderId() + ' Tasks having tag - ');
             show_popover();

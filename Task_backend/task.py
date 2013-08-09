@@ -485,6 +485,7 @@ def delete_task_tree(user, task):
 
 def get_tasks_by_tag(user, tag_name, task_status):
     tag = get_tag_object(user, tag_name = tag_name)
+    print >>sys.stderr, "tag name = " + tag.name + "user = " + user.email + "status = " + str(task_status)
     if tag == None:
         return []
     task_list = []
@@ -494,6 +495,7 @@ def get_tasks_by_tag(user, tag_name, task_status):
         query_set = tag.task_set.filter(status = task_status)
     for task in query_set:
         task_list.append(get_task_details(user, task))
+    print >>sys.stderr, "task = " + str(task_list)
     return task_list
 
 def get_tasks_by_due_date(user, days_left, task_status):
@@ -569,18 +571,14 @@ def add_remove_shared_users(task, users_obj):
     task.shared_with.remove(*to_be_deleted)
     task.shared_with.add(*to_be_added)
 
-def get_task_details(task, log = False):
-    if log == False:
-        shared = []
-        for user in task.shared_with.all():
-            shared.append(get_user_details(user))
-        log_obj = get_log_object(task)
-        log = 'None' if log_obj == None else log_obj.log
-        return { "owner": get_user_details(task.user), \
-                 "shared_with": shared, "log": log }
-    else:
-        log_obj = get_log_object(task)
-        return { "log": log_obj.log }
+def get_shared_task_details(task):
+    shared = []
+    for user in task.shared_with.all():
+        shared.append(get_user_details(user))
+    log_obj = get_log_object(task)
+    log = 'None' if log_obj == None else log_obj.log
+    return { "owner": get_user_details(task.user), \
+             "shared_with": shared, "log": log }
 
 def update_log(user, task, log_type, user_list = [], new_status = IS_ACTIVE):
     if log_type == LOG_NEW_TASK:
