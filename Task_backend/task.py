@@ -135,7 +135,8 @@ def get_task_details(user, task):
                 "closed_date": closed_date, \
                 "last_modified_date": last_modified_date, \
                 "status": task.status, "tags": get_tags_by_task(task), \
-                "subtasks": [], "indent": 0}
+                "subtasks": [], "indent": 0, \
+                "shared_with": [], "owner": ''}
     return details
 
 def get_task_tree_details(user, task, indent, visited_list, folder, \

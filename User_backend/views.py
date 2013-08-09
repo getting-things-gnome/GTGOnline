@@ -38,7 +38,8 @@ def landing(request):
     return HttpResponse(template.render(context))
 
 def login(request):
-    response = login_user(request)
+    response = login_user(request, request.POST['email'], \
+                          request.POST['password'])
     if response == USER_LOGGED_IN:
         request.session['error'] = '0'
         return HttpResponseRedirect('/tasks/main/')
@@ -79,6 +80,10 @@ def register(request):
         user = register_user(email, password, first_name, last_name)
         if user != None:
             create_default_groups(user)
+            response = login_user(request, email, password)
+            if response == USER_LOGGED_IN:
+                request.session['error'] = '0'
+                return HttpResponseRedirect('/tasks/main/')
     request.session['error'] = '4'
     return HttpResponseRedirect('/user/landing/')
 

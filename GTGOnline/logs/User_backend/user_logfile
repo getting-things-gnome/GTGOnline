@@ -396,3 +396,12 @@
 [08/Aug/2013 22:17:50] INFO [User_backend.user:48] LogOUT - email = trevor@philips.com | id = 5
 [08/Aug/2013 22:17:57] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
 [08/Aug/2013 22:59:23] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
+[09/Aug/2013 12:21:50] INFO [User_backend.user:39] LogIN -- email = albert@desilva.com | id = 2
+[09/Aug/2013 12:37:55] INFO [User_backend.user:48] LogOUT - email = albert@desilva.com | id = 2
+[09/Aug/2013 12:39:57] ERROR [User_backend.user:110] Gravatar profile fetch error for email = "a@bb.com" hash = "d00ea036111227788e9a1bfc15d1cb62" error = "HTTP Error 404: Not Found"
+[09/Aug/2013 13:37:48] ERROR [User_backend.user:111] Gravatar profile fetch error for email = "done@did.it" hash = "c94f853a681d829b4553ec78aa6e1615" error = "HTTP Error 404: Not Found"
+[09/Aug/2013 14:16:20] ERROR [User_backend.user:110] Gravatar profile fetch error for email = "aa@bb.com" hash = "5dcdf28d944831f2fb87d48b81500c66" error = "HTTP Error 404: Not Found"
+[09/Aug/2013 14:47:19] INFO [User_backend.user:39] LogIN -- email = aaaa@bbb.com | id = 17
+[09/Aug/2013 14:48:01] ERROR [User_backend.user:110] Gravatar profile fetch error for email = "aaaa@bbbb.com" hash = "180d4ae46f838fd936d25a6e8d23ac19" error = "HTTP Error 404: Not Found"
+[09/Aug/2013 14:48:09] INFO [User_backend.user:39] LogIN -- email = aaaa@bbbb.com | id = 18
+[09/Aug/2013 14:49:17] INFO [User_backend.user:48] LogOUT - email = aaaa@bbbb.com | id = 18
