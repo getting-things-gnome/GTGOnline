@@ -37,9 +37,12 @@ def landing(request):
     context = RequestContext(request, error_dict)
     return HttpResponse(template.render(context))
 
+@csrf_exempt
 def login(request):
     if request.POST.get('email', '') == '':
-        return HttpResponse('0', mimetype='application/json')
+        template = loader.get_template('landing.html')
+        context = RequestContext(request, {})
+        return HttpResponse(template.render(context))
     if request.POST.get('origin', '') == 'gtg':
         print >>sys.stderr, "Request is from GTG"
         return HttpResponse('1', mimetype='application/json')
