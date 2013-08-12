@@ -28,7 +28,10 @@ def get_user_object(user):
     
 def get_bulk_users(email_list):
     return User.objects.filter(email__in = email_list)
-    
+
+def authenticate_user(email, password):
+    return authenticate(email = email, password = password)
+
 def login_user(request, email, password):
     user = authenticate(email = email, \
                         password = password)

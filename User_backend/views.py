@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from User_backend.user import register_user, login_user, logout_user, \
                               validate_form, does_email_exist, \
-                              fetch_gravatar_profile
+                              fetch_gravatar_profile, authenticate_user
 from Group_backend.group import find_users_from_query
 from Group_backend.group import create_default_groups
 from Tools.constants import *
@@ -53,13 +53,18 @@ def login(request):
                           request.POST['password'])
     if response == USER_LOGGED_IN:
         request.session['error'] = '0'
+        if request.POST.get('origin', '') == 'gtg':
+            print >>sys.stderr, "Request is from GTG"
+            return HttpResponse('1', mimetype='application/json')
         return HttpResponseRedirect('/tasks/main/')
     elif response == USER_ACCOUNT_DISABLED:
         request.session['error'] = '2'
-        return HttpResponseRedirect('/user/landing/')
     else:
         request.session['error'] = '1'
-        return HttpResponseRedirect('/user/landing/')
+    if request.POST.get('origin', '') == 'gtg':
+        print >>sys.stderr, "Request is from GTG"
+        return HttpResponse('0', mimetype='application/json')
+    return HttpResponseRedirect('/user/landing/')
 
 def logout(request):
     logout_user(request)
@@ -139,3 +144,10 @@ def get_gravatar(request):
     profile = json.load(profile_obj)
     print >>sys.stderr, 'profile = ' + str(profile)
     return HttpResponse(json.dumps(profile), mimetype='application/json')
+
+def custom_auth_for_gtg(request):
+    email = request.POST.get('email', '')
+    password = request.POST.get('password', '')
+    if authenticate_user(email, password) != None:
+        return HttpResponse('1', mimetype='application/json')
+    return HttpResponse('0', mimetype='application/json')
