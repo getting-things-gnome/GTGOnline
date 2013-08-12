@@ -38,6 +38,8 @@ def landing(request):
     return HttpResponse(template.render(context))
 
 def login(request):
+    if request.POST.get('email', '') == '':
+        return
     if request.POST.get('origin', '') == 'gtg':
         print >>sys.stderr, "Request is from GTG"
         return HttpResponse('1', mimetype='application/json')
