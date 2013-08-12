@@ -37,7 +37,6 @@ def landing(request):
     context = RequestContext(request, error_dict)
     return HttpResponse(template.render(context))
 
-@csrf_exempt
 def login(request):
     print >>sys.stderr, "POST dict = " + str(request.POST)
     #if request.POST.get('email', '') == '':
@@ -145,6 +144,7 @@ def get_gravatar(request):
     print >>sys.stderr, 'profile = ' + str(profile)
     return HttpResponse(json.dumps(profile), mimetype='application/json')
 
+@csrf_exempt
 def custom_auth_for_gtg(request):
     email = request.POST.get('email', '')
     password = request.POST.get('password', '')
