@@ -622,5 +622,5 @@ def get_all_tasks_details(email):
         return []
     all_tasks = []
     for task in user.task_set.all():
-        all_tasks.append(get_task_details(user, task, include_subtask = True))
+        all_tasks.append(get_task_details(user, task, include_subtasks = True))
     return all_tasks
