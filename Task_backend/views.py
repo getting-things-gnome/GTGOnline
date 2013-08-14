@@ -16,16 +16,25 @@ from Task_backend.task import get_task_object, get_task_tree, \
                               get_oldest_parent, delete_task_tree, add_task, \
                               get_tasks_by_due_date, update_task_details, \
                               delete_single_task, search_tasks, add_new_list, \
-                              share_task, get_shared_task_details
+                              share_task, get_shared_task_details, \
+                              get_all_tasks_details
 from Tag_backend.tag import find_tags
+from User_backend.user import authenticate_user
 from Tools.constants import *
 from Tools.dates import get_datetime_object
 
+@csrf_exempt
 def get_serialized_tasks(request):
-    all_tasks = Task.objects.all()
-    data = serializers.serialize('json', all_tasks, indent = 4)
-    return HttpResponse(data, mimetype='application/json')
-
+    email = request.POST.get('email', '')
+    password = request.POST.get('password', '')
+    user = authenticate_user(email, password)
+    if user == None:
+        return HttpResponse(json.dumps([], indent = 4), \
+                        mimetype='application/json')
+    all_tasks = get_all_tasks_details(user)
+    return HttpResponse(json.dumps(all_tasks, indent = 4), \
+                        mimetype='application/json')
+    
 #@login_required
 def get_tasks(request):
     tasks = []

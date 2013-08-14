@@ -3,15 +3,27 @@
 import json,sys
 
 from django.http import HttpResponse, HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
 
 from Task_backend.models import Task
 from Task_backend.task import get_tasks_by_tag
 from Tag_backend.tag import get_tags_by_user, delete_tag_modify_tasks, \
                             update_tag_color, update_tag_icon
+from User_backend.user import get_user_object, authenticate_user
 from Tools.constants import *
 
+@csrf_exempt
 def get_all_tags(request):
-    tags = get_tags_by_user(request.user)
+    email = request.POST.get('email', '')
+    if email != '':
+        password = request.POST.get('password', '')
+        user = authenticate_user(email, password)
+        if user == None:
+            return HttpResponse(json.dumps([], indent=4), \
+                        mimetype="application/json")
+    else:
+        user = request.user
+    tags = get_tags_by_user(user)
     return HttpResponse(json.dumps(tags, indent=4), \
                         mimetype="application/json")
 

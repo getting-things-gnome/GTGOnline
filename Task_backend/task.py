@@ -116,7 +116,7 @@ def change_parents_due_dates(task):
             parent.save()
             change_parents_due_dates(parent)
 
-def get_task_details(user, task):
+def get_task_details(user, task, include_subtasks = False):
     '''
     Takes input an user object and a task object, and returns a dictionary of
     only the details of that particular task. 'subtasks' key will be set to
@@ -129,13 +129,16 @@ def get_task_details(user, task):
     due_date = get_datetime_str(user, task.due_date)
     closed_date = get_datetime_str(user, task.closed_date)
     last_modified_date = get_datetime_str(user, task.last_modified_date)
+    subtask_list = []
+    if include_subtasks:
+        subtask_list = [subtask.id for subtask in task.subtasks.all()]
     details =  {"id": task.id, "name": task.name, \
                 "description": task.description, \
                 "start_date": start_date, "due_date": due_date, \
                 "closed_date": closed_date, \
                 "last_modified_date": last_modified_date, \
                 "status": task.status, "tags": get_tags_by_task(task), \
-                "subtasks": [], "indent": 0, \
+                "subtasks": subtask_list, "indent": 0, \
                 "shared_with": [], "owner": ''}
     return details
 
@@ -612,3 +615,12 @@ def update_log(user, task, log_type, user_list = [], new_status = IS_ACTIVE):
     else:
         obj = Log.objects.get(task = task)
         obj.delete()
+
+def get_all_tasks_details(email):
+    user = get_user_object(email)
+    if user == None:
+        return []
+    all_tasks = []
+    for task in user.task_set.all():
+        all_tasks.append(get_task_details(user, task, include_subtask = True))
+    return all_tasks
