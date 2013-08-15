@@ -150,12 +150,9 @@ def delete_task(request):
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)
 
 def new_task(request):
-    folder = request.GET.get('folder', 'Active')
-    name = request.GET.get('name', 'No Name received')
-    description = request.GET.get('description', '')
-    start_date = request.GET.get('start_date', '')
-    due_date = request.GET.get('due_date', '')
-    parent_id = request.GET.get('parent_id', -1)
+    email = request.POST.get('email', '')
+    password = request.POST.get('password', '')
+    task_list = request.POST.get('task_list', '')
     
     task, parent = add_task(request.user, name, description, \
                             start_date, due_date, folder, \

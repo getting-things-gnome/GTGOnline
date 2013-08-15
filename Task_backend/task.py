@@ -518,7 +518,7 @@ def search_tasks(user, query):
         task_list.append(get_task_details(user, task))
     return task_list
 
-def add_new_list(user, new_list, folder, parent_id):
+def add_new_list(user, new_list, folder, parent_id, origin = None):
     #print >>sys.stderr, new_list
     created_tasks = {}
     for task in new_list:
@@ -539,10 +539,16 @@ def add_new_list(user, new_list, folder, parent_id):
                         folder, \
                         parent_object = created_tasks.get(level-1, None), \
                         needs_task_dict = False)
-        
         #print >>sys.stderr, 'new task = ' + str(new_task)
         created_tasks[level] = new_task
+        id_dict[task.get('gtg_id', 'None')] = new_task.id
+        print >>sys.stderr, "new task = " + str(new_task) + "parent = " + str(parent)
         #update_log(new_task, LOG_NEW_TASK)
+    
+    if origin != None:
+        print >>sys.stderr, "Id dict = " + str(id_dict)
+        return id_dict
+    
     if parent_id == '-1':
         return None
     oldest = get_oldest_parent(get_task_object(user, parent_id))
