@@ -518,7 +518,7 @@ def search_tasks(user, query):
         task_list.append(get_task_details(user, task))
     return task_list
 
-def add_new_list(user, new_list, folder, parent_id, origin = None):
+def add_new_list(user, new_list, folder, parent_id):
     #print >>sys.stderr, new_list
     created_tasks = {}
     for task in new_list:
@@ -541,13 +541,16 @@ def add_new_list(user, new_list, folder, parent_id, origin = None):
                         needs_task_dict = False)
         #print >>sys.stderr, 'new task = ' + str(new_task)
         created_tasks[level] = new_task
-        id_dict[task.get('gtg_id', 'None')] = new_task.id
+        #if origin != None:
+            #id_dict[task.get('gtg_id', 'None')] = new_task.id
+            #new_task.status = FOLDER_STATUS_INT[task.get('status', 'Active')]
+            #new_task.save()
         print >>sys.stderr, "new task = " + str(new_task) + "parent = " + str(parent)
         #update_log(new_task, LOG_NEW_TASK)
     
-    if origin != None:
-        print >>sys.stderr, "Id dict = " + str(id_dict)
-        return id_dict
+    #if origin != None:
+        #print >>sys.stderr, "Id dict = " + str(id_dict)
+        #return id_dict
     
     if parent_id == '-1':
         return None
@@ -630,3 +633,9 @@ def get_all_tasks_details(email):
     for task in user.task_set.all():
         all_tasks.append(get_task_details(user, task, include_subtasks = True))
     return all_tasks
+
+def add_gtg_tasks(user, task_list):
+    for key, value in task_list.iteritems():
+        print >>sys.stderr, "key = " + key + " value = " + value
+    
+    return {}

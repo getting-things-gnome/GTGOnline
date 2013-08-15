@@ -23,6 +23,13 @@ FOLDER_STATUS_STR = {
     IS_DISMISSED: 'Dismissed',
 }
 
+FOLDER_STATUS_INT = {
+    'All': -1,
+    'Active': IS_ACTIVE,
+    'Done': IS_DONE,
+    'Dismissed': IS_DISMISSED,
+}
+
 # Task sharing folders
 YOUR_SHARED = -2
 THEY_SHARED = -3

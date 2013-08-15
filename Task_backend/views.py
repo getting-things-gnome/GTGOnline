@@ -17,7 +17,7 @@ from Task_backend.task import get_task_object, get_task_tree, \
                               get_tasks_by_due_date, update_task_details, \
                               delete_single_task, search_tasks, add_new_list, \
                               share_task, get_shared_task_details, \
-                              get_all_tasks_details
+                              get_all_tasks_details, add_gtg_tasks
 from Tag_backend.tag import find_tags
 from User_backend.user import authenticate_user
 from Tools.constants import *
@@ -149,18 +149,22 @@ def delete_task(request):
                 delete_single_task(request.user, task)
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)
 
+@csrf_exempt
 def new_task(request):
     email = request.POST.get('email', '')
     password = request.POST.get('password', '')
     task_list = request.POST.get('task_list', '')
+    #print >>sys.stderr, "task_list = " + str(request.POST)
+    task_list = json.loads(task_list)
+    print >>sys.stderr, "task_list = " + str(task_list)
     
-    task, parent = add_task(request.user, name, description, \
-                            start_date, due_date, folder, \
-                            parent_id = parent_id)
-    if parent != None:
-        return HttpResponse(json.dumps(task, indent=4), \
+    user = authenticate_user(email, password)
+    if user == None:
+        return HttpResponse(json.dumps({}, indent=4), \
                             mimetype='application/json')
-    return HttpResponseRedirect('/tasks/get/?folder=' + folder)
+    id_dict = add_gtg_tasks(user, task_list)
+    return HttpResponse(json.dumps(id_dict, indent=4), \
+                            mimetype='application/json')
 
 def update_task(request):
     folder = request.GET.get('folder', 'Active')
@@ -213,8 +217,14 @@ def create_new_list(request):
     parent_id = request.POST.get('parent_id', -1)
     print >>sys.stderr, 'parent id = ' + str(parent_id)
     received_list = json.loads(request.POST.get('new_list', '[]'))
-    #print >>sys.stderr, received_list
+    print >>sys.stderr, received_list
     if received_list != []:
+        #origin = request.POST.get('origin', None)
+        #if origin != None:
+            #id_dict = add_new_list(request.user, received_list, \
+                                   #folder, parent_id, origin = origin)
+            #return HttpResponse(json.dumps(id_dict, indent = 4), \
+                                #mimetype = 'application/json')
         task = add_new_list(request.user, received_list, folder, parent_id)
         if task != None:
             return HttpResponse(json.dumps(task, indent = 4), \
