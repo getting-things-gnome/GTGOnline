@@ -635,7 +635,19 @@ def get_all_tasks_details(email):
     return all_tasks
 
 def add_gtg_tasks(user, task_list):
+    subtasks = {}
+    id_dict = {}
+    print >>sys.stderr, "At starting, task list = " + str(task_list) + '\n\n'
     for key, value in task_list.iteritems():
-        print >>sys.stderr, "key = " + key + " value = " + value
+        print >>sys.stderr, "key = " + key + " value = " + str(value)
+        if value['subtasks'] != []:
+            subtasks[key] = value['subtasks']
+        task, parent = add_task(user, value['name'], value['description'], \
+                                value['start_date'], value['due_date'], \
+                                None, needs_task_dict = False)
+        task_list[key] = task
+        id_dict[key] = str(task.id)
     
-    return {}
+    print >>sys.stderr, "After, updated task_list = " + str(task_list)
+    print >>sys.stderr, "After, updated subtasks = " + str(subtasks) + '\n\n'
+    return id_dict

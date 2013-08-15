@@ -154,7 +154,7 @@ def new_task(request):
     email = request.POST.get('email', '')
     password = request.POST.get('password', '')
     task_list = request.POST.get('task_list', '')
-    #print >>sys.stderr, "task_list = " + str(request.POST)
+    #print >>sys.stderr, "task_list = " + str(task_list) + "type = " + str(type(task_list))
     task_list = json.loads(task_list)
     print >>sys.stderr, "task_list = " + str(task_list)
     
