@@ -647,6 +647,13 @@ def add_gtg_tasks(user, task_list):
                                 None, needs_task_dict = False)
         task_list[key] = task
         id_dict[key] = str(task.id)
+        
+    for key, value in subtasks.iteritems():
+        task = task_list[key]
+        to_add = []
+        for gtg_id in value:
+            to_add.append(task_list[gtg_id])
+        task.subtasks.add(*to_add)
     
     print >>sys.stderr, "After, updated task_list = " + str(task_list)
     print >>sys.stderr, "After, updated subtasks = " + str(subtasks) + '\n\n'
