@@ -36,14 +36,17 @@ def get_datetime_object(input_str):
 #        return 'someday'
 ############################################################################### 
 
-def get_datetime_str(user, input_datetime):
+def get_datetime_str(user, input_datetime, precise_needed = False):
+    directive = CONVERT_24_HR
     if input_datetime == None or not isinstance(input_datetime, datetime):
         return ''
     #elif input_datetime.year == FUZZY_YEAR:
     #    return fuzzy_datetime_to_str(input_datetime)
     elif get_time_format(user) == TIME_FORMAT_24_HR:
-        return input_datetime.strftime(CONVERT_24_HR)
-    return input_datetime.strftime(CONVERT_12_HR)
+        if precise_needed:
+            directive = CONVERT_24_HR_WITH_TIME
+        return input_datetime.strftime(directive)
+    return input_datetime.strftime(directive)
     
 def get_days_left(input_datetime):
     if input_datetime == None:

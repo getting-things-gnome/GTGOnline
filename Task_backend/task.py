@@ -128,7 +128,8 @@ def get_task_details(user, task, include_subtasks = False):
     start_date = get_datetime_str(user, task.start_date)
     due_date = get_datetime_str(user, task.due_date)
     closed_date = get_datetime_str(user, task.closed_date)
-    last_modified_date = get_datetime_str(user, task.last_modified_date)
+    last_modified_date = get_datetime_str(user, task.last_modified_date, \
+                                          precise_needed = True)
     subtask_list = []
     if include_subtasks:
         subtask_list = [subtask.id for subtask in task.subtasks.all()]
@@ -258,7 +259,8 @@ def get_task_tree2(user, task_list, indent, visited_list, folder):
             oldest_parent = get_oldest_parent(task)
 
 def update_task_details(user, task_id, new_name, new_description, \
-                        new_start_date, new_due_date, folder):
+                        new_start_date, new_due_date, folder, \
+                        origin = None):
     task = get_task_object(user, task_id)
     if task == None:
         return
@@ -280,6 +282,10 @@ def update_task_details(user, task_id, new_name, new_description, \
     change_task_tree_due_date(user, task, new_due_date)
     task.save()
     #print >>sys.stderr, str(get_oldest_parent(task))
+    
+    if origin != None:
+        return None
+    
     return get_task_tree(user, get_oldest_parent(task), 0, [], folder)
 
 #def update_task_name(user, new_name, task_object, tag_list = None):

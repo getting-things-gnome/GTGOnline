@@ -49,7 +49,7 @@ CONVERT_12_HR = '%d/%m/%y'
 CONVERT_24_HR_FULL_YEAR = '%d/%m/%Y'
 CONVERT_12_HR_FULL_YEAR = '%d/%m/%Y'
 
-CONVERT_24_HR_WITH_TIME = '%d/%m/%y %H:%M'
+CONVERT_24_HR_WITH_TIME = '%d/%m/%y %H:%M:%S'
 CONVERT_12_HR_WITH_TIME = '%d/%m/%y %I:%M %p'
 
 # Fuzzy date list
