@@ -166,13 +166,24 @@ def new_task(request):
     return HttpResponse(json.dumps(id_dict, indent=4), \
                             mimetype='application/json')
 
+@csrf_exempt
 def update_task(request):
     folder = request.GET.get('folder', 'Active')
-    name = request.GET.get('name', 'No Name received')
-    description = request.GET.get('description', '')
-    start_date = request.GET.get('start_date', '')
-    due_date = request.GET.get('due_date', '')
-    task_id = request.GET.get('task_id', -1)
+    name = request.REQUEST.get('name', 'No Name received')
+    description = request.REQUEST.get('description', '')
+    start_date = request.REQUEST.get('start_date', '')
+    due_date = request.REQUEST.get('due_date', '')
+    task_id = request.REQUEST.get('task_id', -1)
+    origin = request.POST.get('origin', None)
+    
+    if origin != None:
+        email = request.POST.get('email', '')
+        password = request.POST.get('password', '')
+        user = authenticate_user(email, password)
+        update_task_details(user, task_id, name, description, \
+                            start_date, due_date, folder, origin = origin)
+        return HttpResponse(json.dumps('1', indent = 4), \
+                            mimetype='application/json')
     
     if task_id < 0:
         return HttpResponseRedirect('/tasks/get/?folder=' + folder)
