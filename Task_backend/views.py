@@ -128,17 +128,30 @@ def modify_date(request):
 #            change_task_tree_due_date(task, new_date_object)
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)
 
+@csrf_exempt
 def delete_task(request):
     folder = request.GET.get('folder', 'Active')
     
     task_id_list = request.GET.getlist('task_id_list[]')
-    print >>sys.stderr, task_id_list
+    
+    origin = request.POST.get('origin', None)
+    if origin != None:
+        email = request.POST.get('email', '')
+        password = request.POST.get('password', '')
+        user = authenticate_user(email, password)
+        if user == None:
+            return HttpResponse(json.dumps('0', indent=4), \
+                                mimetype='application/json')
+        task_id_list = json.loads(request.POST.get("task_id_list", ""))
+    else:
+        user = request.user
+    
     if task_id_list != []:
         for task_id in task_id_list:
-            task = get_task_object(request.user, task_id)
+            task = get_task_object(user, task_id)
             if task != None:
-                delete_task_tree(request.user, task)
-                delete_single_task(request.user, task)
+                delete_task_tree(user, task)
+                delete_single_task(user, task)
     else:
         task_id = request.GET.get('task_id', -1)
         print >>sys.stderr, task_id
@@ -147,6 +160,9 @@ def delete_task(request):
             if task != None:
                 delete_task_tree(request.user, task)
                 delete_single_task(request.user, task)
+    if origin != None:
+        return HttpResponse(json.dumps('1', indent=4), \
+                        mimetype='application/json')
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)
 
 @csrf_exempt
