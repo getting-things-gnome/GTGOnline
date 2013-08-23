@@ -423,3 +423,10 @@
 [21/Aug/2013 02:03:02] INFO [User_backend.user:51] LogOUT - email = albert@desilva.com | id = 2
 [21/Aug/2013 12:59:07] INFO [User_backend.user:42] LogIN -- email = albert@desilva.com | id = 2
 [22/Aug/2013 14:45:14] INFO [User_backend.user:42] LogIN -- email = albert@desilva.com | id = 2
+[22/Aug/2013 16:34:59] INFO [User_backend.user:51] LogOUT - email = albert@desilva.com | id = 2
+[22/Aug/2013 16:36:07] INFO [User_backend.user:42] LogIN -- email = michael@hollick.com | id = 3
+[23/Aug/2013 12:21:31] INFO [User_backend.user:42] LogIN -- email = trevor@philips.com | id = 5
+[23/Aug/2013 12:36:00] INFO [User_backend.user:51] LogOUT - email = trevor@philips.com | id = 5
+[23/Aug/2013 12:36:40] ERROR [User_backend.user:113] Gravatar profile fetch error for email = "nikobellic914@aol.com" hash = "a5a0d3643b9d7cf67258e1f2e266127a" error = "HTTP Error 404: Not Found"
+[23/Aug/2013 12:37:44] INFO [User_backend.user:42] LogIN -- email = nikobellic914@aol.com | id = 19
+[23/Aug/2013 22:42:57] INFO [User_backend.user:42] LogIN -- email = nikobellic914@aol.com | id = 19

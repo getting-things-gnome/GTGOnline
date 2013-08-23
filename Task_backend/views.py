@@ -182,7 +182,6 @@ def new_task(request):
     return HttpResponse(json.dumps(id_dict, indent=4), \
                             mimetype='application/json')
 
-@csrf_exempt
 def update_task(request):
     folder = request.GET.get('folder', 'Active')
     name = request.REQUEST.get('name', 'No Name received')
@@ -210,6 +209,28 @@ def update_task(request):
     #print >>sys.stderr, task_tree
     return HttpResponse(json.dumps(task_tree, indent = 4), \
                         mimetype='application/json')
+
+@csrf_exempt
+def bulk_update(request):
+    email = request.POST.get('email', '')
+    password = request.POST.get('password', '')
+    user = authenticate_user(email, password)
+    
+    if user == None:
+        return HttpResponse(json.dumps('0', indent = 4), \
+                            mimetype='application/json')
+    
+    task_list = json.loads(request.POST.get('task_list', []))
+    print >>sys.stderr, "Task List = " + str(task_list)
+    origin = request.POST.get('origin', None)
+    for task in task_list:
+        update_task_details(user, task["id"], task["name"], \
+                            task["description"], task["start_date"], \
+                            task["due_date"], 'Active', origin = origin, \
+                            subtask_ids = task["subtask_ids"])
+    
+    return HttpResponse(json.dumps('1', indent = 4), \
+                            mimetype='application/json')
 
 def get_tasks_due_by(request):
     folder = request.GET.get('folder', 'Active')

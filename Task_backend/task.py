@@ -260,7 +260,7 @@ def get_task_tree2(user, task_list, indent, visited_list, folder):
 
 def update_task_details(user, task_id, new_name, new_description, \
                         new_start_date, new_due_date, folder, \
-                        origin = None):
+                        origin = None, subtask_ids = []):
     task = get_task_object(user, task_id)
     if task == None:
         return
@@ -279,6 +279,9 @@ def update_task_details(user, task_id, new_name, new_description, \
     if task.shared_with.exists():
         update_log(user, task, LOG_TASK_MODIFY)
     
+    if subtask_ids != []:
+        task = add_remove_subtasks(task, subtask_ids)
+    
     change_task_tree_due_date(user, task, new_due_date)
     task.save()
     #print >>sys.stderr, str(get_oldest_parent(task))
@@ -287,6 +290,22 @@ def update_task_details(user, task_id, new_name, new_description, \
         return None
     
     return get_task_tree(user, get_oldest_parent(task), 0, [], folder)
+
+def add_remove_subtasks(task, subtask_ids):
+    existing = task.subtasks.all()
+    existing_ids = [str(subtask.id) for subtask in existing]
+    to_add = list(set(subtask_ids) - set(existing_ids))
+    
+    to_add_tasks = task.subtasks.filter(id__in = to_add)
+    print >>sys.stderr, "To Add subtasks = " + str(to_add_tasks)
+    task.subtasks.add(*to_add_tasks)
+    
+    to_delete = list(set(existing_ids) - set(subtask_ids))
+    to_delete_tasks = task.subtasks.filter(id__in = to_delete)
+    print >>sys.stderr, "To Delete subtasks = " + str(to_delete_tasks)
+    task.subtasks.remove(*to_delete_tasks)
+    
+    return task
 
 #def update_task_name(user, new_name, task_object, tag_list = None):
 #    task_object.name = new_name
