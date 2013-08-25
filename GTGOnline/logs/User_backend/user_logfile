@@ -430,3 +430,24 @@
 [23/Aug/2013 12:36:40] ERROR [User_backend.user:113] Gravatar profile fetch error for email = "nikobellic914@aol.com" hash = "a5a0d3643b9d7cf67258e1f2e266127a" error = "HTTP Error 404: Not Found"
 [23/Aug/2013 12:37:44] INFO [User_backend.user:42] LogIN -- email = nikobellic914@aol.com | id = 19
 [23/Aug/2013 22:42:57] INFO [User_backend.user:42] LogIN -- email = nikobellic914@aol.com | id = 19
+[24/Aug/2013 13:01:43] INFO [User_backend.user:42] LogIN -- email = nikobellic914@aol.com | id = 19
+[24/Aug/2013 17:28:10] INFO [User_backend.user:51] LogOUT - email = nikobellic914@aol.com | id = 19
+[25/Aug/2013 10:20:01] INFO [User_backend.user:42] LogIN -- email = nikobellic914@aol.com | id = 19
+[25/Aug/2013 11:51:28] INFO [User_backend.user:51] LogOUT - email = nikobellic914@aol.com | id = 19
+[25/Aug/2013 14:54:07] ERROR [User_backend.user:113] Gravatar profile fetch error for email = "new_niko@bellic.com" hash = "e0e9a79959fbbc1f5f3ce8d4034b22e1" error = "HTTP Error 404: Not Found"
+[25/Aug/2013 14:54:17] INFO [User_backend.user:42] LogIN -- email = new_niko@bellic.com | id = 20
+[25/Aug/2013 14:57:10] INFO [User_backend.user:51] LogOUT - email = new_niko@bellic.com | id = 20
+[25/Aug/2013 14:57:22] INFO [User_backend.user:42] LogIN -- email = nikobellic914@aol.com | id = 19
+[25/Aug/2013 14:59:47] INFO [User_backend.user:51] LogOUT - email = nikobellic914@aol.com | id = 19
+[25/Aug/2013 14:59:57] INFO [User_backend.user:42] LogIN -- email = new_niko@bellic.com | id = 20
+[25/Aug/2013 16:37:08] INFO [User_backend.user:51] LogOUT - email = new_niko@bellic.com | id = 20
+[25/Aug/2013 16:37:20] INFO [User_backend.user:42] LogIN -- email = nikobellic914@aol.com | id = 19
+[25/Aug/2013 16:37:43] INFO [User_backend.user:51] LogOUT - email = nikobellic914@aol.com | id = 19
+[25/Aug/2013 17:04:54] INFO [User_backend.user:42] LogIN -- email = new_niko@bellic.com | id = 20
+[25/Aug/2013 17:45:54] INFO [User_backend.user:51] LogOUT - email = new_niko@bellic.com | id = 20
+[25/Aug/2013 17:46:06] INFO [User_backend.user:42] LogIN -- email = nikobellic914@aol.com | id = 19
+[25/Aug/2013 17:51:03] INFO [User_backend.user:51] LogOUT - email = nikobellic914@aol.com | id = 19
+[25/Aug/2013 17:51:12] INFO [User_backend.user:42] LogIN -- email = new_niko@bellic.com | id = 20
+[25/Aug/2013 18:05:36] INFO [User_backend.user:51] LogOUT - email = new_niko@bellic.com | id = 20
+[25/Aug/2013 18:05:46] INFO [User_backend.user:42] LogIN -- email = nikobellic914@aol.com | id = 19
+[25/Aug/2013 18:06:42] INFO [User_backend.user:51] LogOUT - email = nikobellic914@aol.com | id = 19

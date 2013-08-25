@@ -97,7 +97,8 @@ def modify_status(request):
                                task_id == '-1' ):
         for task_id in task_id_list:
             task = change_task_status(request.user, task_id, new_status)
-            change_task_tree_status(request.user, task, new_status)
+            if task != None:
+                change_task_tree_status(request.user, task, new_status)
     else:
         if task_id > -1:
             task = change_task_status(request.user, task_id, new_status)
@@ -224,7 +225,7 @@ def bulk_update(request):
     print >>sys.stderr, "Task List = " + str(task_list)
     origin = request.POST.get('origin', None)
     for task in task_list:
-        update_task_details(user, task["id"], task["name"], \
+        update_task_details(user, task["task_id"], task["name"], \
                             task["description"], task["start_date"], \
                             task["due_date"], 'Active', origin = origin, \
                             subtask_ids = task["subtask_ids"])

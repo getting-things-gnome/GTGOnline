@@ -132,7 +132,7 @@ def get_task_details(user, task, include_subtasks = False):
                                           precise_needed = True)
     subtask_list = []
     if include_subtasks:
-        subtask_list = [subtask.id for subtask in task.subtasks.all()]
+        subtask_list = [str(subtask.id) for subtask in task.subtasks.all()]
     details =  {"id": task.id, "name": task.name, \
                 "description": task.description, \
                 "start_date": start_date, "due_date": due_date, \
@@ -294,9 +294,11 @@ def update_task_details(user, task_id, new_name, new_description, \
 def add_remove_subtasks(task, subtask_ids):
     existing = task.subtasks.all()
     existing_ids = [str(subtask.id) for subtask in existing]
+    print >>sys.stderr, "Subtask ids = " + str(subtask_ids)
+    print >>sys.stderr, "Existing Subtask ids = " + str(existing_ids)
     to_add = list(set(subtask_ids) - set(existing_ids))
     
-    to_add_tasks = task.subtasks.filter(id__in = to_add)
+    to_add_tasks = Task.objects.filter(id__in = to_add)
     print >>sys.stderr, "To Add subtasks = " + str(to_add_tasks)
     task.subtasks.add(*to_add_tasks)
     
