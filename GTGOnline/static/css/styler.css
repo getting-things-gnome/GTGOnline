@@ -1255,7 +1255,7 @@ div.task-row {
 .task_list_field {
   width: 666px;
   max-width: 666px;
-  height: 400px;
+  height: 300px;
   min-height: 150px;
   /*overflow: auto;*/
   resize: vertical;

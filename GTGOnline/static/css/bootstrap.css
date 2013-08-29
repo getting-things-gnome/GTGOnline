@@ -5195,8 +5195,8 @@ input[type="submit"].btn.btn-mini {
 
 .modal-big-height {
   position: relative;
-  max-height: 500px;
-  min-height: 400px;
+  max-height: 400px;
+  min-height: 300px;
   padding: 15px;
   overflow-y: auto;
 }
