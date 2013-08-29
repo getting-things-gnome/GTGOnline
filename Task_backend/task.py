@@ -649,8 +649,11 @@ def update_log(user, task, log_type, user_list = [], new_status = IS_ACTIVE):
         obj.log += s
         obj.save()
     else:
-        obj = Log.objects.get(task = task)
-        obj.delete()
+        try:
+            obj = Log.objects.get(task = task)
+            obj.delete()
+        except Log.DoesNotExist:
+            pass
 
 def get_all_tasks_details(email):
     user = get_user_object(email)

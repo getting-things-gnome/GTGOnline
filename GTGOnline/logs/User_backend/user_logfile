@@ -451,3 +451,4 @@
 [25/Aug/2013 18:05:36] INFO [User_backend.user:51] LogOUT - email = new_niko@bellic.com | id = 20
 [25/Aug/2013 18:05:46] INFO [User_backend.user:42] LogIN -- email = nikobellic914@aol.com | id = 19
 [25/Aug/2013 18:06:42] INFO [User_backend.user:51] LogOUT - email = nikobellic914@aol.com | id = 19
+[26/Aug/2013 11:41:18] INFO [User_backend.user:42] LogIN -- email = new_niko@bellic.com | id = 20
