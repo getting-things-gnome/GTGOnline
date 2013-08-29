@@ -1052,9 +1052,12 @@ function description_is_short(task_description) {
 	return task_description.length < DESCRIPTION_MAX_LENGTH
 }
 
-function shortify_description(task_description) {
+function shortify_description(task_description, level) {
     //return task_name.substring(0, NAME_MAX_LENGTH-3) + "<span style='color: #FF0000'>" + task_name.charAt(NAME_MAX_LENGTH-3) + "</span><span style='color: #EE0000'>" + task_name.charAt(NAME_MAX_LENGTH-2) + "</span><span style='color: #DD0000'>" + task_name.charAt(NAME_MAX_LENGTH-1) + "</span>"
-    return task_description.substring(0, DESCRIPTION_MAX_LENGTH-3) + '...'
+    if (level == 1) {
+        return task_description.substring(0, DESCRIPTION_MAX_LENGTH-3) + '...'
+    }
+    return task_description.substring(0, 500) + '...'
 }
 
 function tags_are_less(tags_length) {

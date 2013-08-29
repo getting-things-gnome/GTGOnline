@@ -70,7 +70,7 @@
 							<span class="muted" data-bind="text: description"></span>
 						</span>
 						<span data-bind="ifnot: description_is_short(description)">
-							<span class="muted task_description" data-bind="text: shortify_description(description), attr: { 'data-content': description }" rel="popover" data-trigger="hover"></span>
+							<span class="muted task_description" data-bind="text: shortify_description(description, 1), attr: { 'data-content': shortify_description(description, 2) }" rel="popover" data-trigger="hover"></span>
 						</span>
 					</a>
 				</div>
