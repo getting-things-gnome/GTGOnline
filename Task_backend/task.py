@@ -677,14 +677,14 @@ def add_gtg_tasks(user, task_list):
     id_dict = {}
     print >>sys.stderr, "At starting, task list = " + str(task_list) + '\n\n'
     for key, value in task_list.iteritems():
-        print >>sys.stderr, "key = " + key + " value = " + str(value)
+        #print >>sys.stderr, "key = " + key + " value = " + str(value)
         if value['subtasks'] != []:
             subtasks[key] = value['subtasks']
         task, parent = add_task(user, value['name'], value['description'], \
                                 value['start_date'], value['due_date'], \
                                 None, needs_task_dict = False)
         if value['status'] != FOLDER_STATUS_STR.get(task.status, 'Active')[:7]:
-            print >>sys.stderr, "STATUS DIFFERENT, old = " + FOLDER_STATUS_STR.get(task.status, 'Active')[:7] + " new = " + value['status']
+            #print >>sys.stderr, "STATUS DIFFERENT, old = " + FOLDER_STATUS_STR.get(task.status, 'Active')[:7] + " new = " + value['status']
             change_task_status(user, -1, \
                                FOLDER_STATUS_INT.get(value['status'], \
                                                      IS_ACTIVE), task = task)
