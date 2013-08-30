@@ -229,7 +229,7 @@ def bulk_update(request):
                             task["description"], task["start_date"], \
                             task["due_date"], 'Active', origin = origin, \
                             subtask_ids = task["subtask_ids"], \
-                            status = task["status"])
+                    status = FOLDER_STATUS_INT.get(task["status"], IS_ACTIVE))
     
     return HttpResponse(json.dumps('1', indent = 4), \
                             mimetype='application/json')
