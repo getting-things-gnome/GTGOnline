@@ -286,7 +286,7 @@ def update_task_details(user, task_id, new_name, new_description, \
     
     if origin != None:
         print >>sys.stderr, "OLD STATUS = " + str(task.status)
-        task.status = status
+        change_task_status(user, -1, status, task = task)
         print >>sys.stderr, "RECEIVED STATUS = " + str(status)
         print >>sys.stderr, "NEW STATUS = " + str(task.status)
     
@@ -418,8 +418,9 @@ def set_visited(task, visited_list):
 def visited(task, visited_list):
     return task in visited_list
 
-def change_task_status(user, task_id, new_status):
-    task = get_task_object(user, task_id)
+def change_task_status(user, task_id, new_status, task = None):
+    if task == None:
+        task = get_task_object(user, task_id)
     if task == None:
         return None
     task.status = new_status
@@ -682,6 +683,11 @@ def add_gtg_tasks(user, task_list):
         task, parent = add_task(user, value['name'], value['description'], \
                                 value['start_date'], value['due_date'], \
                                 None, needs_task_dict = False)
+        if value['status'] != FOLDER_STATUS_STR.get(task.status, 'Active')[:7]:
+            print >>sys.stderr, "STATUS DIFFERENT, old = " + FOLDER_STATUS_STR.get(task.status, 'Active')[:7] + " new = " + value['status']
+            change_task_status(user, -1, \
+                               FOLDER_STATUS_INT.get(value['status'], \
+                                                     IS_ACTIVE), task = task)
         task_list[key] = task
         id_dict[key] = str(task.id)
         
