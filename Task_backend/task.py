@@ -260,7 +260,7 @@ def get_task_tree2(user, task_list, indent, visited_list, folder):
 
 def update_task_details(user, task_id, new_name, new_description, \
                         new_start_date, new_due_date, folder, \
-                        origin = None, subtask_ids = []):
+                        origin = None, subtask_ids = [], status = IS_ACTIVE):
     task = get_task_object(user, task_id)
     if task == None:
         return
@@ -283,6 +283,10 @@ def update_task_details(user, task_id, new_name, new_description, \
         task = add_remove_subtasks(task, subtask_ids)
     
     change_task_tree_due_date(user, task, new_due_date)
+    
+    if origin != None:
+        task.status = status
+    
     task.save()
     #print >>sys.stderr, str(get_oldest_parent(task))
     

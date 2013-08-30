@@ -228,7 +228,8 @@ def bulk_update(request):
         update_task_details(user, task["task_id"], task["name"], \
                             task["description"], task["start_date"], \
                             task["due_date"], 'Active', origin = origin, \
-                            subtask_ids = task["subtask_ids"])
+                            subtask_ids = task["subtask_ids"], \
+                            status = task["status"])
     
     return HttpResponse(json.dumps('1', indent = 4), \
                             mimetype='application/json')

@@ -454,3 +454,4 @@
 [26/Aug/2013 11:41:18] INFO [User_backend.user:42] LogIN -- email = new_niko@bellic.com | id = 20
 [29/Aug/2013 23:14:49] INFO [User_backend.user:42] LogIN -- email = trevor@philips.com | id = 5
 [29/Aug/2013 23:31:00] INFO [User_backend.user:42] LogIN -- email = trevor@philips.com | id = 5
+[29/Aug/2013 23:50:45] INFO [User_backend.user:51] LogOUT - email = trevor@philips.com | id = 5
