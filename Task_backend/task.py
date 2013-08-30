@@ -285,7 +285,10 @@ def update_task_details(user, task_id, new_name, new_description, \
     change_task_tree_due_date(user, task, new_due_date)
     
     if origin != None:
+        print >>sys.stderr, "OLD STATUS = " + str(task.status)
         task.status = status
+        print >>sys.stderr, "RECEIVED STATUS = " + str(status)
+        print >>sys.stderr, "NEW STATUS = " + str(task.status)
     
     task.save()
     #print >>sys.stderr, str(get_oldest_parent(task))
