@@ -1123,7 +1123,7 @@ div.task-row {
 }
 
 .taskDone {
-  background-image:url(../img/tickmark.png);
+  background-image:url(../img/tickmark_translucent.png);
   background-repeat: no-repeat;
   background-size: 50px 40px;
   background-position: 6% 0%;
