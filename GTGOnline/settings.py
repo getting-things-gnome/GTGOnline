@@ -189,7 +189,7 @@ LOGGING = {
         'task_logfile': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': PROJECT_DIR + "/logs/Task_backend/task_logfile",
+            'filename': WSGI_DIR + "/logs/Task_backend/task_logfile",
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
@@ -197,7 +197,7 @@ LOGGING = {
         'tag_logfile': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': PROJECT_DIR + "/logs/Tag_backend/tag_logfile",
+            'filename': WSGI_DIR + "/logs/Tag_backend/tag_logfile",
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
@@ -205,7 +205,7 @@ LOGGING = {
         'user_logfile': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': PROJECT_DIR + "/logs/User_backend/user_logfile",
+            'filename': WSGI_DIR + "/logs/User_backend/user_logfile",
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
@@ -213,7 +213,7 @@ LOGGING = {
         'group_logfile': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': PROJECT_DIR + "/logs/Group_backend/group_logfile",
+            'filename': WSGI_DIR + "/logs/Group_backend/group_logfile",
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
