@@ -7,6 +7,7 @@ OPENSHIFT_SETTINGS = 0
 LOCALHOST_SETTINGS = 1
 
 if 'OPENSHIFT_REPO_DIR' in os.environ:
+    REPO_DIR = os.environ['OPENSHIFT_REPO_DIR']
     WSGI_DIR = os.path.join(os.environ['OPENSHIFT_REPO_DIR'], 'wsgi')
     use_settings = OPENSHIFT_SETTINGS
 else:
@@ -189,7 +190,7 @@ LOGGING = {
         'task_logfile': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': WSGI_DIR + "/logs/Task_backend/task_logfile",
+            'filename': REPO_DIR + "/logs/Task_backend/task_logfile",
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
@@ -197,7 +198,7 @@ LOGGING = {
         'tag_logfile': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': WSGI_DIR + "/logs/Tag_backend/tag_logfile",
+            'filename': REPO_DIR + "/logs/Tag_backend/tag_logfile",
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
@@ -205,7 +206,7 @@ LOGGING = {
         'user_logfile': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': WSGI_DIR + "/logs/User_backend/user_logfile",
+            'filename': REPO_DIR + "/logs/User_backend/user_logfile",
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
@@ -213,7 +214,7 @@ LOGGING = {
         'group_logfile': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': WSGI_DIR + "/logs/Group_backend/group_logfile",
+            'filename': REPO_DIR + "/logs/Group_backend/group_logfile",
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
