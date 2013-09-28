@@ -298,6 +298,10 @@ function TaskFoldersViewModel() {
         $("#tag_dropdown_options").hide();
     };
     
+	self.goToTaskQuery = function() {
+		location.hash = 'query=' + self.search_query();
+	}
+
     $.get('/tasks/get/due_by', { days_left: 0, folder: self.chosenFolderId() }, function(data) {
         self.todays_tasks(data);
                 
@@ -320,7 +324,13 @@ function TaskFoldersViewModel() {
                 self.header_name(display);
                 self.titlebar_display(display);
             }
-            else {
+            else if (this.params.folder.substring(0,5) == 'query') {
+				self.chosenFolderId(this.params.folder);
+                self.chosenSharedFolderId(this.params.folder);
+				self.call_search();
+				return;
+			}
+			else {
                 self.chosenFolderId(this.params.folder);
                 self.chosenSharedFolderId(this.params.folder);
                 var display = this.params.folder + ' Tasks';

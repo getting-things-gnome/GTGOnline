@@ -3,10 +3,6 @@
 TAG_REGEX = ur'(?:^|[\s])(@[\w\/\.\-\:]*\w)'
 
 # The regex used to validate email
-# Old one. Does not accept email - 'xyzzy+foo@example.com'
-#EMAIL_REGEX = ur'[\.\w]{1,}[@]\w+[.]\w+'
-# New one. Accepts emails containing single '+' in username.
-# eg:- 'xyzzy+foo@example.com'
 EMAIL_REGEX = ur'[\.\w]+[\+]?[\.\w]+[@]\w+[.]\w+'
 
 # The regexes used for start date and due date
