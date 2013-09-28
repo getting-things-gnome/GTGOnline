@@ -317,22 +317,18 @@ function TaskFoldersViewModel() {
     // Client-side routes
     Sammy(function() {
         this.get('#:folder', function() {
+			self.chosenFolderId(this.params.folder);
+            self.chosenSharedFolderId(this.params.folder);
             if (this.params.folder.substring(0,5) == 'Tasks' || this.params.folder.substring(0,4) == 'Your') {
-                self.chosenFolderId(this.params.folder);
-                self.chosenSharedFolderId(this.params.folder);
                 var display = this.params.folder.replace(/_/g, ' ')
                 self.header_name(display);
                 self.titlebar_display(display);
             }
             else if (this.params.folder.substring(0,5) == 'query') {
-				self.chosenFolderId(this.params.folder);
-                self.chosenSharedFolderId(this.params.folder);
 				self.call_search();
 				return;
 			}
 			else {
-                self.chosenFolderId(this.params.folder);
-                self.chosenSharedFolderId(this.params.folder);
                 var display = this.params.folder + ' Tasks';
                 self.header_name(display);
                 self.titlebar_display(display);
