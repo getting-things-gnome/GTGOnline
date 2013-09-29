@@ -6,11 +6,15 @@ import os
 OPENSHIFT_SETTINGS = 0
 LOCALHOST_SETTINGS = 1
 
+PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
+print PROJECT_DIR
+
 if 'OPENSHIFT_REPO_DIR' in os.environ:
     REPO_DIR = os.environ['OPENSHIFT_REPO_DIR']
     WSGI_DIR = os.path.join(os.environ['OPENSHIFT_REPO_DIR'], 'wsgi')
     use_settings = OPENSHIFT_SETTINGS
 else:
+    REPO_DIR = PROJECT_DIR
     use_settings = LOCALHOST_SETTINGS
 
 DEBUG = True
@@ -22,8 +26,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
-print PROJECT_DIR
 
 if use_settings == OPENSHIFT_SETTINGS:
     DATABASES = {

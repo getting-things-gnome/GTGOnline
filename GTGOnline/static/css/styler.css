@@ -204,13 +204,6 @@ body .navbar .user > a b.caret {
   border-top: 4px solid #fff;
   vertical-align: middle;
 }
-body .navbar .dropdown-menu li > a:hover,
-body .navbar .dropdown-menu li > a:focus {
-  background: #15aaff;
-}
-body .navbar .dropdown-submenu:hover > a {
-  background: #15aaff;
-}
 
 body .content .section.menu {
   /*height: 90px;*/
