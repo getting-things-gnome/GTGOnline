@@ -168,6 +168,7 @@ INSTALLED_APPS = (
     'Tag_backend',
     'User_backend',
     'Group_backend',
+    'Api_docs',
 )
 
 # A sample logging configuration. The only tangible logging
