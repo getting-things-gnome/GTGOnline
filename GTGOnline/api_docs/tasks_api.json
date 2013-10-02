@@ -220,9 +220,13 @@
             "start_date",
             "due_date",
             "closed_date",
+            "last_modified_date",
+            "shared_with",
+            "owner"
             "status",
             "tags",
-            "subtasks"
+            "subtasks",
+            "indent"
          ],
          "properties":{
             "id":{

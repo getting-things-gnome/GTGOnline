@@ -135,9 +135,11 @@ def delete_task(request):
     
     task_id_list = request.GET.getlist('task_id_list[]')
     
+    query_is_from_client = True
     email = request.POST.get('email', None)
     password = request.POST.get('password', None)
     if email != None and password != None:
+        query_is_from_client = False
         user = authenticate_user(email, password)
         if user == None:
             return HttpResponse(json.dumps('0', indent=4), \
@@ -160,7 +162,7 @@ def delete_task(request):
             if task != None:
                 delete_task_tree(request.user, task)
                 delete_single_task(request.user, task)
-    if origin != None:
+    if not query_is_from_client:
         return HttpResponse(json.dumps('1', indent=4), \
                         mimetype='application/json')
     return HttpResponseRedirect('/tasks/get/?folder=' + folder)
