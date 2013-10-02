@@ -135,10 +135,9 @@ def delete_task(request):
     
     task_id_list = request.GET.getlist('task_id_list[]')
     
-    origin = request.POST.get('origin', None)
-    if origin != None:
-        email = request.POST.get('email', '')
-        password = request.POST.get('password', '')
+    email = request.POST.get('email', None)
+    password = request.POST.get('password', None)
+    if email != None and password != None:
         user = authenticate_user(email, password)
         if user == None:
             return HttpResponse(json.dumps('0', indent=4), \
