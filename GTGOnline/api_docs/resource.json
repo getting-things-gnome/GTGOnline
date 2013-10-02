@@ -17,7 +17,7 @@
    ],
    "info":{
       "title":"GTGOnline! API Description",
-      "description":"The URIs listed here are still in development and are subject to change. If a URI isn't working, please contact the developer",
+      "description":"The URIs listed here are still in development and are subject to change. If a URI isn't working, please contact the developer\nIf you don't have an account on server, use the following credentials -\nemail - test@test.com\npassword - testtest",
       "termsOfServiceUrl":"http://i.imgur.com/TbwzurA.png",
       "contact":"scr.im/nikobellic"
    }

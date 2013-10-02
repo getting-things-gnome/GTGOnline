@@ -140,7 +140,7 @@
                   },
                   {
                      "name":"task_id_list",
-                     "description":"Array containing list of Task ids",
+                     "description":"Array containing list of Task ids. Eg:- [151,219]",
                      "required":true,
                      "type":"array",
                      "items":{
