@@ -222,7 +222,7 @@
             "closed_date",
             "last_modified_date",
             "shared_with",
-            "owner"
+            "owner",
             "status",
             "tags",
             "subtasks",
@@ -259,12 +259,13 @@
                "description":"The Time at which the task was last modified on server. Format - 'dd/mm/yy hh:mm:ss'"
             },
             "status":{
-               "type":"string",
+               "type":"integer",
+               "format":"int32",
                "description":"Status of the Task",
                "enum":[
-                  "Active",
-                  "Done",
-                  "Dismissed"
+                  0,
+                  1,
+                  2
                ]
             },
             "subtasks":{
