@@ -1,7 +1,7 @@
 {
    "apiVersion":"1.0.0",
    "swaggerVersion":"1.3",
-   "basePath":"http://localhost:8000/",
+   "basePath":"http://gtgonline-parinporecha.rhcloud.com/",
    "resourcePath":"user/",
    "produces":[
       "application/json"
