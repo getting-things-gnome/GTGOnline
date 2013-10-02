@@ -295,7 +295,7 @@
             "indent":{
                "type":"integer",
                "description":"The level of task. 0 means main task. >0 are subtasks. Current implementation will return only 0"
-            },
+            }
          }
       },
       "Tag":{
