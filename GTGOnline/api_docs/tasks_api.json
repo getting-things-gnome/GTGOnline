@@ -1,0 +1,311 @@
+{
+   "apiVersion":"0.1",
+   "swaggerVersion":"1.3",
+   "basePath":"http://localhost:8000/",
+   "resourcePath":"tasks/",
+   "produces":[
+      "application/json"
+   ],
+   "apis":[
+      {
+         "path":"tasks/new/",
+         "operations":[
+            {
+               "method":"POST",
+               "summary":"Create new tasks",
+               "notes":"",
+               "type":"array",
+               "items":{
+                  "$ref":"TaskIdsDict"
+               },
+               "nickname":"CreateNewTasks",
+               "parameters":[
+                  {
+                     "name":"email",
+                     "description":"Email of the user",
+                     "required":true,
+                     "type":"string",
+                     "paramType":"form"
+                  },
+                  {
+                     "name":"password",
+                     "description":"Password of the user",
+                     "required":true,
+                     "type":"string",
+                     "paramType":"form"
+                  },
+                  {
+                     "name":"task_list",
+                     "description":"a dictionary of the model type NewTaskParam",
+                     "required":true,
+                     "type":"string",
+                     "paramType":"form"
+                  }
+               ]
+            }
+         ]
+      },
+      {
+         "path":"tasks/serial/",
+         "operations":[
+            {
+               "method":"POST",
+               "summary":"Get all the tasks of a user",
+               "notes":"",
+               "type":"array",
+               "items":{
+                  "$ref": "TaskDetails"
+               },
+               "nickname":"GetAllTasks",
+               "parameters":[
+                  {
+                     "name":"email",
+                     "description":"Email of the user",
+                     "required":true,
+                     "type":"string",
+                     "paramType":"form"
+                  },
+                  {
+                     "name":"password",
+                     "description":"Password of the user",
+                     "required":true,
+                     "type":"string",
+                     "paramType":"form"
+                  }
+               ]
+            }
+         ]
+      },
+      {
+         "path":"tasks/bulk_update/",
+         "operations":[
+            {
+               "method":"POST",
+               "summary":"Update one or multiple tasks",
+               "notes":"",
+               "type":"string",
+               "nickname":"UpdateTasks",
+               "parameters":[
+                  {
+                     "name":"email",
+                     "description":"Email of the user",
+                     "required":true,
+                     "type":"string",
+                     "paramType":"form"
+                  },
+                  {
+                     "name":"password",
+                     "description":"Password of the user",
+                     "required":true,
+                     "type":"string",
+                     "paramType":"form"
+                  },
+                  {
+                     "name":"task_list",
+                     "description":"Array containing dictionaries of model type TaskDetails",
+                     "required":true,
+                     "type":"array",
+                     "items":{
+                        "$ref":"TaskDetails"
+                     },
+                     "paramType":"form"
+                  }
+               ]
+            }
+         ]
+      },
+      {
+         "path":"tasks/delete/",
+         "operations":[
+            {
+               "method":"POST",
+               "summary":"Delete one or multiple tasks",
+               "notes":"",
+               "type":"string",
+               "nickname":"DeleteTasks",
+               "parameters":[
+                  {
+                     "name":"email",
+                     "description":"Email of the user",
+                     "required":true,
+                     "type":"string",
+                     "paramType":"form"
+                  },
+                  {
+                     "name":"password",
+                     "description":"Password of the user",
+                     "required":true,
+                     "type":"string",
+                     "paramType":"form"
+                  },
+                  {
+                     "name":"task_id_list",
+                     "description":"Array containing list of Task ids",
+                     "required":true,
+                     "type":"array",
+                     "items":{
+                        "$ref": "string"
+                     },
+                     "paramType":"form"
+                  }
+               ]
+            }
+         ]
+      }
+   ],
+   "models":{
+      "User":{
+         "id":"User",
+         "properties":{
+            "id":{
+               "type":"integer",
+               "format":"int64",
+               "description":"Unique identifier for the user"
+            },
+            "username":{
+               "type":"string",
+               "description":"Unique username"
+            },
+            "firstName":{
+               "type":"string",
+               "description":"First name of the user"
+            },
+            "lastName":{
+               "type":"string",
+               "description":"Last name of the user"
+            },
+            "email":{
+               "type":"string",
+               "description":"Email address of the user"
+            },
+            "password":{
+               "type":"string",
+               "description":"Password name of the user"
+            },
+            "phone":{
+               "type":"string",
+               "description":"Phone number of the user"
+            },
+            "userStatus":{
+               "type":"integer",
+               "format":"int32",
+               "description":"User Status",
+               "enum":[
+                  "1-registered",
+                  "2-active",
+                  "3-closed"
+               ]
+            }
+         }
+      },
+      "TaskIdsDict":{
+         "id":"TaskIdsDict",
+         "required":[
+            "TaskLocalId"
+         ],
+         "properties":{
+            "TaskLocalId":{
+               "type":"string",
+               "description":"Remote Id of the Task"
+            }
+         }
+      },
+      "TaskDetails":{
+         "id":"TaskDetails",
+         "description": "Task Details model",
+         "required":[
+            "id",
+            "name",
+            "description",
+            "start_date",
+            "due_date",
+            "closed_date",
+            "status",
+            "tags",
+            "subtasks"
+         ],
+         "properties":{
+            "id":{
+               "type":"string",
+               "description":"Unique Id of the Task"
+            },
+            "name":{
+               "type":"string",
+               "description":"Name or Title of the Task"
+            },
+            "description":{
+               "type":"string",
+               "description":"Description of the Task"
+            },
+            "start_date":{
+               "type":"string",
+               "description":"Start date of the Task in the format 'dd/mm/yy', 'dd/mm/YYYY' or ''"
+            },
+            "due_date":{
+               "type":"string",
+               "description":"Due date of the Task in the format 'dd/mm/yy', 'dd/mm/YYYY' or ''"
+            },
+            "closed_date":{
+               "type":"string",
+               "description":"If the Task is not Active, this will contain the date when it was closed (i.e. - marked as Done/Dismissed). Format - 'dd/mm/yy', 'dd/mm/YYYY' or ''"
+            },
+            "status":{
+               "type":"string",
+               "description":"Status of the Task",
+               "enum":[
+                  "Active",
+                  "Done",
+                  "Dismissed"
+               ]
+            },
+            "subtasks":{
+               "type":"array",
+               "items":{
+                  "$ref":"string"
+               },
+               "description":"Array containing the ids of subtasks"
+            },
+            "tags":{
+               "type":"array",
+               "items":{
+                  "$ref":"Tag"
+               },
+               "description":"Array of tags in the task. Each tag will be of model type - Tag"
+            }
+         }
+      },
+      "Tag":{
+         "id":"Tag",
+         "required":[
+            "id",
+            "name",
+            "color",
+            "icon",
+            "count"
+         ],
+         "properties":{
+            "id":{
+               "type":"string",
+               "description":"Unique identifier for the tag"
+            },
+            "name":{
+               "type":"string",
+               "description":"Name of the tag"
+            },
+            "color":{
+               "type":"string",
+               "description":"Color of the tag 6 digit hex"
+            },
+            "icon":{
+               "type":"string",
+               "description":"icon associated with the tag if any"
+            },
+            "count":{
+               "type":"integer",
+               "format":"int32",
+               "description":"No. of tasks having this tag in name or description"
+            }
+         }
+      }
+   }
+}

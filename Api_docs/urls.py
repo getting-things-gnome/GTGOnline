@@ -4,9 +4,10 @@ from django.conf.urls import patterns, url
 from Api_docs import views
 
 urlpatterns = patterns('',
-    #url(r'^landing/$', views.landing, name='landing'),
-    #url(r'^login/$', views.landing, name='login'),
-    #url(r'^authenticate/$', views.login, name='authenticate'),
+    url(r'^api_docs/$', views.load_api_docs, name='api_docs'),
+    url(r'^user/$', views.user_api, name='user_api'),
+    url(r'^tasks/$', views.tasks_api, name='tasks_api'),
+    url(r'^tags/$', views.tags_api, name='tags_api'),
     #url(r'^auth_gtg/$', views.custom_auth_for_gtg, name='auth_gtg'),
     #url(r'^logout/$', views.logout, name='logout'),
     #url(r'^after_login/$', views.after_login, name='after_login'),

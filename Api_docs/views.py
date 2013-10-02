@@ -1,22 +1,52 @@
 # Create your views here.
-import os
+from os import path
 import json
 
 from django.http import HttpResponse
+from django.template import loader, RequestContext
+
+def load_api_docs(request):
+    template = loader.get_template('api_docs.html')
+    context = RequestContext(request, {})
+    resp = HttpResponse(template.render(context))
+    return get_httpresponse_with_access_control(resp)
 
 def resource_listing(request):
-    #return HttpResponse('1', mimetype='application/json')
-    CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
-    print "Current path = " + CURRENT_PATH
-    json_data = open(CURRENT_PATH + '/resource.json')
-    #data1 = json.load(json_data) // deserialises it
-    #data2 = json.dumps(json_data)  #json formatted string
-    resp = HttpResponse()
+    JSON_FILE = '../GTGOnline/api_docs/resource.json'
+    content = read_json_file(JSON_FILE)
+    resp = HttpResponse(content, mimetype="application/json",)
+    return get_httpresponse_with_access_control(resp)
+
+def user_api(request):
+    JSON_FILE = '../GTGOnline/api_docs/user_api.json'
+    content = read_json_file(JSON_FILE)
+    resp = HttpResponse(content, mimetype="application/json",)
+    return get_httpresponse_with_access_control(resp)
+
+def tasks_api(request):
+    JSON_FILE = '../GTGOnline/api_docs/tasks_api.json'
+    content = read_json_file(JSON_FILE)
+    resp = HttpResponse(content, mimetype="application/json",)
+    return get_httpresponse_with_access_control(resp)
+
+def tags_api(request):
+    JSON_FILE = '../GTGOnline/api_docs/tags_api.json'
+    content = read_json_file(JSON_FILE)
+    resp = HttpResponse(content, mimetype="application/json",)
+    return get_httpresponse_with_access_control(resp)
+
+def get_httpresponse_with_access_control(resp):
     resp['Access-Control-Allow-Origin'] = '*'
     resp['Access-Control-Max-Age'] = '120'
     resp['Access-Control-Allow-Credentials'] = 'true'
     resp['Access-Control-Allow-Methods'] = 'HEAD, GET, OPTIONS, POST, DELETE'
-    resp['Access-Control-Allow-Headers'] = 'origin, content-type, accept, x-requested-with'
-    resp['mimetype'] = 'application/json'
-    resp.content = json_data
+    resp['Access-Control-Allow-Headers'] = 'origin, content-type, ' + \
+                                           'accept, x-requested-with'
     return resp
+
+def read_json_file(file_relative_path):
+    CURRENT_PATH = path.dirname(path.realpath(__file__))
+    JSON_FILE = path.join(CURRENT_PATH, file_relative_path)
+    json_data = open(JSON_FILE)
+    json_loaded = json.loads(json_data.read())
+    return json.dumps(json_loaded, indent=4)

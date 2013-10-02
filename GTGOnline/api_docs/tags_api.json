@@ -1,0 +1,70 @@
+{
+   "apiVersion":"0.1",
+   "swaggerVersion":"1.3",
+   "basePath":"http://localhost:8000/",
+   "resourcePath":"tags/",
+   "produces":[
+      "application/json"
+   ],
+   "apis":[
+      {
+         "path":"tags/all/",
+         "operations":[
+            {
+               "method":"POST",
+               "summary":"Get all the tags of a user",
+               "notes":"",
+               "type":"array",
+               "items":{
+                  "$ref":"Tag"
+               },
+               "nickname":"tags",
+               "parameters":[
+                  {
+                     "name":"email",
+                     "description":"Email of the user",
+                     "required":true,
+                     "type":"string",
+                     "paramType":"form"
+                  },
+                  {
+                     "name":"password",
+                     "description":"Password of the user",
+                     "required":true,
+                     "type":"string",
+                     "paramType":"form"
+                  }
+               ]
+            }
+         ]
+      }
+   ],
+   "models":{
+      "Tag":{
+         "id":"Tag",
+         "properties":{
+            "id":{
+               "type":"string",
+               "description":"Unique identifier for the tag"
+            },
+            "name":{
+               "type":"string",
+               "description":"Name of the tag"
+            },
+            "color":{
+               "type":"string",
+               "description":"Color of the tag 6 digit hex"
+            },
+            "icon":{
+               "type":"string",
+               "description":"icon associated with the tag if any"
+            },
+            "count":{
+               "type":"integer",
+               "format":"int32",
+               "description":"No. of tasks having this tag in name or description"
+            }
+         }
+      }
+   }
+}
