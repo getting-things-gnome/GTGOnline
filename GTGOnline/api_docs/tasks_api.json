@@ -226,7 +226,8 @@
          ],
          "properties":{
             "id":{
-               "type":"string",
+               "type":"integer",
+               "format":"int32",
                "description":"Unique Id of the Task"
             },
             "name":{
@@ -248,6 +249,10 @@
             "closed_date":{
                "type":"string",
                "description":"If the Task is not Active, this will contain the date when it was closed (i.e. - marked as Done/Dismissed). Format - 'dd/mm/yy', 'dd/mm/YYYY' or ''"
+            },
+            "last_modified_date":{
+               "type":"string",
+               "description":"The Time at which the task was last modified on server. Format - 'dd/mm/yy hh:mm:ss'"
             },
             "status":{
                "type":"string",
@@ -271,7 +276,26 @@
                   "$ref":"Tag"
                },
                "description":"Array of tags in the task. Each tag will be of model type - Tag"
-            }
+            },
+            "shared_with":{
+               "type":"array",
+               "items":{
+                  "$ref": "string"
+               },
+               "description":"Array of email ids of the users with which this task has been shared. This returns empty array right now. Contact the developer if you want to enable it."
+            },
+            "owner":{
+               "type":"string",
+               "description":"Email-id of the owner of the task"
+            },
+            "last_modified_date":{
+               "type":"string",
+               "description":"The Time at which the task was last modified on server. Format - 'dd/mm/yy hh:mm:ss'"
+            },
+            "indent":{
+               "type":"integer",
+               "description":"The level of task. 0 means main task. >0 are subtasks. Current implementation will return only 0"
+            },
          }
       },
       "Tag":{
@@ -285,7 +309,8 @@
          ],
          "properties":{
             "id":{
-               "type":"string",
+               "type":"integer",
+               "format":"int32",
                "description":"Unique identifier for the tag"
             },
             "name":{
@@ -294,7 +319,7 @@
             },
             "color":{
                "type":"string",
-               "description":"Color of the tag 6 digit hex"
+               "description":"Color of the tag 6 digit hex. If not set, returns ''"
             },
             "icon":{
                "type":"string",
