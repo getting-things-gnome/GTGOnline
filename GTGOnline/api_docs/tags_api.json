@@ -2,13 +2,13 @@
    "apiVersion":"0.1",
    "swaggerVersion":"1.3",
    "basePath":"http://gtgonline-parinporecha.rhcloud.com/",
-   "resourcePath":"tags/",
+   "resourcePath":"api/",
    "produces":[
       "application/json"
    ],
    "apis":[
       {
-         "path":"tags/all/",
+         "path":"api/tags/get/",
          "operations":[
             {
                "method":"POST",

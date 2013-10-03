@@ -2,13 +2,13 @@
    "apiVersion":"0.1",
    "swaggerVersion":"1.3",
    "basePath":"http://gtgonline-parinporecha.rhcloud.com/",
-   "resourcePath":"tasks/",
+   "resourcePath":"api/",
    "produces":[
       "application/json"
    ],
    "apis":[
       {
-         "path":"tasks/new/",
+         "path":"api/tasks/new/",
          "operations":[
             {
                "method":"POST",
@@ -46,7 +46,7 @@
          ]
       },
       {
-         "path":"tasks/serial/",
+         "path":"api/tasks/get/",
          "operations":[
             {
                "method":"POST",
@@ -77,10 +77,10 @@
          ]
       },
       {
-         "path":"tasks/bulk_update/",
+         "path":"api/tasks/update/",
          "operations":[
             {
-               "method":"POST",
+               "method":"PUT",
                "summary":"Update one or multiple tasks",
                "notes":"",
                "type":"string",
@@ -115,7 +115,7 @@
          ]
       },
       {
-         "path":"tasks/delete/",
+         "path":"api/tasks/delete/",
          "operations":[
             {
                "method":"DELETE",

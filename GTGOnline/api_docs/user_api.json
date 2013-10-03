@@ -2,13 +2,13 @@
    "apiVersion":"1.0.0",
    "swaggerVersion":"1.3",
    "basePath":"http://gtgonline-parinporecha.rhcloud.com/",
-   "resourcePath":"user/",
+   "resourcePath":"api/",
    "produces":[
       "application/json"
    ],
    "apis":[
       {
-         "path":"user/auth_gtg/",
+         "path":"api/user/auth/",
          "operations":[
             {
                "method":"POST",

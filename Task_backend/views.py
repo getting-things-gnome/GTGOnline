@@ -135,18 +135,18 @@ def delete_task(request):
     
     task_id_list = request.GET.getlist('task_id_list[]')
     params = QueryDict(request.body, request.encoding)
-    print >>sys.stderr, "Params = " + str(params)
+    #print >>sys.stderr, "Params = " + str(params == {})
     
     query_is_from_client = True
-    email = request.POST.get('email', None)
-    password = request.POST.get('password', None)
-    if email != None and password != None:
+    if params != {}:
         query_is_from_client = False
+        email = params.get('email', None)
+        password = params.get('password', None)
         user = authenticate_user(email, password)
         if user == None:
             return HttpResponse(json.dumps('0', indent=4), \
                                 mimetype='application/json')
-        task_id_list = json.loads(request.POST.get("task_id_list", ""))
+        task_id_list = json.loads(params.get("task_id_list", ""))
     else:
         user = request.user
     
@@ -216,15 +216,16 @@ def update_task(request):
 
 @csrf_exempt
 def bulk_update(request):
-    email = request.POST.get('email', None)
-    password = request.POST.get('password', None)
+    params = QueryDict(request.body, request.encoding)
+    email = params.get('email', None)
+    password = params.get('password', None)
     user = authenticate_user(email, password)
     
     if user == None:
         return HttpResponse(json.dumps('0', indent = 4), \
                             mimetype='application/json')
     
-    task_list = json.loads(request.POST.get('task_list', []))
+    task_list = json.loads(params.get('task_list', []))
     print >>sys.stderr, "Task List = " + str(task_list)
     for task in task_list:
         print >>sys.stderr, "STATUS = " + str(FOLDER_STATUS_INT.get(task["status"], IS_ACTIVE))
