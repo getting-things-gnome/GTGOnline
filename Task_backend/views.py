@@ -214,8 +214,8 @@ def update_task(request):
 
 @csrf_exempt
 def bulk_update(request):
-    email = request.POST.get('email', '')
-    password = request.POST.get('password', '')
+    email = request.POST.get('email', None)
+    password = request.POST.get('password', None)
     user = authenticate_user(email, password)
     
     if user == None:
@@ -224,12 +224,11 @@ def bulk_update(request):
     
     task_list = json.loads(request.POST.get('task_list', []))
     print >>sys.stderr, "Task List = " + str(task_list)
-    origin = request.POST.get('origin', None)
     for task in task_list:
         print >>sys.stderr, "STATUS = " + str(FOLDER_STATUS_INT.get(task["status"], IS_ACTIVE))
         update_task_details(user, task["task_id"], task["name"], \
                             task["description"], task["start_date"], \
-                            task["due_date"], 'Active', origin = origin, \
+                            task["due_date"], 'Active', origin = SERVICE, \
                             subtask_ids = task["subtask_ids"], \
                     status = FOLDER_STATUS_INT.get(task["status"], IS_ACTIVE))
     

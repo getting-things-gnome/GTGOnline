@@ -36,7 +36,7 @@
                   },
                   {
                      "name":"task_list",
-                     "description":"a dictionary of the model type NewTaskParam",
+                     "description":"a dictionary having local id of a task as key and the task details of the model type TaskDetailsParam as value",
                      "required":true,
                      "type":"string",
                      "paramType":"form"
@@ -102,7 +102,7 @@
                   },
                   {
                      "name":"task_list",
-                     "description":"Array containing dictionaries of model type TaskDetails",
+                     "description":"Array containing dictionaries of model type TaskDetailsParam",
                      "required":true,
                      "type":"array",
                      "items":{
@@ -140,7 +140,7 @@
                   },
                   {
                      "name":"task_id_list",
-                     "description":"Array containing list of Task ids. Eg:- [151,219]",
+                     "description":"Array containing list of Task ids (Integer or String). Eg:- [151,219], [\"151\", \"219\"]",
                      "required":true,
                      "type":"array",
                      "items":{
@@ -201,12 +201,12 @@
       "TaskIdsDict":{
          "id":"TaskIdsDict",
          "required":[
-            "TaskLocalId"
+            "'Local Id of Task'"
          ],
          "properties":{
-            "TaskLocalId":{
+            "'Local Id of Task'":{
                "type":"string",
-               "description":"Remote Id of the Task"
+               "description":"This method returns a dictionary with local ids of the tasks given as parameter as keys and their corresponding remote ids as values. Swagger UI currently does not have a datatype defined for such dictionaries. Please contact the developer if this description is not clear"
             }
          }
       },
@@ -300,6 +300,49 @@
             "indent":{
                "type":"integer",
                "description":"The level of task. 0 means main task. >0 are subtasks. Current implementation will return only 0"
+            }
+         }
+      },
+      "TaskDetailsParam":{
+         "id":"TaskDetailsParam",
+         "description": "To create a new task, create a dictionary with local id of the task as key and as value a dictionary of this model type",
+         "required":[
+            "name",
+            "description",
+            "start_date",
+            "due_date",
+            "status",
+            "subtasks"
+         ],
+         "properties":{
+            "id":{
+               "type":"integer",
+               "format":"int32",
+               "description":"Unique Remote Id of the Task"
+            },
+            "name":{
+               "type":"string",
+               "description":"Name or Title of the Task"
+            },
+            "description":{
+               "type":"string",
+               "description":"Description of the Task"
+            },
+            "status":{
+               "type":"string",
+               "description":"Status of the Task",
+               "enum":[
+                  "Active",
+                  "Done",
+                  "Dismiss"
+               ]
+            },
+            "subtasks":{
+               "type":"array",
+               "items":{
+                  "$ref":"string"
+               },
+               "description":"Array containing the local ids of subtasks. For every local id, there should be an element present in the New Task Dictionary"
             }
          }
       },
