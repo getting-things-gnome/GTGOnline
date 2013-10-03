@@ -5,7 +5,7 @@ import sys
 
 from django.core import serializers
 from django.db.models import Count
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, QueryDict
 from django.template import loader, RequestContext
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -134,6 +134,8 @@ def delete_task(request):
     folder = request.GET.get('folder', 'Active')
     
     task_id_list = request.GET.getlist('task_id_list[]')
+    params = QueryDict(request.body, request.encoding)
+    print >>sys.stderr, "Params = " + str(params)
     
     query_is_from_client = True
     email = request.POST.get('email', None)
