@@ -118,7 +118,7 @@
          "path":"tasks/delete/",
          "operations":[
             {
-               "method":"POST",
+               "method":"DELETE",
                "summary":"Delete one or multiple tasks",
                "notes":"",
                "type":"string",
