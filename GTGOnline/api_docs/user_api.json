@@ -8,7 +8,7 @@
    ],
    "apis":[
       {
-         "path":"api/user/auth/",
+         "path":"api/v1/user/auth/",
          "operations":[
             {
                "method":"POST",
@@ -36,6 +36,58 @@
                   {
                      "code":200,
                      "message":"Returns '1' or '0' depending on whether authentication was successful or not"
+                  }
+               ]
+            }
+         ]
+      },
+      {
+         "path":"api/v1/user/register/",
+         "operations":[
+            {
+               "method":"PUT",
+               "summary":"Register a user",
+               "notes":"",
+               "type":"string",
+               "nickname":"registration",
+               "parameters":[
+                  {
+                     "name":"email",
+                     "description":"Email of the user",
+                     "required":true,
+                     "type":"string",
+                     "paramType":"form"
+                  },
+                  {
+                     "name":"password",
+                     "description":"Password of the user",
+                     "required":true,
+                     "type":"string",
+                     "paramType":"form"
+                  },
+                  {
+                     "name":"first_name",
+                     "description":"First Name of the user",
+                     "required":true,
+                     "type":"string",
+                     "paramType":"form"
+                  },
+                  {
+                     "name":"last_name",
+                     "description":"Last Name of the user",
+                     "required":true,
+                     "type":"string",
+                     "paramType":"form"
+                  }
+               ],
+               "responseMessages":[
+                  {
+                     "code":200,
+                     "message":"Registration Successful"
+                  },
+                  {
+                     "code":400,
+                     "message":"Email or Password was invalid, so Registration is unsuccessful, please register again"
                   }
                ]
             }

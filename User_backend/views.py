@@ -3,7 +3,7 @@
 import sys
 import json
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, QueryDict
 from django.template import loader, RequestContext
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
@@ -43,26 +43,15 @@ def login(request):
         #template = loader.get_template('landing.html')
         #context = RequestContext(request, {})
         #return HttpResponse(template.render(context))
-    if request.POST.get('origin', '') == 'gtg':
-        print >>sys.stderr, "Request is from GTG"
-        return HttpResponse('1', mimetype='application/json')
-    else:
-        print >>sys.stderr, "Nope"
     response = login_user(request, request.POST['email'], \
                           request.POST['password'])
     if response == USER_LOGGED_IN:
         request.session['error'] = '0'
-        if request.POST.get('origin', '') == 'gtg':
-            print >>sys.stderr, "Request is from GTG"
-            return HttpResponse('1', mimetype='application/json')
         return HttpResponseRedirect('/tasks/main/')
     elif response == USER_ACCOUNT_DISABLED:
         request.session['error'] = '2'
     else:
         request.session['error'] = '1'
-    if request.POST.get('origin', '') == 'gtg':
-        print >>sys.stderr, "Request is from GTG"
-        return HttpResponse('0', mimetype='application/json')
     return HttpResponseRedirect('/user/landing/')
 
 def logout(request):
@@ -84,21 +73,38 @@ def check_email(request):
         return HttpResponse('0', mimetype='application/json')
 
 def register(request):
+    params = QueryDict(request.body, request.encoding)
     if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        if not validate_form(email, password, first_name, last_name):
-            request.session['error'] = '3'
-            return HttpResponseRedirect('/user/landing/')
-        user = register_user(email, password, first_name, last_name)
-        if user != None:
-            create_default_groups(user)
-            response = login_user(request, email, password)
-            if response == USER_LOGGED_IN:
-                request.session['error'] = '0'
-                return HttpResponseRedirect('/tasks/main/')
+        email = request.POST.get('email', '')
+        password = request.POST.get('password', '')
+        first_name = request.POST.get('first_name', '')
+        last_name = request.POST.get('last_name', '')
+        query_is_from_client = True
+    elif params != {}:
+        email = params.get('email', '')
+        password = params.get('password', '')
+        first_name = params.get('first_name', '')
+        last_name = params.get('last_name', '')
+        query_is_from_client = False
+        resp = HttpResponse(mimetype='application/json')
+    if not validate_form(email, password, first_name, last_name):
+        if not query_is_from_client:
+            resp.content = LOGIN_RESPONSE_DICT['3']
+            resp.status_code = 400
+            return resp
+        request.session['error'] = '3'
+        return HttpResponseRedirect('/user/landing/')
+    user = register_user(email, password, first_name, last_name)
+    if user != None:
+        create_default_groups(user)
+        if not query_is_from_client:
+            resp.content = LOGIN_RESPONSE_DICT['5']
+            resp.status_code = 200
+            return resp
+        response = login_user(request, email, password)
+        if response == USER_LOGGED_IN:
+            request.session['error'] = '0'
+            return HttpResponseRedirect('/tasks/main/')
     request.session['error'] = '4'
     return HttpResponseRedirect('/user/landing/')
 

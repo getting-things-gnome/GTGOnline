@@ -74,6 +74,16 @@ USER_LOGGED_IN = 0
 USER_ACCOUNT_DISABLED = 1
 USER_INVALID = 2
 
+LOGIN_RESPONSE_DICT = {
+    '0': None,
+    '1': 'Incorrect Email/Password combination',
+    '2': 'Account has been disabled',
+    '3': 'Email or Password was invalid, ' \
+         'so Registration is unsuccessful, please register again',
+    '4': 'Registration Successful, you may now login',
+    '5': 'Registration Successful',
+}
+
 # Groups related
 NON_GROUPED = 0
 GROUPED = 1

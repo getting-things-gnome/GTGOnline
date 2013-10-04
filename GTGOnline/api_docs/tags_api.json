@@ -8,7 +8,7 @@
    ],
    "apis":[
       {
-         "path":"api/tags/get/",
+         "path":"api/v1/tags/get/",
          "operations":[
             {
                "method":"POST",

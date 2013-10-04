@@ -8,7 +8,7 @@
    ],
    "apis":[
       {
-         "path":"api/tasks/new/",
+         "path":"api/v1/tasks/new/",
          "operations":[
             {
                "method":"POST",
@@ -46,7 +46,7 @@
          ]
       },
       {
-         "path":"api/tasks/get/",
+         "path":"api/v1/tasks/get/",
          "operations":[
             {
                "method":"POST",
@@ -77,13 +77,13 @@
          ]
       },
       {
-         "path":"api/tasks/update/",
+         "path":"api/v1/tasks/update/",
          "operations":[
             {
                "method":"PUT",
                "summary":"Update one or multiple tasks",
                "notes":"",
-               "type":"string",
+               "type":"TaskDetailsParam",
                "nickname":"UpdateTasks",
                "parameters":[
                   {
@@ -115,7 +115,7 @@
          ]
       },
       {
-         "path":"api/tasks/delete/",
+         "path":"api/v1/tasks/delete/",
          "operations":[
             {
                "method":"DELETE",
