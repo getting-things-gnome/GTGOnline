@@ -90,7 +90,7 @@ def register(request):
         resp = HttpResponse(mimetype='application/json')
     if not validate_form(email, password, first_name, last_name):
         if not query_is_from_client:
-            resp.content = LOGIN_RESPONSE_DICT['3']
+            resp.content = json.dumps(LOGIN_RESPONSE_DICT['3'])
             resp.status_code = 400
             return resp
         request.session['error'] = '3'
@@ -99,7 +99,7 @@ def register(request):
     if user != None:
         create_default_groups(user)
         if not query_is_from_client:
-            resp.content = LOGIN_RESPONSE_DICT['5']
+            resp.content = json.dumps(LOGIN_RESPONSE_DICT['5'])
             resp.status_code = 200
             return resp
         response = login_user(request, email, password)
