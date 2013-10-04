@@ -80,7 +80,7 @@ def register(request):
         password = request.POST.get('password', '')
         first_name = request.POST.get('first_name', 'Walter')
         last_name = request.POST.get('last_name', 'White')
-        if request.path[1:3] == 'api':
+        if request.path[1:4] == 'api':
             query_is_from_client = False
             resp = HttpResponse(mimetype='application/json')
     if not validate_form(email, password, first_name, last_name):
