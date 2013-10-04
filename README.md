@@ -1,4 +1,6 @@
-You can view the demo app deployed at -
-https://gtgonline-parinporecha.rhcloud.com/
+The Web application is up and running ([link](https://gtgonline-parinporecha.rhcloud.com/))
 
-More info will be added soon :)
+I've written a sync backend for Getting Things Gnome! which syncs tasks with GTGOnline!
+It uses REST API and the documentation can be found [here](http://gtgonline-parinporecha.rhcloud.com/api/api_docs/)
+
+For bug reporting, please open an issue or contact the developer
