@@ -72,6 +72,7 @@ def check_email(request):
         print >>sys.stderr, "not exists"
         return HttpResponse('0', mimetype='application/json')
 
+@csrf_exempt
 def register(request):
     params = QueryDict(request.body, request.encoding)
     if request.method == 'POST':
