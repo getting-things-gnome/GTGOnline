@@ -74,20 +74,15 @@ def check_email(request):
 
 @csrf_exempt
 def register(request):
-    params = QueryDict(request.body, request.encoding)
+    query_is_from_client = True
     if request.method == 'POST':
         email = request.POST.get('email', '')
         password = request.POST.get('password', '')
         first_name = request.POST.get('first_name', 'Walter')
         last_name = request.POST.get('last_name', 'White')
-        query_is_from_client = True
-    elif params != {}:
-        email = params.get('email', '')
-        password = params.get('password', '')
-        first_name = params.get('first_name', '')
-        last_name = params.get('last_name', '')
-        query_is_from_client = False
-        resp = HttpResponse(mimetype='application/json')
+        if request.path[1:3] == 'api':
+            query_is_from_client = False
+            resp = HttpResponse(mimetype='application/json')
     if not validate_form(email, password, first_name, last_name):
         if not query_is_from_client:
             resp.content = json.dumps(LOGIN_RESPONSE_DICT['3'])

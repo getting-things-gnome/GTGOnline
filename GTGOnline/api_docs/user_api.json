@@ -45,7 +45,7 @@
          "path":"api/v1/user/register/",
          "operations":[
             {
-               "method":"PUT",
+               "method":"POST",
                "summary":"Register a user",
                "notes":"",
                "type":"string",
