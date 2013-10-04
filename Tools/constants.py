@@ -78,7 +78,7 @@ LOGIN_RESPONSE_DICT = {
     '0': None,
     '1': 'Incorrect Email/Password combination',
     '2': 'Account has been disabled',
-    '3': 'Email or Password was invalid, ' \
+    '3': 'One or more credentials were invalid, ' \
          'so Registration is unsuccessful, please register again',
     '4': 'Registration Successful, you may now login',
     '5': 'Registration Successful',

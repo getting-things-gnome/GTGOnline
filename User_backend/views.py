@@ -23,7 +23,7 @@ def landing(request):
         '0': None,
         '1': 'Incorrect Email/Password combination',
         '2': 'Account has been disabled',
-        '3': 'Email or Password was invalid, ' \
+        '3': 'One or more credentials were invalid, ' \
              'so Registration is unsuccessful, please register again',
         '4': 'Registration Successful, you may now login',
     }
@@ -78,8 +78,8 @@ def register(request):
     if request.method == 'POST':
         email = request.POST.get('email', '')
         password = request.POST.get('password', '')
-        first_name = request.POST.get('first_name', '')
-        last_name = request.POST.get('last_name', '')
+        first_name = request.POST.get('first_name', 'Walter')
+        last_name = request.POST.get('last_name', 'White')
         query_is_from_client = True
     elif params != {}:
         email = params.get('email', '')
