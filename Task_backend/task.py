@@ -167,7 +167,7 @@ def get_task_tree_details(user, task, indent, visited_list, folder, \
         subtasks_list = task.subtasks.annotate(num = Count('shared_with'))
         subtasks_list = subtasks_list.filter(num__gt = 0)
         print >>sys.stderr, "subtasks found = " + str(subtasks_list)
-        owner = get_user_details(task.user)
+        owner = ''
     elif folder == THEY_SHARED:
         q = list(set(task.subtasks.all()).intersection(user.shared_set.all()))
         subtasks_list = q
