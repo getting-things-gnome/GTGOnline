@@ -3,6 +3,7 @@ The Web application is up and running ([link](https://gtgonline-parinporecha.rhc
 If you want to run this application on your own server, here's how you can -
 
 Requirements - SQL server, Django >= 1.4 (1.5 is preferable)
+-------------------------------
 
 - Create a database. For MySQL it is - `CREATE DATABASE <<NAME OF THE DATABASE YOU WANT>> CHARACTER SET utf8 COLLATE utf8_general_ci;` (If you are using PostgreSQL or SQLite, make sure that the character set is UTF-8)
 
