@@ -20,7 +20,7 @@ Open the file `GTGOnline/settings.py`, and replace the lines 42 to 51 -
     }
 with your configuration.
 - Run the script `install.sh`(`./install.sh`). It will create all the tables needed, and the log directories and logfiles.
-- Run ```python manage.py runserver```. It will start a server at ```localhost:8000```. You can specify other port nos. by running ```python manage.py runserver <<PORT NO.>>```
+- Run ```python manage.py runserver```. It will start a server at ```localhost:8000```. You can specify other address and port no. by running ```python manage.py runserver <<ADDRESS>>:<<PORT NO.>>```
 - Thats it !
 - If you face any other errors, please contact the developer
 
