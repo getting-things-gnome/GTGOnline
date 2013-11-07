@@ -19,15 +19,15 @@ from Task_backend.task import get_task_object, get_task_tree, \
                               share_task, get_shared_task_details, \
                               get_all_tasks_details, add_gtg_tasks
 from Tag_backend.tag import find_tags
-from User_backend.user import authenticate_user
+from User_backend.user import authenticate_user, get_user_from_api_key
 from Tools.constants import *
 from Tools.dates import get_datetime_object
 
 @csrf_exempt
 def get_serialized_tasks(request):
-    email = request.POST.get('email', '')
-    password = request.POST.get('password', '')
-    user = authenticate_user(email, password)
+    api_key = request.POST.get('api_key', '')
+    #password = request.POST.get('password', '')
+    user = get_user_from_api_key(api_key)
     if user == None:
         return HttpResponse(json.dumps([], indent = 4), \
                         mimetype='application/json')
@@ -140,9 +140,9 @@ def delete_task(request):
     query_is_from_client = True
     if params != {}:
         query_is_from_client = False
-        email = params.get('email', None)
-        password = params.get('password', None)
-        user = authenticate_user(email, password)
+        api_key = params.get('api_key', None)
+        #password = params.get('password', None)
+        user = get_user_from_api_key(api_key)
         if user == None:
             return HttpResponse(json.dumps('0', indent=4), \
                                 mimetype='application/json')
@@ -171,14 +171,14 @@ def delete_task(request):
 
 @csrf_exempt
 def new_task(request):
-    email = request.POST.get('email', '')
-    password = request.POST.get('password', '')
+    api_key = request.POST.get('api_key', '')
+    #password = request.POST.get('password', '')
     task_list = request.POST.get('task_list', '')
     #print >>sys.stderr, "task_list = " + str(task_list) + "type = " + str(type(task_list))
     task_list = json.loads(task_list)
     print >>sys.stderr, "task_list = " + str(task_list)
     
-    user = authenticate_user(email, password)
+    user = get_user_from_api_key(api_key)
     if user == None:
         return HttpResponse(json.dumps({}, indent=4), \
                             mimetype='application/json')
@@ -217,9 +217,9 @@ def update_task(request):
 @csrf_exempt
 def bulk_update(request):
     params = QueryDict(request.body, request.encoding)
-    email = params.get('email', None)
-    password = params.get('password', None)
-    user = authenticate_user(email, password)
+    api_key = params.get('api_key', None)
+    #password = params.get('password', None)
+    user = get_user_from_api_key(api_key)
     
     if user == None:
         return HttpResponse(json.dumps('0', indent = 4), \

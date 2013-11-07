@@ -9,15 +9,16 @@ from Task_backend.models import Task
 from Task_backend.task import get_tasks_by_tag
 from Tag_backend.tag import get_tags_by_user, delete_tag_modify_tasks, \
                             update_tag_color, update_tag_icon
-from User_backend.user import get_user_object, authenticate_user
+from User_backend.user import get_user_object, authenticate_user, \
+                              get_user_from_api_key
 from Tools.constants import *
 
 @csrf_exempt
 def get_all_tags(request):
-    email = request.POST.get('email', '')
-    if email != '':
-        password = request.POST.get('password', '')
-        user = authenticate_user(email, password)
+    api_key = request.POST.get('api_key', '')
+    if api_key != '':
+        #password = request.POST.get('password', '')
+        user = get_user_from_api_key(api_key)
         if user == None:
             return HttpResponse(json.dumps([], indent=4), \
                         mimetype="application/json")

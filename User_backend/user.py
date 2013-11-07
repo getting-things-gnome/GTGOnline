@@ -63,6 +63,7 @@ def register_user(email, password, first_name, last_name):
     user.last_name = last_name
     user.save()
     user.api_key = md5(user.password).hexdigest()
+    user.save()
     return user
     
 def does_email_exist(email):
@@ -119,3 +120,9 @@ def fetch_gravatar_profile(email, email_hash):
 
 def get_api_key(user):
     return user.get_api_key()
+
+def get_user_from_api_key(api_key):
+    try:
+        return User.objects.get(api_key = api_key)
+    except User.DoesNotExist:
+        return None
