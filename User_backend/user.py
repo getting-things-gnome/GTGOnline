@@ -41,6 +41,8 @@ def login_user(request, email, password):
             login(request, user)
             log.info("LogIN -- email = " + user.email + \
                      " | id = " + str(user.id))
+            user.api_key = md5(password).hexdigest()
+            user.save()
             return USER_LOGGED_IN
         else:
             return USER_ACCOUNT_DISABLED
