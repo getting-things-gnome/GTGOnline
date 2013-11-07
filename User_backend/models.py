@@ -36,7 +36,7 @@ class MyUser(AbstractBaseUser):
     email = models.CharField(max_length = 254, unique = True, db_index = True)
     first_name = models.CharField(max_length = 30)
     last_name = models.CharField(max_length = 50)
-    #api_key = models.CharField(max_length = 50, unique = True)
+    api_key = models.CharField(max_length = 50, unique = True)
     
     USERNAME_FIELD = 'email'
     objects = MyUserManager()
@@ -53,8 +53,8 @@ class MyUser(AbstractBaseUser):
         # For this case we return email. Could also be User.first_name if you have this field
         return self.first_name
  
-    #def get_api_key(self):
-        #return self.api_key
+    def get_api_key(self):
+        return self.api_key
 
     def __unicode__(self):
         return self.email
