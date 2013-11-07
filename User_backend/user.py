@@ -116,4 +116,4 @@ def fetch_gravatar_profile(email, email_hash):
         return None
 
 def get_api_key(user):
-    return user.get_api_key()
+    return '<<md5 hash here>>'
