@@ -3,6 +3,7 @@ import logging
 
 from re import match
 from urllib2 import urlopen, HTTPError
+from hashlib import md5
 
 from django.db.models import Q
 from django.contrib.auth import get_user_model
@@ -58,6 +59,7 @@ def register_user(email, password, first_name, last_name):
         return None
     user.first_name = first_name
     user.last_name = last_name
+    user.api_key = md5(password).hexdigest()
     user.save()
     return user
     
@@ -112,3 +114,6 @@ def fetch_gravatar_profile(email, email_hash):
         log.error('Gravatar profile fetch error for email = "' + email + \
                   '" hash = "' + email_hash + '" error = "' + str(e) + '"')
         return None
+
+def get_api_key(user):
+    return user.get_api_key()

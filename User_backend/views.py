@@ -11,7 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from User_backend.user import register_user, login_user, logout_user, \
                               validate_form, does_email_exist, \
-                              fetch_gravatar_profile, authenticate_user
+                              fetch_gravatar_profile, authenticate_user, \
+                              get_api_key
 from Group_backend.group import find_users_from_query
 from Group_backend.group import create_default_groups
 from Tools.constants import *
@@ -74,17 +75,17 @@ def check_email(request):
 
 @csrf_exempt
 def register(request):
-    query_is_from_client = True
+    query_is_from_browser = True
     if request.method == 'POST':
         email = request.POST.get('email', '')
         password = request.POST.get('password', '')
         first_name = request.POST.get('first_name', 'Walter')
         last_name = request.POST.get('last_name', 'White')
         if request.path[1:4] == 'api':
-            query_is_from_client = False
+            query_is_from_browser = False
             resp = HttpResponse(mimetype='application/json')
     if not validate_form(email, password, first_name, last_name):
-        if not query_is_from_client:
+        if not query_is_from_browser:
             resp.content = json.dumps(LOGIN_RESPONSE_DICT['3'])
             resp.status_code = 400
             return resp
@@ -93,8 +94,8 @@ def register(request):
     user = register_user(email, password, first_name, last_name)
     if user != None:
         create_default_groups(user)
-        if not query_is_from_client:
-            resp.content = json.dumps(LOGIN_RESPONSE_DICT['5'])
+        if not query_is_from_browser:
+            resp.content = json.dumps(get_api_key(user))
             resp.status_code = 200
             return resp
         response = login_user(request, email, password)
@@ -150,6 +151,8 @@ def get_gravatar(request):
 def custom_auth_for_gtg(request):
     email = request.POST.get('email', '')
     password = request.POST.get('password', '')
-    if authenticate_user(email, password) != None:
-        return HttpResponse('1', mimetype='application/json')
+    user_object = authenticate_user(email, password)
+    if user_object != None:
+        return HttpResponse(get_api_key(user_object),
+                            mimetype='application/json')
     return HttpResponse('0', mimetype='application/json')
