@@ -36,7 +36,7 @@ class MyUser(AbstractBaseUser):
     email = models.CharField(max_length = 254, unique = True, db_index = True)
     first_name = models.CharField(max_length = 30)
     last_name = models.CharField(max_length = 50)
-    api_key = models.CharField(max_length = 50, unique = True)
+    api_key = models.CharField(max_length = 50, unique = True, default = email)
     
     USERNAME_FIELD = 'email'
     objects = MyUserManager()
