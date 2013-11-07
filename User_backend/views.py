@@ -152,7 +152,11 @@ def custom_auth_for_gtg(request):
     email = request.POST.get('email', '')
     password = request.POST.get('password', '')
     user_object = authenticate_user(email, password)
+    resp = HttpResponse(mimetype='application/json')
     if user_object != None:
-        return HttpResponse(get_api_key(user_object),
-                            mimetype='application/json')
-    return HttpResponse('0', mimetype='application/json')
+        resp.content = json.dumps(get_api_key(user_object))
+        resp.status_code = 200
+        return resp
+    resp.content = 'No User corresponding to the API KEY provided exists'
+    resp.status_code = 400
+    return resp

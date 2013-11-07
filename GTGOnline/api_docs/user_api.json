@@ -35,7 +35,11 @@
                "responseMessages":[
                   {
                      "code":200,
-                     "message":"Returns '1' or '0' depending on whether authentication was successful or not"
+                     "message":"The API KEY corresponding to the user"
+                  },
+                  {
+                     "code":400,
+                     "message":"No user corresponding to the API KEY provided exists"
                   }
                ]
             }
@@ -83,7 +87,7 @@
                "responseMessages":[
                   {
                      "code":200,
-                     "message":"Registration Successful"
+                     "message":"API KEY for the user"
                   },
                   {
                      "code":400,

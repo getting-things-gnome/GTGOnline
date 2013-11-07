@@ -21,15 +21,8 @@
                "nickname":"CreateNewTasks",
                "parameters":[
                   {
-                     "name":"email",
-                     "description":"Email of the user",
-                     "required":true,
-                     "type":"string",
-                     "paramType":"form"
-                  },
-                  {
-                     "name":"password",
-                     "description":"Password of the user",
+                     "name":"api_key",
+                     "description":"API_KEY corresponding to the user",
                      "required":true,
                      "type":"string",
                      "paramType":"form"
@@ -59,15 +52,8 @@
                "nickname":"GetAllTasks",
                "parameters":[
                   {
-                     "name":"email",
-                     "description":"Email of the user",
-                     "required":true,
-                     "type":"string",
-                     "paramType":"form"
-                  },
-                  {
-                     "name":"password",
-                     "description":"Password of the user",
+                     "name":"api_key",
+                     "description":"API_KEY corresponding to the user",
                      "required":true,
                      "type":"string",
                      "paramType":"form"
@@ -87,15 +73,8 @@
                "nickname":"UpdateTasks",
                "parameters":[
                   {
-                     "name":"email",
-                     "description":"Email of the user",
-                     "required":true,
-                     "type":"string",
-                     "paramType":"form"
-                  },
-                  {
-                     "name":"password",
-                     "description":"Password of the user",
+                     "name":"api_key",
+                     "description":"API_KEY corresponding to the user",
                      "required":true,
                      "type":"string",
                      "paramType":"form"
@@ -125,15 +104,8 @@
                "nickname":"DeleteTasks",
                "parameters":[
                   {
-                     "name":"email",
-                     "description":"Email of the user",
-                     "required":true,
-                     "type":"string",
-                     "paramType":"form"
-                  },
-                  {
-                     "name":"password",
-                     "description":"Password of the user",
+                     "name":"api_key",
+                     "description":"API_KEY corresponding to the user",
                      "required":true,
                      "type":"string",
                      "paramType":"form"
