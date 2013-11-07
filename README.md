@@ -2,7 +2,7 @@ The Web application is up and running ([link](https://gtgonline-parinporecha.rhc
 
 If you want to run this application on your own server, here's how you can -
 
-Requirements - SQL server, Django >= 1.4 (1.5 is preferable)
+**Requirements - SQL server, Django >= 1.4 (1.5 is preferable)**
 
 - Create a database. For MySQL it is - `CREATE DATABASE <<NAME OF THE DATABASE YOU WANT>> CHARACTER SET utf8 COLLATE utf8_general_ci;` (If you are using PostgreSQL or SQLite, make sure that the character set is UTF-8)
 
@@ -19,8 +19,8 @@ Open the file `GTGOnline/settings.py`, and replace the lines 42 to 51 -
     	}
     }
 with your configuration.
-- Run ```python manage.py syncdb```. It will create all the tables needed and ask you for your credentials.
-- Run ```python manage.py runserver```. It will start a server at ```localhost:8000```. You can specify other port nos. by running ```python manage.py runserver <<PORT NO.>>```
+- Run the script `install.sh`(`./install.sh`). It will create all the tables needed, and the log directories and logfiles.
+- Run ```python manage.py runserver```. It will start a server at ```localhost:8000```. You can specify other address and port no. by running ```python manage.py runserver <<ADDRESS>>:<<PORT NO.>>```
 - Thats it !
 - If you face any other errors, please contact the developer
 
