@@ -157,6 +157,5 @@ def custom_auth_for_gtg(request):
         resp.content = json.dumps(get_api_key(user_object))
         resp.status_code = 200
         return resp
-    resp.content = 'No User corresponding to the API KEY provided exists'
     resp.status_code = 400
     return resp
