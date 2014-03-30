@@ -1,5 +1,11 @@
 The Web application is up and running ([link](https://gtgonline-parinporecha.rhcloud.com/))
 
+If you want to check out the UI of GTGOnline!, you can use the following credentials -
+ * email - test@test.com
+ * pass - testtest
+
+or you can view the screenshots ([here](imgur.com/a/NOKse#0))
+
 If you want to run this application on your own server, here's how you can -
 
 **Requirements - SQL server, Django >= 1.4 (1.5 is preferable)**
