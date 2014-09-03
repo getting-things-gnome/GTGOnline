@@ -4,7 +4,7 @@ If you want to check out the UI of GTGOnline!, you can use the following credent
  * email - test@test.com
  * pass - testtest
 
-or you can view the screenshots ([here](imgur.com/a/NOKse#0))
+or you can view the screenshots ([here](http://imgur.com/a/NOKse#0))
 
 If you want to run this application on your own server, here's how you can -
 
